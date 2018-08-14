@@ -51,7 +51,7 @@ Page({
     tab_value: "1",
     tab2: 'default',
     updown: 0,     //升序 降序
-    shop_type: shop_type,  //商家类型 1普通 2百货超市
+    shop_type: shop_type,  //商家类型 1普通 2百货超市 3生鲜
     scrollLeft: 0,
     toView: 0,
     member_type:3,  //厨师

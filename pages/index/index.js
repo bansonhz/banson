@@ -8,7 +8,7 @@ var app = getApp();
 //var weburl = "https://czw.saleii.com";
 var weburl = app.globalData.weburl;
 var qqmapkey = app.globalData.mapkey;
-var shop_type=2;
+var shop_type = app.globalData.shop_type;
 var navList = [
   { id: "is_recommend", title: "推荐", value: "1" },
   { id: "activity_flag", title: "精品", value: "1" },

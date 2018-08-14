@@ -1,0 +1,27 @@
+ 
+<view class="cell" wx:if="{{addressList.length == 0}}">
+	<text>地址</text>
+	<text class="area_select" bindtap="bindCreateNew">请先添加地址</text>
+</view>
+<view class="cell" wx:else>
+	<text style="width:100rpx;">地址:</text>
+	<picker bindchange="bindPickerChange" value="{{index}}" range="{{addressList}}" range-key="address" mode="selector">
+		{{addressList[addressIndex]['prov_str']}}{{addressList[addressIndex]['city_str']}}{{addressList[addressIndex]['area_str']}}{{addressList[addressIndex]['town_str']}}{{addressList[addressIndex]['address']}}
+	</picker>
+   <icon style="margin-top:-10rpx;margin-left:-10rpx;" class="Hui-iconfont iconv-downarrow" />
+</view>
+ <block wx:for="{{carts}}"  wx:key="index">
+  <view class="cell"  data-object-id="{{item.id}}" data-goods-id="{{item.goods_id}}"  data-goods-name="{{item.name}}"  data-goods-info="{{item.act_info}}" data-goods-price="{{item.sell_price}}"  bindtap="showGoods">
+	  <image src="{{item.image}}"></image>
+    <view class="cart-item-list">
+    <text style="width:100%">{{item.name}}</text>
+    <text style='color:gray'>x{{item.num}}</text>
+    <!-- <text class="amount" style='color:gray'>{{item.sell_price}}</text> -->
+    </view>
+  </view>
+</block>
+<view class="cell">
+	<text>总金额</text>
+	<text class="amount">{{amount}}</text>
+</view>
+<button class="submit" type="primary" bindtap="confirmOrder">提交订单</button>

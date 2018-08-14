@@ -1,0 +1,14 @@
+<!--导航nav组件 -->
+<template name="nav2">
+    <view class="top-bar2">
+      <block wx:for="{{navList2}}" wx:key="">
+        <view id="v_{{iindex}}" data-index="{{index}}" data-title="{{item.title}}" data-value="{{item.value}}" class="top-bar-item2 {{index == activeIndex2 ? 'top-bar-active2' : ''}}" catchtap="onTapTag2">
+        <view class="top-bar-item-text2">
+        <image src="{{item.img}}" ></image>
+        <text>{{item.title}}</text>
+        </view>
+        </view>
+      </block>
+    </view>
+</template>
+

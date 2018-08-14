@@ -1,0 +1,418 @@
+@import "../../lib/style/font.wxss";
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.Hui-iconfont {
+ font-family: "Hui-iconfont";
+ font-size:30rpx;
+}
+.iconv-uparrow:after {
+  content:'\e6d6';
+}
+
+.iconv-downarrow:after {
+  content:'\e6d5';
+}
+
+.container {
+    background-color: #F2f2f2;
+    z-index: 1;
+    width:100%;
+}
+
+.banner {
+	width: 100%;
+	height: 70rpx;
+	padding-top: 0rpx;
+	/*margin-left: 15rpx;*/
+}
+
+.banner image {
+	width: 100%;
+	height: 0rpx;
+}
+
+.banner2 {
+	width: 100%;
+	height: 300rpx;
+	padding-top: 30rpx;
+  background: white;
+	/*margin-left: 15rpx;*/
+}
+
+.banner2 image {
+	width: 100%;
+	height: 0rpx;
+}
+
+.swiper_box {
+    width: 100%;
+    height:450rpx;
+    margin-top:0rpx;
+}
+.swiper_box .slide-image{
+    width: 100%;
+    height: 400rpx;
+    display: inline-block;
+    overflow: hidden;
+
+}
+.swiper-box .wx-swiper-dots .wx-swiper-dots-horizontal{
+     margin-bottom: 2rpx;
+}
+.swiper-box .wx-swiper-dot{
+    width:40rpx;
+    display: inline-flex;
+    height: 10rpx;
+    margin-left: 20rpx;
+    justify-content:space-between;
+}
+.swiper-box .wx-swiper-dot::before{
+    content: '';
+    flex-grow: 1; 
+    background: rgba(255,255,255,0.8);
+    border-radius: 8rpx
+}
+.swiper-box .wx-swiper-dot-active::before{
+    background:rgba(244,0,0,0.8);   
+}
+
+.search {
+	width: 100%;
+	height: 70rpx;
+  display: flex;
+	flex-direction: row;
+	justify-content: center;/*子项横轴上居中对齐*/
+	align-items: center;/*子项纵轴上居中对齐*/
+  padding: 5rpx;
+  top:0;
+  position: fixed;
+  z-index: 99;
+  opacity: 1;
+}
+
+.search .wx-input {
+	width: 30%;
+	height: 30rpx;
+	border: 1px solid #bfbfbf;
+	border-radius: 120rpx;
+  padding-left: 10rpx;
+  text-align: left;
+  z-index: 99;
+}
+
+.search image {
+	width: 5%;
+	height: 40rpx;
+	border: 0px solid #bfbfbf;
+  margin-left:10rpx;
+  z-index: 99;
+}
+.search .address-text {
+  width:350rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-right:30rpx;
+  
+}
+
+/*导航 nav*/
+.top-bar {
+  height: 72rpx;
+  background: white; 
+  white-space: nowrap;
+  position: fixed;
+  margin-top: 100rpx;
+  top:0;
+  z-index:99;
+}
+.top-bar-item {
+  display:inline-block;
+  width: 150rpx;
+  color: gray;
+  text-align: center;
+  /* line-height: 72rpx; */
+  font-size: 30rpx;
+}
+.top-bar-active{
+  color: red;
+  font-size: 34rpx;
+}
+
+/*辅助导航 nav2*/
+.top-bar2 {
+  background: white; 
+  width:100%;
+  height:300rpx;
+  position: relative;
+  margin-top:1rpx;
+  top:10;
+  border-top: 0px solid #F2f2f2;
+  z-index:1;
+}
+.top-bar-item2 {
+  display:inline-block;
+  width: 185rpx;
+  height:120rpx;
+  color: gray;
+  text-align: center;
+  /* line-height: 72rpx; */
+  font-size: 30rpx;
+ 
+}
+.top-bar-active2 {
+  color: red;
+  font-size: 30rpx;
+}
+.top-bar-item-text2 {
+  display: flex;
+	flex-direction: column;
+	justify-content: center;/*子项横轴上居中对齐*/
+	align-items: center;/*子项纵轴上居中对齐*/
+}
+.top-bar-item-text2 image{
+  width: 30%;
+  height: 60rpx;
+  border-radius: 50%;
+}
+swiper-item image {
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
+}
+
+.title-text {   
+  display: flex;
+  flex-direction:row;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+  /**其中子view垂直居中显示*/
+  align-items: center;
+  position: relative;
+  font-size: 15px;
+  color: #656565;
+  background-color: white;
+}
+
+.title-text image{
+    width: 45%;
+    height: 65rpx;
+    padding: 10rpx;
+      
+}
+
+.title-text .more{
+    width: 50%;
+    text-align: right;
+    margin-right:20rpx; 
+    font-size: 38rpx;
+}
+.venues_box {
+  padding: 10rpx;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.venues_item {
+    display: -webkit-inline-flex; 
+    padding: 10rpx;
+}
+
+/*右部描述*/
+.venues_text {
+	margin: 10rpx;
+  height: 180rpx;
+  width: 180rpx;
+	display: flex;
+	flex-direction: column;
+	
+}
+
+.venues_item image{
+    width: 200rpx;
+    height: 180rpx;
+}
+
+ .venues_text .goods_name {
+  color: black; 
+  font-size: 8pt;
+}
+
+ .venues_text .goods_tag {
+   color: gray; 
+   font-size: 8pt;
+   margin-top:0px;
+
+}
+.venues_text .goods_tag image{
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+}
+ .venues_text .goods_prom {
+   color: gray; 
+  
+   font-size: 8pt;
+   margin-top:0px;
+}
+
+.venues_box2 {
+  width: 100%;
+  padding: 0 10rpx;
+  display: inline-block;
+}
+
+.venues_item2 {
+    display: inline-block;
+    text-align: left;
+    width: 47%;
+    margin:0;
+    margin-left:15rpx;
+}
+
+.venues_item2 image{
+    width: 100%;
+    height: 260rpx;
+}
+
+ .venues_item2 .goods_name {
+  color: black; 
+  font-size: 8pt;
+}
+
+ .venues_item2 .goods_tag {
+   color: gray; 
+   font-size: 8pt;
+   margin-top:0px;
+   border: 2px solid #F2f2f2;
+   border-style: solid;  
+}
+.venues_item2 .goods_tag image{
+  width: 10%;
+  height: 30rpx;
+}
+ .venues_item2 .goods_prom {
+   color: gray; 
+   font-size: 8pt;
+   margin-top:0px;
+}
+
+.venues_box3 {
+  width: 100%;
+  height: 350rpx;
+  padding:0rpx;
+  white-space: nowrap;
+}
+
+.venues_item3 {
+    display: inline-block;
+    text-align: left;
+    width: 30%;
+    margin-left:15rpx;
+}
+
+.venues_item3 image{
+    width: 100%;
+    height: 180rpx;
+}
+
+ .venues_item3 .goods_name {
+  color: black; 
+  font-size: 8pt;
+}
+
+ .venues_item3 .goods_tag {
+   color: gray; 
+   font-size: 8pt;
+   margin-top:0px;
+   border: 0px solid #F2f2f2;
+   border-style: solid;  
+}
+.venues_item3 .goods_tag image{
+  width: 10%;
+  height: 20rpx;
+}
+ .venues_item3 .goods_prom {
+   color: gray; 
+   font-size: 8pt;
+   margin-top:0px;
+}
+
+
+.venues_box_list {
+  width: 100%;
+  padding: 0 10rpx;
+  display:flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.venues_item_list {
+    display:flex;
+    flex-direction: row;
+    text-align: left;
+    width: 100%;
+    margin:0;
+    margin-left:15rpx;
+}
+
+.venues_item_list image{
+    width: 400rpx;
+    height: 200rpx;
+    padding: 20rpx;
+}
+
+.venues_item_list .venues_item_list_text {
+    display:flex;
+    flex-direction: column;
+    text-align: left;
+    height: 200rpx;
+    margin-top:20rpx;
+    margin-left:20rpx;
+    width:100%;
+    
+}
+ .venues_item_list_text .goods_name {
+  color: black; 
+  font-size: 8pt;
+}
+ 
+ .venues_item_list_text .goods_tag {
+   color: gray; 
+   margin-right:20rpx;
+   line-height: 30rpx;
+   height: 60rpx;
+   width: 30%;
+   align-content: right;
+   align-items: right;
+   text-align: right;
+   z-index: 99;
+    
+}
+
+.goods_cart {
+  display: flex;
+  flex-direction: row;
+  align-items: left;
+  text-align: left;
+  height: 60rpx;
+}
+.goods_cart image {
+  background:#dc322f;
+  width:50rpx;
+  height:50rpx;
+  position: absolute;
+  right: 30rpx;
+  align-content: center;
+  border-radius: 50%;
+}
+ .venues_item_list_text .goods_prom {
+   color: gray; 
+   font-size: 8pt;
+   margin-top:0px;
+}

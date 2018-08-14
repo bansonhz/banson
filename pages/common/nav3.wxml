@@ -1,0 +1,25 @@
+<!--导航nav组件 -->
+<template name="nav3">
+    <view class="top-bar2">
+      <block wx:for="{{navList2}}" wx:key="">
+        <view id="v_{{iindex}}" data-id="{{item.id}}" data-index="{{index}}" data-title="{{item.title}}" data-value="{{item.value}}" class="top-bar-item2 {{index == activeIndex2 ? 'top-bar-active2' : ''}}" catchtap="">
+          <view class="top-bar-item-list2">
+            <view class="top-bar-item-text2">
+          <picker wx:if="{{item.id == 'cuisinesystem'}}" mode="selector" data-id="{{item.id}}" data-index="{{index}}" bindchange="bindPickerChange" value="{{index}}" range="{{item.list}}">
+            <view class="picker">
+              {{item.default_title?item.default_title:item.title}}
+              <icon style="margin-top:-15rpx;" class="Hui-iconfont iconv-downarrow" />
+            </view>
+          </picker> 
+          <picker wx:if="{{item.id == 'dinner_date'}}" mode="multiSelector" bindchange="bindMultiPickerChange2" bindcolumnchange="bindMultiPickerColumnChange2" value="{{multiIndex}}" range="{{dinner_order}}" range-key="{{'name'}}">
+          <view class="picker">
+           {{dinner_order[0][multiIndex2[0]].name}} {{dinner_order[1][multiIndex2[1]].name}}
+           <icon style="margin-top:-15rpx;" class="Hui-iconfont iconv-downarrow" />
+          </view>
+        </picker>
+        </view>
+      </view>
+    </view>
+    </block>
+  </view>
+</template>

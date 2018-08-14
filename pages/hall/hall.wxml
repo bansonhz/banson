@@ -1,0 +1,108 @@
+
+<!-- <view class="banner" style="background-image:url({{main_title_Bg}});">
+  <view class="slogan" >
+    <text style="font-size:20px;color:white;" >品质生活从做菜开始</text>
+    <text style="font-size:14px;color:red;margin-left:5px;margin-top:5px;">精选 精品 精心</text>
+  </view>
+  <view class="user">
+  <view class="userinfo">
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <text class="userinfo-nickname" >{{userInfo.nickName}}</text>
+    
+  </view>
+ 
+  <view class="usergifts">
+    <text style="color:white;margin-left:30rpx;font-size:14px">收到 {{gifts_rcv}}</text>
+    <text style="color:white;margin-left:30rpx;font-size:14px">送出 {{gifts_send}}</text>
+  </view>
+ 
+  </view> 
+</view>
+-->
+<view class="pick-goods" hidden="{{all_rows>0?false:false}}" bindtap="bindPickGoods">
+    <view>
+    <image class="pick-goods-image" src="../../images/icon-1.png"></image>
+    </view>
+    <view class="pick-goods-text">
+    <text class="pick-goods-slogan">挑选最合味的</text>
+    <text class="pick-goods-slogan2">健康，可口</text>
+    </view>
+    <image class="pick-goods-image" src="../../images/cart-null.png"></image>
+</view>
+<view class="container carts-list">
+    <view wx:for="{{carts}}" class="carts-container" wx:key="index" data-object-id="{{item.id}}" data-goods-id="{{item.goods_id}}"  data-goods-name="{{item.name}}"  data-goods-info="{{item.act_info}}" data-goods-price="{{item.sell_price}}" hidden="{{item.hidden==1?false:false}}" bindtap="showGoods">
+    	<view class="carts-item" style="left: {{itemLefts[index]}}px;" data-index="{{index}}" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
+	    	<!-- 复选框图标 -->
+			<icon style="margin-left:20rpx;" type="{{item.selected ? 'success_circle' : 'circle'}}" size="18" catchtap="bindCheckbox" data-index="{{index}}" />
+ 
+			<!-- 缩略图 -->
+				<image  class="carts-image" src="{{item.image}}" mode="aspectFill"/>
+				<!-- 商品标题 -->
+        <view class="carts-text">
+				<text class="carts-title">{{item.sku_note?item.sku_note:item.name}}</text>
+				<view class="carts-text carts-subtitle">
+            <view class='carts-price'>
+				      <!-- 价格 -->
+				  	  <view class="carts-gov-price">{{item.act_info?item.act_info:'经典趣味'}}</view>
+              <view class="carts-en-price">￥{{item.sell_price}}元</view>
+            </view>
+				  	<!-- 数量加减 -->
+				      <view class="stepper">
+						<!-- 减号 -->
+						<text class="{{minusStatuses[index]}}" data-index="{{index}}" catchtap="bindMinus">-</text>
+						<!-- 数值 -->
+						<input type="number" data-index="{{index}}" catchchange="bindManual" catchtap="bindManualTapped" value="{{item.num}}" />
+						<!-- 加号 -->
+						<text class="normal" data-index="{{index}}" catchtap="bindPlus">+</text>
+				  	</view>
+				</view>
+			</view>
+    </view>
+    <button type="warn" data-index="{{index}}" class="delete-button" catchtap="delete" data-object-id="{{item.objectId}}">删除</button>
+    </view>
+</view>
+<!-- 
+<view class="carts-more" hidden="{{showmorehidden}}">
+    <text style="60%;margin-left:30rpx;" bindtap="bindShowMore" >更多...[{{all_rows}}]</text>
+</view>
+<view class="carts-more" hidden="{{(showmorehidden && all_rows>0)?false:true}}">
+
+    <text style="60%;margin-left:30rpx;" bindtap="bindShowLess" >收起...[{{all_rows}}]</text>
+     
+</view>
+-->
+
+<!--
+<view class="note">
+<textarea  bindblur="bindTextAreaBlur" auto-height placeholder="选你一份心意，愿美好长存!" />
+</view>
+-->
+<view class="carts-footer" hidden="{{all_rows>0?false:true}}">
+	<view class="select-and-amount" bindtap="bindSelectAll">
+		<icon style="margin-top:-5rpx;" type="{{selectedAllStatus ? 'success_circle' : 'circle'}}" size="18"/>
+		<text>全选</text>
+		<text>{{total}}</text>
+	</view>
+	<view class="button" bindtap="bindCheckout">去支付</view>
+</view>
+
+<view class="recomment-title">
+    <text>精品推荐</text>
+</view>
+<view wx:for="{{recommentList}}" class="item" wx:key="index" bindtap="showGoods" data-object-id="{{item.id}}" data-goods-id="{{item.id}}" data-goods-name="{{item.name}}" data-goods-price="{{item.sell_price}}" data-sale="{{item.sale}}" data-goods-info="{{item.act_info}}" hidden="{{item.hidden==1?true:false}}">
+   <image class="img" src="{{item.image}}"></image>
+    <text style="font-size:12px;">{{item.name}}</text>
+    <view style="font-size:10px;color:gray;">{{item.act_info?item.act_info:'经典干货'}}</view>  
+    <!--     
+    <view style="font-size:10px;color:gray;"><image class="img_tag" src="../../images/u48.png"></image>{{item.goods_tag}}</view>
+    -->    
+		<view>￥{{item.sell_price}}元</view> 
+ </view>
+ <view class="carts-more" hidden="{{rshowmorehidden}}">
+    <text bindtap="bindShowMoreR" >更多...[{{rall_rows}}]</text>
+</view>
+<view class="carts-more" hidden="{{rshowmorehidden?false:true}}">
+    <text bindtap="bindShowLessR" >收起...[{{rall_rows}}]</text>
+</view>
+<button wx:if="{{!userInfo}}" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" type="warn" class="logout">获取用户信息</button>
+ 

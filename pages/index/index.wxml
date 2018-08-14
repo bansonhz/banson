@@ -1,0 +1,167 @@
+<!--index.wxml-->
+<!-- 
+<import src="../common/nav.wxml"/>
+-->
+<import src="../common/nav2.wxml"/>
+<view bindtap = "handletap" bindtouchstart = "touchstart" bindtouchmove="touchmove" bindtouchend="handletouchend" style='position:relative'>
+ 
+<view class="search" hidden='{{searchhidden}}'>
+		<image bindtap='addressTapTag'  src="../../images/icon_address.png"></image>
+    <text bindtap='addressTapTag' class="address-text" style="color:gray">{{address}}</text>
+    <text class="wx-input"  bindtap='searchTapTag' ></text>
+    <image bindtap='searchTapTag' src="../../images/search-btn.png"></image>
+</view>
+ 
+<!--
+<view class="banner">
+  <template is="nav" data="{{navList, activeIndex}}"/>
+</view>
+ -->
+<swiper class="swiper_box" indicator-dots="{{indicatorDots}}" vertical="{{vertical}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiperchange">
+        <block wx:for="{{images}}" wx:key="">
+            <swiper-item>
+              <video wx:if="{{item.ext=='mp4'}}" id="myVideo"  class="slide-image" src="{{item.desc}}" controls autoplay="autoplay" >
+              </video> 
+                <image wx:else src="{{item.desc}}" class="slide-image" mode="aspectFill"/>
+            </swiper-item>
+        </block>
+</swiper>
+<view class="banner2">
+ <template is="nav2" data="{{navList2, activeIndex2, updown}}"/>
+</view>
+  <view class="title-text" wx:if="{{venuesItems3_3.length>0}}">
+    <text style='width:20%;margin-left:40rpx;color:black;font-size:48rpx;'>限时抢购</text>  
+    <text style='width:20%;margin-left:20rpx;'>{{prom_hour?prom_hour+':00':'08:00'}}场</text>
+    <text style='width:10%;margin-left:10rpx;background:black;width:30rpx;color:white;'>{{left_hour?left_hour:'00'}}</text><text style='text-align:center'>:</text>
+        <text style='width:10%;margin-left:10rpx;background:black;width:30rpx;color:white;'>{{left_min>9?left_min:'0'+left_min}}</text><text style='text-align:center'>:</text>
+        <text style='width:10%;margin-left:10rpx;background:black;width:30rpx;color:white;'>{{left_sec>9?left_sec:'0'+left_sec}}</text>
+        <!-- 
+        <text style='width:10%;margin-left:85rpx;'>更多...</text>
+        -->
+  </view>
+  <view class="container"  wx:if="{{venuesItems3_3.length>0}}">   
+    <view class="venues_box3">
+    <swiper class="venues_box3" indicator-dots="{{indicatorDots}}" current="{{swiperCurrent}}" vertical="{{vertical}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular="{{circular}}" bindchange="swiperchange">
+        <block wx:for="{{venuesItems3_3}}" wx:key="index">
+         <swiper-item>
+              <view class="venues_item3">
+               <navigator url="../details/details?id={{item[0].id}}&image={{item[0].image}}&goods_info={{item[0].act_info}}&name={{item[0].name}}&gov_price={{item[0].gov_price}}&goods_price={{item[0].sell_price}}&sale={{item[0].sale}}">
+                <image src="{{item[0].image}}" mode='aspectFill'/>   
+                </navigator>    
+                <text class="goods_name">{{item[0].short_name}}</text>
+                <view class="goods_prom">{{item[0].act_info?item[0].act_info:'绿色安全'}}</view>
+                <!--  
+                <view class="goods_tag">
+                  <image src="../../images/u48.png"></image>
+                  {{item.goods_tag}}
+                </view>
+                -->
+				        <view style="color: red; font-size: 8pt;" class="price-now">￥{{item[0].sell_price}}元</view>                   </view>
+               <view class="venues_item3">
+               <navigator url="../details/details?id={{item[1].id}}&image={{item[1].image}}&goods_info={{item[1].act_info}}&name={{item[1].name}}&gov_price={{item[1].gov_price}}&goods_price={{item[1].sell_price}}&sale={{item[1].sale}}">
+                <image src="{{item[1].image}}" mode='aspectFill'/>   
+                </navigator>    
+                <text class="goods_name">{{item[1].short_name}}</text>
+                <view class="goods_prom">{{item[1].act_info?item[1].act_info:'绿色安全'}}</view>
+                <!--
+                <view class="goods_tag">
+                  <image src="../../images/u48.png"></image>
+                  {{item.goods_tag}}
+                </view>
+                -->
+				        <view style="color: red; font-size: 8pt;" class="price-now">￥{{item[1].sell_price}}元</view>                </view>
+              <view class="venues_item3">
+               <navigator url="../details/details?id={{item[2].id}}&image={{item[2].image}}&goods_info={{item[2].act_info}}&name={{item[2].name}}&gov_price={{item[2].gov_price}}&goods_price={{item[2].sell_price}}&sale={{item[2].sale}}">
+                <image src="{{item[2].image}}" mode='aspectFill'/>   
+                </navigator>    
+                <text class="goods_name">{{item[2].short_name}}</text>
+                <view class="goods_prom">{{item[2].act_info?item[2].act_info:'绿色安全'}}</view>
+                <!-- 
+                <view class="goods_tag">
+                  <image src="../../images/u48.png"></image>
+                  {{item.goods_tag}}
+                </view>
+                -->
+				        <view style="color: red; font-size: 8pt;" class="price-now">￥{{item[2].sell_price}}元</view>                   </view>
+                                  
+          </swiper-item>
+        </block>
+        
+        </swiper>
+      </view>    
+  </view>
+
+<view class="title-text">
+        <!-- <text style='margin-left:40rpx;color:black;font-size:48rpx;'>精品推荐</text> -->
+        <image src="../../images/xinpinqiangxian.png" mode='aspectFill' />
+        <view class="more" bindtap='goodsClassify'>更多...</view>         
+</view>
+
+<scroll-view scroll-x="true" bindscroll="menu_scroll" class="venues_box" >
+    <view class="venues_item" >
+    <block wx:for="{{venuesItems2}}" wx:key="">
+          <navigator url="../details/details?id={{item.id}}&image={{item.image}}&goods_info={{item.act_info}}&name={{item.name}}&gov_price={{item.gov_price}}&goods_price={{item.sell_price}}&sale={{item.sale}}">
+              <image src="{{item.image}}" mode='aspectFill'/>  
+          </navigator>     
+          <view class="venues_text">
+              <text class="goods_name">{{item.short_name}}</text>
+              <view class="goods_prom">{{item.act_info?item.act_info:'绿色安全'}}</view>
+				      <view style="color: red; font-size: 8pt;" class="price-now">￥{{item.sell_price}}元</view>
+               <view class="goods_tag">
+                  <image style="background:#dc322f;" data-goods-id="{{item.id}}" bindtap='addCart' src="../../images/cart.png"></image>
+                </view>
+             
+          </view> 
+      </block>    
+    </view>
+</scroll-view>
+  <view class="title-text">
+  <!--
+        <text style='margin-left:40rpx;color:black;font-size:48rpx;'>品味生活</text>
+        <text style='margin-left:400rpx;' bindtap='goodsClassify'>更多...</text>      
+        -->   
+      <image src="../../images/xianshiqianggou.png" mode='aspectFill' />
+      <view class="more" bindtap='goodsClassify'>更多...</view>      
+  </view>
+  <view class="container">
+    <view class="venues_box_list">
+      
+        <block wx:for="{{venuesItems}}" wx:key="">
+          <view class="venues_item_list">
+               
+            <image data-id="{{item.id}}"  data-goods-id="{{item.id}}" bindtap='showGoods' src="{{item.image}}" mode='aspectFill'/>   
+               
+            <view class="venues_item_list_text" style=''>   
+              <text class="goods_name">{{item.name}}</text>
+              <view class="goods_prom">{{item.act_info?item.act_info:'绿色安全'}}</view>
+              
+              <view class="goods_cart"> 
+                <view style="color: red; font-size: 8pt;width:70%;" class=""></view>
+                <view style='width:20%;'>
+                  <image data-goods-id="{{item.id}}" bindtap='addCart' src="../../images/cart.png" mode='aspectFill'></image>
+                </view>
+              </view>
+              <view style="color: red; font-size: 8pt;width:70%;" class="price-now">￥{{item.sell_price}}元</view>
+                <!-- 
+                <view class="goods_tag">
+                  <image src="../../images/u48.png"></image>
+                  {{item.goods_tag}}
+                </view>
+                -->
+				      
+              
+              
+            </view>             
+          </view>
+        </block>
+         
+         
+    </view>
+    
+
+  </view>
+</view>
+<button wx:if="{{!userInfo}}" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" type="warn" class="logout">获取用户信息</button>
+<loading hidden="{{loadingHidden}}">
+        加载中...
+</loading>

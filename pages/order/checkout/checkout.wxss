@@ -1,0 +1,77 @@
+@import "../../../lib/style/font.wxss";
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+
+.Hui-iconfont {
+ font-family: "Hui-iconfont";
+ font-size:30rpx;
+}
+.iconv-uparrow:after {
+  content:'\e6d6';
+}
+
+.iconv-downarrow:after {
+  content:'\e6d5';
+}
+
+
+.amount:before {
+	content: '￥';	
+}
+
+.submit {
+	margin: 8px;
+}
+
+/*单元格*/
+.cell {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items:center;
+	margin: 4px;
+	border-bottom: 1px solid #eee;
+	line-height: 20px;
+  width:100%;
+}
+/*单元格*/
+.cell image{
+  width:100rpx;
+  height:100rpx;
+  margin-left: 10rpx;
+}
+.cell text{
+  margin-left: 5rpx;
+}
+.cell:last-child {
+	border-bottom: 0;
+}
+
+/*label显示字符*/
+.cell text:first-child {
+	width: 100px;
+}
+
+.cell .cart-item-list {
+  display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items:center;
+}
+
+.cell text{
+  margin-left: 20rpx;
+}
+/*请先填写地址*/
+.area_select {
+	width: 100%;
+}
+
+/*选择器*/
+picker {
+	width: 80%;
+}

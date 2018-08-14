@@ -1,0 +1,31 @@
+<view class="currentlocation">
+		<image  src="../../../images/dizhiguanli.png"></image>
+    <text class="address-text" style="width:{{windowWidth-20}}px color:gray;font-size:34rpx;">{{city[curIndex]}}</text>
+</view>
+ 
+ 
+<view class="address-list">
+	<view class="item" wx:for="{{addressObjects}}" wx:key="">
+		<!-- first row -->
+		<view class="header">
+			<text class="realname">{{item.name}}</text>
+			<text class="mobile">{{item.tel}}</text>
+		</view>
+		<!-- second row -->
+		<view class="summary">
+      <text>{{item.prov_str}}{{item.city_str}}{{item.area_str}}{{item.town_str}}{{item.address}}</text>
+      <image style='width:60rpx;height:60rpx;' src='../../../images/map.jpg' bindtap='gotoMap' data-address="{{item.prov_str}}{{item.city_str}}{{item.area_str}}{{item.town_str}}{{item.address}}" data-addrname="{{item.name}}" />
+    </view>
+   
+    <text class="" style="color:{{item.is_delivery==1?'gray':'red'}}"></text>
+		<!-- third row -->
+		<view class="footer">
+		
+			<view class="operation">
+			
+			</view>
+		</view>
+	</view>
+</view>
+
+<button bindtap="getMore" type="primary" class="address-add">更多</button>

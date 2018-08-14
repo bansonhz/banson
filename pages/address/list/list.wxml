@@ -1,0 +1,35 @@
+<view class="currentlocation" hidden='{{currentlocationhidden}}'>
+		<image  src="../../../images/icon_address.png"></image>
+    <text class="address-text" style="width:{{windowWidth-20}}px color:gray">{{address}}</text>
+</view>
+<view class="currentaddress" hidden='{{currentaddresshidden}}'>
+    <text class="" style="color:{{is_delivery==1?'gray':'red'}}">{{is_delivery==1?'地址在配送区附近，请放心选购':'地址不在配送区,请修改地址'}}</text>
+</view>
+ 
+<view class="address-list">
+	<view class="item" wx:for="{{addressObjects}}" wx:key="">
+		<!-- first row -->
+		<view class="header">
+			<text class="realname">{{item.full_name}}</text>
+			<text class="mobile">{{item.tel}}</text>
+		</view>
+		<!-- second row -->
+		<view class="summary">{{item.prov_str}}{{item.city_str}}{{item.area_str}}{{item.town_str}}{{item.address}}</view>
+    <text class="" style="color:{{item.is_delivery==1?'gray':'red'}}">{{item.is_delivery==1?'地址在配送区附近，请放心选购':'地址不在配送区,请修改地址'}}</text>
+		<!-- third row -->
+		<view class="footer">
+			<!-- is default switch -->
+			<view class="set-default" data-index="{{index}}" bindtap="setDefault">
+				<!-- circle or success type -->
+				<icon type="{{item.is_default == 1 ? 'success_circle' : 'circle'}}"/>
+				<text>默认地址</text>
+			</view>
+			<!-- edit and delete button -->
+			<view class="operation">
+				<view class="container" data-index="{{index}}" bindtap="edit"><image src="../../../images/icon_edit.png" /><text>编辑</text></view>
+				<view class="container" data-index="{{index}}" bindtap="delete"><image src="../../../images/icon_delete.png" /><text>删除</text></view>
+			</view>
+		</view>
+	</view>
+</view>
+<button bindtap="add" type="primary" class="address-add">添加</button>

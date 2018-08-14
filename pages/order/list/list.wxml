@@ -1,0 +1,55 @@
+<import src="../../common/nav_order.wxml"/>
+<!-- 
+<view class="banner">
+ <template is="nav_order" data="{{navList_order, activeIndex2,gift_send,gift_rcv}}"/>
+</view>
+-->
+<view class="order-item" wx:for="{{orders}}" wx:key="">
+	<!-- 厂家logo缩略图 -->
+  <view class="shop-text">
+			<image class="logo-image" src="{{item.logo}}" mode="aspectFill"/>
+      <text class="shop-text" style="width:50%;font-size:14px;">{{item.shop_name}}</text>
+      <!--
+      <text bindtap="detailTapTag" class="shop-text" style="width:10%;font-size:12px;color:blue;text-align:left" data-order-object="{{item}}">详情</text>
+      -->
+  </view>
+  
+	<view wx:for="{{item['order_sku']}}" wx:for-item="mapping" wx:key="" class="carts-item" bindtap="detailTapTag" data-sku-id="{{mapping.id}}" data-goods-id="{{mapping.goods_id}}" data-goods-name="{{mapping.goods_name}}" data-order-object="{{item}}" data-goods-owner="{{mapping.goods_owner}}" data-shape="{{mapping.shape}}">
+		<view>
+			<!-- 缩略图 -->
+			<image class="carts-image" src="{{mapping.sku_image}}" mode="aspectFill"/>
+		</view>
+		<view class="carts-text">
+			<!-- 商品标题 -->
+			<text class="carts-title">{{mapping.goods_name}}</text>
+      <view wx:for="{{mapping['sku_value']}}" wx:for-item="sku_value" wx:key="">
+      	<text>{{sku_value?sku_value['name']+':':''}}</text>
+        <text wx:if="{{sku_value['type']==1}}">{{sku_value?sku_value['value']:''}}</text>
+        <image wx:if="{{sku_value['type']==2}}" src="{{sku_value['value']}}" style="width:10%;height:30rpx;margin-left:2px;"></image>
+         <text wx:if="{{sku_value['type']==2}}">{{sku_value?sku_value['note']:''}}</text> 
+      </view>
+			<view class="carts-subtitle">
+				<text wx:if="{{mapping.shape==2}}">x{{mapping.sku_num}} ({{item.delivery_time}}{{item.m_desc}})</text>
+        <text wx:if="{{mapping.shape<=1}}">x{{mapping.sku_num}} </text>
+			</view>
+		</view>
+	</view>
+	<view class="order-footer">
+    <view style="width:80%">
+		<text>金额:￥{{item.order_price}}元</text>
+		<text bindtap="pay" data-object-id="{{item.order_no}}" data-total-fee="{{item.amount}}" class="{{(item.status==1 ) ? '': 'hidden'}}" style="color:red" >去支付</text>
+		<text style="width:20%;" bindtap="receive" data-object-id="{{item.id}}" class="{{(item.status==3 ) ? '': 'hidden'}}"  style="color:red">确认收货</text>
+
+   
+    </view>
+
+	</view>
+	<view class="order-footer">
+   
+		<text>收货地址</text>
+		<text>{{item.address?item.address:''}}</text>
+   
+    
+	</view>
+</view>
+ <button type="default" size="default" hover-class="button-hover" class="button" bindtap="getMoreOrdersTapTag" style="margin-top:10px;"  wx:if="{{page<page_num}}"> 更多...【{{page}}/{{page_num}}】</button>

@@ -1,0 +1,45 @@
+<!--index.wxml-->
+<!-- 
+<import src="../common/nav.wxml"/>
+
+ 
+<view class="banner">
+  <template is="nav" data="{{navList, activeIndex,toView}}"/>
+</view>
+-->
+<import src="../common/nav3.wxml"/>
+<view class="banner2">
+ <template is="nav3" data="{{navList2, activeIndex2, dinner_order, multiIndex2}}"/>
+</view>
+<!-- 
+<view class="search">
+		<input value="{{keyword}}" class="wx-input" placeholder="  请输入搜索关键字..."  bindinput='search_goodsnameTapTag'/>
+    <image bindtap='searchTapTag' src="../../images/search-btn.png"></image>
+</view>
+-->
+<scroll-view scroll-y="true" style="height:{{dkheight}};margin-bottom:30rpx;" bindscrolltoupper="upper" bindscrolltolower="lower" bindscroll="scroll" scroll-into-view="v_{{toView}}" scroll-top="{{scrollTop}}">
+  <view class="venues_box">  
+        <view class="venues_item"  wx:for="{{memberItems}}" wx:key="" bindtap='onTapTag' data-username="{{item.username}}" data-headimgurl="{{item.headimgurl}}" data-star="{{item['star']}}" data-cuisinesystem="{{item['cuisinesystem']}}">    
+          <image src="{{item.headimgurl}}"/>
+          <view class="venues_text" bindtap='' data-username="{{item.username}}" data-headimgurl="{{item.headimgurl}}" data-star="{{item['star']}}" data-cuisinesystem="{{item['cuisinesystem']}}" >    
+              <text class="goods_name">{{item.full_name}}</text>
+              <view class="cuisine-level">
+                <view class="goods_prom" wx:for="{{item['star']}}" wx:for-item="cuisine_star" wx:key="">
+                  <image style="width:30rpx;height:30rpx;padding:5rpx;" src="{{cuisine_star}}" />
+                </view>
+              </view>
+              <view class="cuisine-item">
+                  <view class="goods_prom" wx:for="{{item['cuisinesystem']}}" wx:for-item="cuisine_item" wx:key="">
+                  <text wx:if="{{cuisine_item}}" style='line-height:20rpx;height:20rpx;text-align:center; border: 1px solid gray;border-radius:120rpx;padding-left:5rpx;padding-right:5rpx;margin-right:10rpx;' >{{cuisine_item}}</text>
+              </view>
+              </view>
+                        
+          </view>
+        </view>
+    <button wx:if="{{page<all_rows}}" type="default" size="default" hover-class="button-hover" class="button" bindtap="getMoreGoodsTapTag" style="margin-top:10px;"> 更多...【{{page}}/{{all_rows}}】</button>
+    <loading hidden="{{loadingHidden}}">
+        加载中...
+    </loading>
+
+  </view>
+</scroll-view>

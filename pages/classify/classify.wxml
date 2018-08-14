@@ -1,0 +1,93 @@
+ <view class="all-classify" hidden="{{hiddenallclassify}}">
+    <view style="display:flex;flex-direction:row;width:100%;" catchtap="openAllTapTag">
+      <view style='font-size:32rpx;width:95%;align-items:right;'>全部分类</view>
+      <view style='width:5%;align-items:right;'>
+       <image style="width:20rpx;height:20rpx;padding:20rpx;margin-left:-20rpx;" src='../../images/22chac.png'></image>
+      </view>
+    </view>
+    <view class="all-classify-list" >
+    <block wx:for="{{navRightItems}}" wx:for-item="item2" wx:key="{{item2.sec_id}}">
+      <view id="u_{{index}}" data-index="{{index}}" data-id="{{item2.sec_id}}"  data-name="{{item2.name}}"  class="all-classify-item {{index == activeIndex ? 'all-classify-item-active' : ''}}" catchtap="onTapTag">
+        {{item2.name}}
+      </view>
+    </block>
+    </view>
+</view>
+<!--主盒子-->
+<view class="container" style='height:{{dkheight}}px;'>
+  <!--左侧栏-->
+  <view class="nav_left" style='height:{{dkheight}}px;'>
+    <block wx:for="{{navLeftItems}}" wx:key="{{id}}">
+      <!--当前项的id等于item项的id，那个就是当前状态-->
+      <!--用data-index记录这个数据在数组的下标位置，使用data-id设置每个item的id值，供打开2级页面使用-->
+      <view class="nav_left_items {{curNav == item.id ? 'active' : ''}}" bindtap="switchRightTab" data-index="{{index}}" data-id="{{item.id}}">{{item.name}}</view>
+    </block>
+  </view>
+
+  <!--右侧栏-->
+  <view class="nav_right" style='height:{{dkheight}}px;'>
+  <!--
+    <view class="banner">
+      <swiper class="swiper_box" indicator-dots="{{indicatorDots}}" vertical="{{vertical}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" bindchange="swiperchange">
+        <block wx:for="{{images}}" wx:key="">
+            <swiper-item>
+              <video wx:if="{{item.ext=='mp4'}}" id="myVideo"  class="slide-image" src="{{item.desc}}" controls autoplay="autoplay" >
+              </video> 
+                <image wx:else src="{{item.desc}}" class="slide-image"/>
+            </swiper-item>
+        </block>
+      </swiper>
+  </view>
+  -->
+  <view class="top-bar-list">
+  <scroll-view scroll-x="true" bindscroll="getleft" scroll-into-view="v_{{toView}}" class="top-bar">
+      <block wx:for="{{navRightItems}}" wx:key="{{item.sec_id}}">
+        <view id="v_{{index}}" data-index="{{index}}" data-id="{{item.sec_id}}"  data-name="{{item.name}}"  class="top-bar-item {{index == activeIndex ? 'top-bar-active' : ''}}" catchtap="onTapTag">
+        {{item.name}}
+        </view>
+      </block>
+  </scroll-view>
+  <image style="width:40rpx;height:40rpx;margin-top:2rpx;" src="../../images/icon.png" bindtap="openAllTapTag" ></image>
+  </view>
+ 
+  <view class="right_list" style='height:{{dkheight-78}}px;'>
+    <scroll-view scroll-y="true" style="margin-bottom:60px;" bindscrolltoupper="topLoad" bindscrolltolower="bindDownLoad" bindscroll="scroll" scroll-top="{{scrollTop}}">
+    <!--如果有数据，才遍历项-->
+    <view wx:if="{{lists}}">
+      <block wx:for="{{lists}}" wx:key="curIndex">
+        <view class="nav_right_items">
+          <navigator url="../details/details?id={{item.id}}">
+            <!--用view包裹图片组合，如果有图片就用，无图片提供就使用50x30的这个默认图片-->
+            <view>              
+              <block wx:if="{{item.image}}">
+                <image src="{{item.image}}"></image>
+              </block>
+            </view>
+            <!--如果有文字，就用文字；无文字就用其他-->
+            <view wx:if="{{item.name}}">
+              <text>{{item.name}}</text>
+              <text>￥{{item.sell_price}}</text>
+            </view>
+            <view wx:else>
+              <text>{{item.name}}</text>
+              <text>￥{{item.sell_price}}</text>
+            </view>
+          </navigator>
+        </view>
+      </block>
+    </view>
+    <!--如果无数据，则显示数据-->
+    <view wx:else>暂无数据</view>
+    </scroll-view>
+     <button wx:if="{{page<all_rows}}" type="default" size="default" hover-class="button-hover" class="button" bindtap="getMoreGoodsTapTag" style="margin-top:0px;"> 更多...【{{page}}/{{all_rows}}】</button>
+  </view>
+ 
+ 
+</view>
+<view class="body-view">
+    <loading hidden="{{hidden}}" bindchange="loadingChange">
+      加载中...
+    </loading>
+</view>
+
+</view>

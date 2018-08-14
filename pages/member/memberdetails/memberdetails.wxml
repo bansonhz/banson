@@ -1,0 +1,116 @@
+<import src="../../../wxParse/wxParse.wxml"/>  
+
+<swiper class="swiper_box" indicator-dots="{{indicatorDots}}" vertical="{{vertical}}"
+                autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}" circular='true'>
+            <block wx:for="{{goodsPicsInfo.image}}" wx:key="">
+                <swiper-item>
+                <video wx:if="{{item.ext=='mp4'}}" id="myVideo"  class="slide-image" src="{{item.url}}" controls autoplay="autoplay">
+                  <cover-view class="controls" src="{{item.image}}" mode="aspecFill">
+                  </cover-view>
+                </video>
+                <image wx:else src="{{item.url}}" class="slide-image"/>
+                </swiper-item>
+            </block>
+</swiper>
+<view class='cuisine_title' >
+         <image style="width:200rpx;height:200rpx;border-radius: 50%;margin-top:-150rpx;position:absolute;" src="{{headimgurl}}"/>
+        <text style='margin-top:100rpx;font-size:38rpx;'>{{goodsname?goodsname:''}}</text>
+        <text style='color:gray;'>已服务过{{goodssale>0?goodssale:'100'}}个家庭</text>
+        <view class="cuisine-level">
+              <view class="" wx:for="{{star}}" wx:for-item="cuisine_star" wx:key="">
+                  <image style="width:30rpx;height:30rpx;padding:5rpx;" src="{{cuisine_star}}" />
+              </view>
+        </view>
+        
+        <view class="cuisine-item">
+            <view class="goods_prom" wx:for="{{cuisinesystem}}" wx:for-item="cuisine_item" wx:key="">
+              <text wx:if="{{cuisine_item}}" style='line-height:20rpx;height:20rpx;text-align:center; border: 1px solid gray;border-radius:120rpx;padding-left:5rpx;padding-right:5rpx;margin-right:15rpx;' >{{cuisine_item}}</text>
+            </view>
+        </view>
+</view>
+      
+   
+
+<view>  
+  <view >  
+    <modal title="{{attrValueList.length>0?'请选择套餐':add_cart_title}}" hidden="{{modalHidden}}" confirm-text="确定" cancel-text="取消" bindconfirm="modalBindaconfirm" bindcancel="modalBindcancel">
+      <view wx-if="{{attrValueList.length>0}}" class="commodity_attr_list">
+      <view wx:for="{{attrValueList}}" wx:for-item="attrValueObj" wx:for-index="attrIndex" wx:key=""> 
+        <view>{{attrValueObj.name}}:</view>
+        <view class="attr_value {{attrIndex<=firstIndex || attrValueObj.attrValueStatus[valueIndex]?(value==attrValueObj.selectedValue?'attr_value_active':''):'attr_value_disabled'}}" bindtap="selectAttrValue" data-status="{{attrValueObj.attrValueStatus[valueIndex]}}" 
+      data-value="{{value}}" data-key="{{attrValueObj.name}}" data-index="{{attrIndex}}" data-selectedvalue="{{attrValueObj.selectedValue}}" wx:for="{{attrValueObj.value}}" wx:for-item="value" wx:for-index="valueIndex" wx:key="">
+          <view > 
+            <image wx:if="{{attrValueObj.type == 2}}" src="{{attrValueObj.value[valueIndex]}}" style="width:30px;height:30px;margin-left:2px;"></image>
+            <view wx:elif="{{attrValueObj.type == 1}}" style="margin-left:2px;">{{attrValueObj.value[valueIndex]}}        </view>
+            {{attrValueObj.note[valueIndex]}}
+          </view>
+        </view>
+      </view> 
+  
+</view>
+<view wx:if="{{goodsname}}" style="color: blue; font-size: 8pt;margin-top:1px;" class="price-now">{{sku_id}}:{{goodsshortname}}</view>
+		<text wx:if="{{sku_sell_price}}" style="color: red; font-size: 8pt;" class="price-now"> ￥{{sku_sell_price}}元 </text>
+    </modal> 
+  </view>  
+</view>
+<view class="order_title">
+    <view class="opt-buttons">
+      <view class="button-group">
+        <view>
+          <picker mode="multiSelector" bindchange="bindMultiPickerChange2" bindcolumnchange="bindMultiPickerColumnChange2" value="{{multiIndex2}}" range="{{dinner_order}}" range-key="{{'name'}}">
+          <view class="picker">
+           {{dinner_order[0][multiIndex2[0]].name}} {{dinner_order[1][multiIndex2[1]].name}}
+           <icon style="margin-top:-15rpx;" class="Hui-iconfont iconv-downarrow" />
+          </view>
+        </picker>
+        </view>
+        <view style='margin-left:30rpx;'>
+          <picker mode="selector" data-index="{{foodsIndex}}" bindchange="bindPickerChange" value="{{foodsIndex}}" range="{{foodsbuy}}" range-key="name">
+            <view class="picker">
+              {{foodsbuy[foodsIndex].name}}
+              <icon style="margin-top:-15rpx;" class="Hui-iconfont iconv-downarrow" />
+            </view>
+          </picker> 
+        </view>
+        <view style='margin-left:30rpx;'>
+          <picker mode="selector" data-index="{{flavourIndex}}" bindchange="bindFlavourChange" value="{{flavourIndex}}" range="{{flavour}}" range-key="name">
+            <view class="picker">
+              {{flavour[flavourIndex].name}}
+              <icon style="margin-top:-15rpx;" class="Hui-iconfont iconv-downarrow" />
+            </view>
+          </picker> 
+        </view>
+      </view>
+    </view>
+</view>
+<view class="venues_comm_content">
+     <view class="venues_comm_footer"> 
+        <text class="goods_name" style='font-size:28rpx;margin-left:30rpx;margin-top:30rpx;'>评论{{project_info.num_comm>0?'('+project_info.num_comm+')':''}}</text> 
+        <text class="goods_name" style='font-size:28rpx;color:blue;margin-left:30rpx;margin-top:30rpx;' bindtap='commentTapTag'>我要点评+</text>
+		 </view>
+     <view class='venues_comm_list' wx:for="{{comm_list}}"  wx:for-item="commList" wx:key="{{id}}">
+      <view class="venues_comm_footer"> 
+          <image src="{{commList.headimgurl}}" mode='aspectFill'/>
+          <view class='venues_comm_footer_item'>  
+            <text class="goods_name" style='color:gray;margin-left:20rpx;'space="ensp">{{commList.nickname}}     {{commList.pub_time}}</text>
+            <text class="goods_name" style='width:600rpx;color:black;margin-left:20rpx;font-size:32rpx;'>{{commList.content}}</text>
+          </view>
+		  </view>
+    </view>
+    <view style="height:180rpx;">
+      <button wx:if="{{page<all_rows}}" type="default" size="default" hover-class="button-hover" class="button" bindtap="getMoreGoodsTapTag" > 更多...【{{page}}/{{all_rows}}】</button>
+    </view>
+</view>
+
+<modal hidden="{{hiddenmodalput}}" title="评论内容" confirm-text="提交" cancel-text="返回" bindcancel="cancel" bindconfirm="confirm">  
+    <input bindinput="bindChange" value="{{comment}}" placeholder="请输入评论内容" type='text' maxlength='50' />  
+</modal>
+
+<view class="footer">
+    <view class="opt-buttons">
+        <view class="button-group">
+        
+        </view>
+    </view>
+    <button class="add-cart" bindtap="goodsmodel">预约厨师</button>
+</view>

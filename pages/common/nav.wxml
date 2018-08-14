@@ -1,0 +1,11 @@
+<!--导航nav组件 -->
+<template name="nav">
+    <scroll-view scroll-x="true" bindscroll="menu_scroll" scroll-with-animation= scroll-left="{{scrollLeft}}"  class="top-bar">
+      <block wx:for="{{navList}}" wx:key="">
+        <view id="{{item.id}}" data-index="{{index}}" data-id="{{item.id}}" data-title="{{item.title}}" data-value="{{item.value}}"
+              class="top-bar-item {{index == activeIndex ? 'top-bar-active' : ''}}"
+              catchtap="onTapTag">{{item.title}}</view>
+      </block>
+    </scroll-view>
+</template>
+

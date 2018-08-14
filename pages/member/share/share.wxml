@@ -1,0 +1,4 @@
+<text class="desc">
+	半生相伴，健康人生
+</text>
+<image src="{{weburl}}/api/WXPay/getQRCode?username={{username}}&appid={{appid}}&secret={{secret}}" mode="widthFix" />

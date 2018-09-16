@@ -4,7 +4,7 @@
 -->
 <import src="../common/nav2.wxml"/>
 <view bindtap = "handletap" bindtouchstart = "touchstart" bindtouchmove="touchmove" bindtouchend="handletouchend" style='position:relative'>
- 
+
 <view class="search" hidden='{{searchhidden}}'>
 		<image bindtap='addressTapTag'  src="../../images/icon_address.png"></image>
     <text bindtap='addressTapTag' class="address-text" style="color:gray">{{address}}</text>
@@ -107,9 +107,9 @@
               <text class="goods_name">{{item.short_name}}</text>
               <view class="goods_prom">{{item.act_info?item.act_info:'绿色安全'}}</view>
 				      <view style="color: red; font-size: 8pt;" class="price-now">￥{{item.sell_price}}元</view>
-               <view class="goods_tag">
+              <view class="goods_tag">
                   <image style="background:#dc322f;" data-goods-id="{{item.id}}" bindtap='addCart' src="../../images/cart.png"></image>
-                </view>
+              </view>
              
           </view> 
       </block>    

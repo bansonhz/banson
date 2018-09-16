@@ -11,6 +11,7 @@ App({
     code: null,
     mapkey:'SSPBZ-ALR32-4BWUC-CLUXY-HAFM3-3ABQF',
     shop_type:3,
+    deliverytype:1, //默认自提模式
    
   },
  

@@ -1,6 +1,6 @@
 {
     "pages": [
-        "pages/index/index",
+        "pages/main/main",
         "pages/my/index",
         "pages/hall/hall",
         "pages/list/list",
@@ -41,25 +41,29 @@
         "borderStyle": "#F2f2f2",
         "backgroundColor": "#F2f2f2",
         "list": [{
-            "pagePath": "pages/index/index",
-            "iconPath": "images/footer-icon-05.png",
-            "selectedIconPath": "images/footer-icon-05-active.png",
+            "pagePath": "pages/main/main",
+            "iconPath": "images/main.png",
+            "selectedIconPath": "images/main_selected.png",
             "text": "首页"
        }, {
-        "pagePath": "pages/list/list",
-        "iconPath": "images/btn_tour_pal.png",
-        "selectedIconPath": "images/friends_icon.png",
-        "text": "共享厨师"
+        "pagePath": "pages/classify/classify",
+        "iconPath": "images/menu.png",
+        "selectedIconPath": "images/menu_selected.png",
+        "text": "菜单"
         }, {
-            "pagePath": "pages/hall/hall",
-            "iconPath": "images/icon_cart.png",
-            "selectedIconPath": "images/icon_cart_selected.png",
-            "text": "购物车"
-        
+            "pagePath": "pages/classify/classify",
+            "iconPath": "images/customize.png",
+            "selectedIconPath": "images/customize_selected.png",
+            "text": "定制"
+        }, {
+          "pagePath": "pages/hall/hall",
+          "iconPath": "images/cart.png",
+          "selectedIconPath": "images/cart_selected.png",
+          "text": "购物车"
         }, {
             "pagePath": "pages/my/index",
-            "iconPath": "images/icon_member.png",
-            "selectedIconPath": "images/icon_member_selected.png",
+            "iconPath": "images/my.png",
+            "selectedIconPath": "images/my_selected.png",
             "text": "我的"
         }]
          

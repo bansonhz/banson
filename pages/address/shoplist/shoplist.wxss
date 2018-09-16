@@ -149,3 +149,10 @@ page {
   z-index: 99;
   opacity: 1;
 }
+
+
+.select-and-amount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

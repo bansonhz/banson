@@ -608,25 +608,25 @@ Page({
         console.log(res.data);
         var recommentslist = res.data.result;
         var rshowmorehidden;
-       
-        for (var i = 0; i < recommentslist.length; i++) {
-          recommentslist[i]['image'] = weburl + '/' + recommentslist[i]['image'];
-          recommentslist[i]['name'] = recommentslist[i]['name'].substr(0, 13) + '...';
-          if (i > 1) {
-            recommentslist[i]['hidden'] = 1;
+        if (recommentslist){
+          for (var i = 0; i < recommentslist.length; i++) {
+            recommentslist[i]['image'] = weburl + '/' + recommentslist[i]['image'];
+            recommentslist[i]['name'] = recommentslist[i]['name'].substr(0, 13) + '...';
+            if (i > 1) {
+              recommentslist[i]['hidden'] = 1;
+            }
           }
-
+          if (recommentslist.length > 1) {
+            rshowmorehidden = false
+          } else {
+            rshowmorehidden = true
+          }
+          that.setData({
+            recommentList: recommentslist,
+            rshowmorehidden: rshowmorehidden,
+            rall_rows: recommentslist.length
+          })
         }
-        if (recommentslist.length > 1) {
-          rshowmorehidden = false
-        } else {
-          rshowmorehidden = true
-        }
-        that.setData({
-          recommentList: recommentslist,
-          rshowmorehidden: rshowmorehidden,
-          rall_rows: recommentslist.length
-        });
       }
     })
     

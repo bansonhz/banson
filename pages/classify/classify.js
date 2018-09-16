@@ -14,6 +14,8 @@ Page({
   data: {
     navLeftItems: [],
     navRightItems: [],
+    navLeftItems_name:'',
+    navLeftItems_slogon:'我们保证食品的新鲜，隔日不用，每日更新',
     lists: [],
     curNav: 1,
     curIndex: 0,
@@ -120,6 +122,83 @@ Page({
       keyword: keyword
     })
 
+  },
+  showGoods: function (e) {
+    // 点击购物车某件商品跳转到商品详情
+    var objectId = e.currentTarget.dataset.objectId;
+    var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '';
+    var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
+    var goods_id = e.currentTarget.dataset.goodsId;
+    //var carts = this.data.carts;
+    var sku_id = objectId;
+    wx.navigateTo({
+      url: '../details/details?id=' + goods_id + '&token=' + token + '&username=' + username
+    })
+  },
+  addCart: function (e) {
+    var that = this
+    var goods_id = e.currentTarget.dataset.goodsId
+    var username = wx.getStorageSync('username')
+
+    if (!username) {//登录
+      wx.navigateTo({
+        url: '../login/login?goods_id=' + that.data.goodsid
+      })
+    } else {
+      if (goods_id) {
+        that.insertCart(goods_id, username, 0);
+
+      } else {
+        wx.showToast({
+          title: '该产品无货',
+          icon: 'loading',
+          duration: 1500
+        });
+      }
+    }
+
+  },
+  insertCart: function (goods_id, username, sku_id = 0) {
+    var that = this
+    var wishflag = 0
+
+    // 加入购物车
+
+    wx.request({
+      url: weburl + '/api/client/add_cart',
+      method: 'POST',
+      data: {
+        username: username,
+        access_token: "1",
+        sku_id: sku_id,
+        goods_id: goods_id,
+      },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      success: function (res) {
+        console.log(res.data.result);
+        var title = wishflag == 1 ? '加入购物车完成' : '加入购物车完成'
+        wx.showToast({
+          title: title,
+          duration: 1000
+        })
+        if (wishflag == 1) {
+          wx.navigateTo({
+            url: '../wish/wish'
+          })
+        } else {
+          /*
+          wx.switchTab({
+            url: '../hall/hall'
+          })
+          */
+        }
+
+      }
+
+    })
   },
   loadgoods: function (cat_id,sec_cat_id) {
     var that = this
@@ -318,7 +397,9 @@ Page({
             }
           }
         }
-       
+        that.setData({
+          navLeftItems_name: that.data.navLeftItems[that.data.curIndex]['name']
+        })
         page = 1
         that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
       }
@@ -337,6 +418,7 @@ Page({
       curNav: id,
       curIndex: index,
       navRightItems: that.data.navLeftItems[index]['list'],
+      navLeftItems_name: that.data.navLeftItems[index]['name'],
       hiddenallclassify: true,
     })
     that.setData({

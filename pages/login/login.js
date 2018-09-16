@@ -1,8 +1,8 @@
 var utils = require('../../utils/util.js');
 var interval = null; //倒计时函数
 var app = getApp();
-var url = app.globalData.url;
-var weburl = 'https://czw.saleii.com';
+var weburl = app.globalData.url;
+//var weburl = 'https://czw.saleii.com';
 //console.log(url);
 Page({
 

@@ -3,9 +3,12 @@
     <text class="address-text" style="width:{{windowWidth-20}}px color:gray;font-size:34rpx;">{{city[curIndex]}}</text>
 </view>
  
- 
 <view class="address-list">
 	<view class="item" wx:for="{{addressObjects}}" wx:key="">
+    <view class="select-and-amount" bindtap="bindSelectShop" data-shopindex="{{index}}" data-shopid="{{item.shop_id}}" data-shopcity="{{item.city}}" data-shopprov="{{item.prov}}" data-shoparea="{{item.area}}" data-shoptown="{{item.town}}">
+		  <icon style="margin-top:1rpx;margin-left:10rpx;" type="{{item.selected ? 'success_circle' : 'circle'}}" size="18"/>
+		  <text style="margin-left:10rpx;">选中</text> 
+    </view>
 		<!-- first row -->
 		<view class="header">
 			<text class="realname">{{item.name}}</text>
@@ -28,4 +31,5 @@
 	</view>
 </view>
 
-<button bindtap="getMore" type="primary" class="address-add">更多</button>
+
+<button  class="address-add" type="default" size="default" hover-class="none" class="morebtn" bindtap="getMore">更多记录 {{page}}/{{page_num}}</button>

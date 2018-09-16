@@ -39,7 +39,12 @@
       </swiper>
   </view>
   -->
+  <view style='display:flex;flex-direction:column;text-align:left'>
+    <text style='margin-left:0rpx;'>{{navLeftItems_name}}</text>
+    <text style='margin-left:0rpx;'>{{navLeftItems_slogon}}</text>
+  </view>
   <view class="top-bar-list">
+ 
   <scroll-view scroll-x="true" bindscroll="getleft" scroll-into-view="v_{{toView}}" class="top-bar">
       <block wx:for="{{navRightItems}}" wx:key="{{item.sec_id}}">
         <view id="v_{{index}}" data-index="{{index}}" data-id="{{item.sec_id}}"  data-name="{{item.name}}"  class="top-bar-item {{index == activeIndex ? 'top-bar-active' : ''}}" catchtap="onTapTag">
@@ -55,24 +60,27 @@
     <!--如果有数据，才遍历项-->
     <view wx:if="{{lists}}">
       <block wx:for="{{lists}}" wx:key="curIndex">
-        <view class="nav_right_items">
-          <navigator url="../details/details?id={{item.id}}">
+        <view class="nav_right_items linegray" >
             <!--用view包裹图片组合，如果有图片就用，无图片提供就使用50x30的这个默认图片-->
-            <view>              
+          <view style="display:flex;flex-direction:row;">
+            <view style='margin-right:20rpx;' bindtap='showGoods' data-goods-id="{{item.id}}">              
               <block wx:if="{{item.image}}">
-                <image src="{{item.image}}"></image>
+                <image src="{{item.image}}" mode='aspecFit'></image>
               </block>
             </view>
+            <view>
             <!--如果有文字，就用文字；无文字就用其他-->
-            <view wx:if="{{item.name}}">
+            <view>
               <text>{{item.name}}</text>
+              <text style="color:gray;font-size:20rpx;">{{item.goods_tag?item.goods_tag:'美味佳肴'}}</text>
+              <text style="color:gray;font-size:20rpx;">{{item.act_info?item.act_info:'美味佳肴'}}</text>
               <text>￥{{item.sell_price}}</text>
+              <view class="goods_tag" data-goods-id="{{item.id}}" bindtap='addCart' style="text-align:right;">
+                <image style="width:60rpx;height:60rpx;"src="../../images/addcart.png"></image>
+              </view>
             </view>
-            <view wx:else>
-              <text>{{item.name}}</text>
-              <text>￥{{item.sell_price}}</text>
             </view>
-          </navigator>
+          </view>
         </view>
       </block>
     </view>

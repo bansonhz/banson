@@ -13,6 +13,10 @@ Page({
     town:[],
     curIndex:0,
     shop_type:shop_type,
+    page: 1,
+    pagesize: 10,
+    all_rows:0,
+    page_num: 0,
 
   },
 	add: function () {
@@ -67,6 +71,50 @@ Page({
         console.log('complete')
       }
     })
+  },
+  bindSelectShop: function (e) {
+    var that = this
+    var selected_shop_index = e.currentTarget.dataset.shopindex ? e.currentTarget.dataset.shopindex : 0;
+    var selected_shop_id = e.currentTarget.dataset.shopid ? e.currentTarget.dataset.shopid : 0
+    var selected_shop_prov = e.currentTarget.dataset.shopprov ? e.currentTarget.dataset.shopprov : 0
+    var selected_shop_city = e.currentTarget.dataset.shopcity ? e.currentTarget.dataset.shopcity : 0
+    var selected_shop_area = e.currentTarget.dataset.shoparea ? e.currentTarget.dataset.shoparea : 0
+    var selected_shop_town = e.currentTarget.dataset.shoptown ? e.currentTarget.dataset.shoptown : 0
+    
+    var shop_list = that.data.addressObjects
+    for (var i = 0; i < shop_list.length; i++) {
+      if (i == selected_shop_index) {
+        shop_list[selected_shop_index]['selected'] = !shop_list[selected_shop_index]['selected']
+        wx.setStorageSync('current_shop_info', shop_list[selected_shop_index]) //当前选中的门店信息
+      } else {
+        shop_list[i]['selected'] = false
+      }
+    }
+    that.setData({
+      addressObjects: shop_list,
+    })
+    // 等待半秒，toast消失后返回上一页
+    setTimeout(function () {
+      wx.navigateBack();
+    }, 500);
+  },
+  getMore: function (e) {
+    var that = this;
+    var page = that.data.page + 1;
+    var pagesize = that.data.pagesize;
+    var all_rows = that.data.all_rows;
+    if (page > that.data.page_num) {
+      wx.showToast({
+        title: '没有更多记录了',
+        icon: 'loading',
+        duration: 1000
+      });
+      return
+    }
+    that.setData({
+      page: page,
+    })
+    that.loadData()
   },
   onLoad: function (options) {
     var that = this
@@ -244,6 +292,11 @@ Page({
     var curIndex = that.data.curIndex
     var city = that.data.city[curIndex]
     var area = that.data.area[curIndex]
+    var addressObjects = that.data.addressObjects
+    var page = that.data.page
+    var pagesize = that.data.pagesize
+    var page_num = that.data.page_num
+    var shop_type = that.data.shop_type
     wx.request({
       url: weburl + '/api/client/get_shop4s_address',
       method: 'POST',
@@ -251,19 +304,35 @@ Page({
         username: username, 
         token: token,
         city:city,
+        page:page,
+        pagesize:pagesize,
+        shop_type:shop_type,
         },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json'
       },
       success: function (res) {
-        console.log(res.data.result);
-        var address = res.data.result;
+        console.log('get_shop4s_address:', res.data.result, res.data.all_rows);
+        var address = res.data.result
+        var all_rows = res.data.all_rows
+        if(address){
+          for (var i = 0; i < address.length; i++) {
+            address[i]['selected'] = false
+          }
+          if (page > 1) {
+            //向后合拼
+            address = addressObjects.concat(address);
+          }
+          
+          page_num = (all_rows / pagesize + 0.5)
+          that.setData({
+            addressObjects: address,
+            all_rows:all_rows,
+            page_num: page_num.toFixed(0),
+          })
+        }
         
-         
-        that.setData({
-          addressObjects: address,
-        });
       }
     })
 	}

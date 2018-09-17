@@ -12,7 +12,7 @@ Page({
     var status = e.currentTarget.dataset.status
     wx.navigateTo({
       url: '../order/list/list?status=' + status
-    });
+    })
   },
   navigateToMyOrder: function (e) {
     
@@ -26,6 +26,13 @@ Page({
       url: '../address/shoplist/shoplist'
     })
   },
+  navigateToCoupon: function (e) {
+
+    wx.navigateTo({
+      url: '../member/couponmy/couponmy'
+    })
+  },
+  
   logout: function () {
 
   },

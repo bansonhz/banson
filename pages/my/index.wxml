@@ -21,15 +21,15 @@
 	</view>
 </view>
 <view bindtap="navigateToMyOrder" class="tableviewcell">
-	<image src="../../images/visit.png" />
-	<text>我的预约单</text>
+	<image src="../../images/wallet_logo.png" />
+	<text>唐朝钱包</text>
 </view>
-<view bindtap="navigateToShop4s" class="tableviewcell">
-	<image src="../../images/focus.png" />
-	<text>附近销售点</text>
+<view bindtap="navigateToCoupon" class="tableviewcell">
+	<image src="../../images/coupon_logo.png" />
+	<text>优惠券</text>
 </view>
 <view bindtap="navigateToAddress" class="tableviewcell">
-	<image src="../../images/icon_address.png" />
+	<image src="../../images/location.png" />
 	<text>收货地址</text>
 </view>
 <view bindtap="navigateToShare" class="tableviewcell">

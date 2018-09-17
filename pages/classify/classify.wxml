@@ -40,7 +40,7 @@
   </view>
   -->
   <view style='display:flex;flex-direction:column;text-align:left'>
-    <text style='margin-left:0rpx;'>{{navLeftItems_name}}</text>
+    <text style='margin-left:0rpx;color:#333;font-weight:bold;'>{{navLeftItems_name}}</text>
     <text style='margin-left:0rpx;'>{{navLeftItems_slogon}}</text>
   </view>
   <view class="top-bar-list">
@@ -87,7 +87,7 @@
     <!--如果无数据，则显示数据-->
     <view wx:else>暂无数据</view>
     </scroll-view>
-     <button wx:if="{{page<all_rows}}" type="default" size="default" hover-class="button-hover" class="button" bindtap="getMoreGoodsTapTag" style="margin-top:0px;"> 更多...【{{page}}/{{all_rows}}】</button>
+     <button wx:if="{{page<page_num}}" type="default" size="default" hover-class="button-hover" class="button" bindtap="getMoreGoodsTapTag" style="margin-top:0px;"> 更多...【{{page}}/{{page_num}}】</button>
   </view>
  
  

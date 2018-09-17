@@ -22,7 +22,7 @@ Page({
     autoplay: true,
     interval: 3000,
     duration: 1000,
-    main_title_Bg: "https://czw.saleii.com/uploads/u54.png",
+    main_title_Bg: weburl+"/uploads/xianshe_hall_banner.png",
     gifts_rcv:0,
     gifts_snd:0,
     note:'',
@@ -254,6 +254,8 @@ Page({
 
   bindCheckout: function () {
     var that = this;
+    var order_type = 'xianshe'
+    var order_note = that.data.note
     var amount = that.data.total;
     var cartIds = that.calcIds();
     cartIds = cartIds.join(',');
@@ -288,11 +290,14 @@ Page({
     });
     //that.confirmOrder()
 
-    
+    /*
     wx.navigateTo({
       url: '../order/checkout/checkout?cartIds=' + cartIds + '&amount=' + that.data.total + '&carts=' + JSON.stringify(cartselected) + '&username=' + username + '&token=' + token
     });
-    
+    */
+    wx.navigateTo({
+      url: '../order/checkout/checkout?cartIds=' + cartIds + '&amount=' + amount + '&carts=' + JSON.stringify(cartselected) + '&order_type=' + order_type + '&order_note=' + order_note + '&username=' + username + '&token=' + token
+    });
   },
 
   confirmOrder: function () {
@@ -541,7 +546,7 @@ Page({
         for (var key in cartlist) {
           for (var i = 0; i < cartlist[key]['sku_list'].length; i++) {
             cartlist[key]['sku_list'][i]['image'] = weburl + '/' + cartlist[key]['sku_list'][i]['image'];
-            cartlist[key]['sku_list'][i]['name'] = cartlist[key]['sku_list'][i]['name'].substr(0, 13) + '...';
+            //cartlist[key]['sku_list'][i]['name'] = cartlist[key]['sku_list'][i]['name'].substr(0, 13) + '...';
             if (cartlist[key]['sku_list'][i]['sku_note']){
               cartlist[key]['sku_list'][i]['sku_note'] = cartlist[key]['sku_list'][i]['sku_note'].substr(0, 13) + '...';
             }
@@ -691,9 +696,55 @@ Page({
     console.log(e.detail.userInfo)
     console.log(e.detail.rawData)
   },
+  get_project_xianshe_para: function () {
+    var that = this
+    var navList2 = that.data.navList2
+    var shop_type = that.data.shop_type
 
+
+    //项目列表
+    wx.request({
+      url: weburl + '/api/client/get_project_xianshe_para',
+      method: 'POST',
+      data: {
+        type: 1,  //暂定
+        shop_type: shop_type,
+      },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      success: function (res) {
+        console.log('get_project_xianshe_para:', res.data.result)
+        var navList_new = res.data.result;
+        if (!navList_new) {
+          /*
+           wx.showToast({
+             title: '没有菜单项2',
+             icon: 'loading',
+             duration: 1500
+           });
+           */
+          return;
+        }
+
+        that.setData({
+          navList2: navList_new,
+          main_title_Bg: navList_new[0]['img'], //首页banner图
+          banner_link: navList_new[0]['link'], //首页banner图跳转链接
+        })
+
+        setTimeout(function () {
+          that.setData({
+            loadingHidden: true,
+          })
+        }, 1500)
+      }
+    })
+  },
   onLoad: function () {
-    var that = this;
+    var that = this
+    that.get_project_xianshe_para()
     
   },
   //事件处理函数

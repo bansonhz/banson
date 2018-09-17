@@ -1,24 +1,54 @@
-@import "../../../lib/style/font.wxss";
-
+page {
+	background: #F2F2F2;
+  overflow-x: hidden;
+  width: 100%;
+}
 ::-webkit-scrollbar {
   width: 0;
   height: 0;
   color: transparent;
 }
-
-.Hui-iconfont {
- font-family: "Hui-iconfont";
- font-size:30rpx;
+.startBar {
+  height: 75rpx;
+  background: #333;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  padding: 5rpx;
+  border-bottom: 0px solid #f2f2f2;
+  z-index: 99;
 }
-.iconv-uparrow:after {
-  content:'\e6d6';
+.top-title {
+  height: 75rpx;
+  background: #333;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  padding: 5rpx;
+  border-bottom: 0px solid #f2f2f2;
+  z-index: 99;
 }
-
-.iconv-downarrow:after {
-  content:'\e6d5';
+.top-title-item {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  line-height: 75rpx;
+  font-size: 48rpx;
+  padding: 10rpx;
 }
-
-
+.top-title-item .title-image {
+  width: 70rpx;
+  height: 70rpx;
+  margin-right: 1rpx;
+  margin-top: 0rpx;
+  margin-left: 20rpx;
+}
+.amount {
+color:red;
+font-size:24rpx;
+}
 .amount:before {
 	content: '￥';	
 }
@@ -33,39 +63,29 @@
 	flex-direction: row;
 	justify-content: flex-start;
 	align-items:center;
-	margin: 4px;
-	border-bottom: 1px solid #eee;
-	line-height: 20px;
+	border-top: 1rpx solid #eee;
+	border-bottom: 1rpx solid #eee;
+	line-height: 1.5;
   width:100%;
+  background: #fff;
+  font-size: 28rpx;
+  padding: 15rpx 30rpx;
 }
-/*单元格*/
-.cell image{
-  width:100rpx;
-  height:100rpx;
-  margin-left: 10rpx;
-}
-.cell text{
-  margin-left: 5rpx;
-}
+
 .cell:last-child {
-	border-bottom: 0;
+	display: flex;
+  flex-direction: row;
+  align-items: center;
+  background: #fff;
+  font-size: 28rpx;
+  padding: 15rpx 30rpx;
 }
 
 /*label显示字符*/
 .cell text:first-child {
-	width: 100px;
+	width: 80px;
 }
 
-.cell .cart-item-list {
-  display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items:center;
-}
-
-.cell text{
-  margin-left: 20rpx;
-}
 /*请先填写地址*/
 .area_select {
 	width: 100%;
@@ -73,5 +93,232 @@
 
 /*选择器*/
 picker {
-	width: 80%;
+	width: 60%;
+}
+
+
+.gifts-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  /*width属性解决标题文字太短而缩略图偏移*/
+  width: 100%;
+}
+.gifts-image {
+  margin: 10rpx;
+  width: 450rpx;
+  height: 250rpx;
+}
+.morebtn {
+  margin: 20rpx auto;
+  background: #fff;
+  color: #e34c55;
+  font-size: 28rpx;
+  width: 70%;
+}
+
+/*外部容器*/
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+/*整体列表*/
+
+.container .carts-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/*item与button的容器*/
+
+.carts-container {
+  position: relative;
+  width: 100%;
+  height: 190rpx;
+}
+
+/*每行单元格*/
+
+.carts-item {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 150rpx;
+  /*width属性解决标题文字太短而缩略图偏移*/
+  border-bottom: 1px solid #F2F2F2;
+  padding: 20rpx 0;
+  margin-right: 20rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #fff;
+  z-index: 1;
+}
+
+/*左部图片*/
+
+.carts-image {
+  width: 120rpx;
+  height: 120rpx; 
+  margin: 0 20rpx;
+}
+
+/*右部描述*/
+
+.carts-text {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/*右上部分标题*/
+
+.carts-title {
+  font-size: 28rpx;
+  color: #444;
+  line-height: 30rpx;
+}
+
+/*右下部分价格与数量*/
+
+.carts-subtitle {
+  font-size: 25rpx;
+	color:#999;
+	display: flex;
+	flex-direction: row;
+	justify-content:space-between;
+}
+.carts-sku {
+font-size:24rpx;
+color:#999;
+line-height: 1.5;
+}
+/*价格*/
+
+.carts-price {
+  line-height: 1.5;
+}
+
+.carts-gov-price {
+  color: #999;
+  font-size: 24rpx;
+  line-height: 1;
+  width: 150rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.carts-en-price {
+  color: #e34c55;
+  font-size: 12px;
+  line-height: 18px;
+  width: 150rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subtitle2 {
+  background: white;
+  width: 100%;
+  height: 6rpx;
+  border-radius: 0 0 10rpx 10rpx;
+}
+
+/*人民币符号*/
+
+.carts-price:before, .select-and-amount text:last-child:before {
+  content: '';
+}
+
+
+
+
+.select-and-amount {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 28rpx;
+  background: #fff;
+  padding:15rpx 20rpx;
+}
+.select-and-amount-mark {
+  position: absolute;
+  top: 10rpx;
+  left: 20rpx;
+  font-size: 28rpx;
+}
+.coupons_list {
+  position: relative;
+  top: 0;
+  left: 0;
+  display:flex;
+  flex-direction:row;
+}
+.coupon-item-banner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  align-content: center;
+}
+.counpons-item {
+  background-size: 552rpx 246rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 552rpx;
+  padding: 55rpx 0 20rpx 0;
+}
+.counpons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  align-content: center;
+  background: #fff;
+  margin: 10rpx auto;
+  width: 100%;
+}
+.coupon-name {
+  font-size: 32rpx;
+  color: #ebdddd;
+  line-height: 26rpx;
+  width: 100%;
+}
+
+.coupon-content {
+  font-size: 36rpx;
+  color: #ebdddd;
+  line-height: 2;
+  width: 100%;
+  
+}
+
+.coupon-dueday {
+  font-size: 22rpx;
+  color: #ebdddd;
+  line-height: 1.5;
+  width: 100%;
+  
+}
+.coupon-footer {
+  font-size: 22rpx;
+  color: #ebdddd;
+  line-height: 1.5;
+  width: 100%;
+  
 }

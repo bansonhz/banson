@@ -2,8 +2,8 @@ var app = getApp();
 
 var weburl = app.globalData.weburl;
 var navList_order = [
-  { id: "send", title: "我送出的" },
-  { id: "receive", title: "我收到的" },
+  { id: "xianshe", title: "我送出的" },
+  { id: "xianshe", title: "我收到的" },
 ];
 
 Page({
@@ -13,7 +13,7 @@ Page({
     pagesize: 10,
     status: 0,
     navList_order: navList_order,
-    tab2: '',
+    tab2: 'xianshe',
     activeIndex2: 0,
     all_rows: 0,
     giftflag: 0,

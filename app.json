@@ -12,7 +12,7 @@
         "pages/member/index/index",
         "pages/member/memberdetails/memberdetails",
         "pages/member/share/share",
-        "pages/member/aboutus/aboutus",
+        "pages/member/couponmy/couponmy",
         "pages/goods/list/list",
         "pages/details/details",
         "pages/login/login",

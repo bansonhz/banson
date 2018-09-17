@@ -3,10 +3,10 @@ import defaultData from '../../data';
 var app = getApp();
 var weburl = app.globalData.weburl;
 var page = 1;
-var pagesize = 9;
+var pagesize = 6;
 var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '15355813859';
 var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
-var shop_id = 3672;
+var shop_id = app.globalData.shop_id;
 var shop_type = app.globalData.shop_type;
 // 请求数据
 
@@ -31,6 +31,7 @@ Page({
     duration: 1000,
     activeIndex:-1,
     all_rows:0,
+    page_num:0,
     page:page,
     pagesize:pagesize,
     hiddenallclassify:true,
@@ -206,6 +207,9 @@ Page({
     var sec_catid = sec_cat_id > 0 ? sec_cat_id:0
     var search_goodsname = that.data.search_goodsname
     var goods_type = ''
+    var page = that.data.page
+    var pagesize = that.data.pagesize
+    var page_num = that.data.page_num
     if (search_goodsname) goods_type ='search_goodsname'
     wx.request({
       url: weburl + '/api/client/get_goods_list',
@@ -228,21 +232,26 @@ Page({
 
       },
       success: function (res) {
-        console.log(res.data.result)
+        console.log('loadgoods:',res.data.result)
         var list = that.data.lists;
         if (!res.data.result){
           return
         }
-        var all_rows = res.data.all_rows; 
+        if (page == 1) list = []
+        var all_rows = res.data.all_rows
+        page_num = all_rows //(all_rows / pagesize + 0.5)
         for (var i = 0; i < res.data.result.length; i++) {
           res.data.result[i]['short_name'] = res.data.result[i]['name'].substring(0, 15) + '...';
           if (res.data.result[i]['activity_image']) res.data.result[i]['image'] = weburl + res.data.result[i]['activity_image'];
+         
           list.push(res.data.result[i]);
         }
+       
         that.setData({
           lists: list,
           all_rows: all_rows,
           page:page,
+          page_num: page_num.toFixed(0),
         });
         that.setData({
           hidden: true
@@ -313,6 +322,9 @@ Page({
   onLoad: function (options) {
     var that = this
     var value = options.value ? options.value:0
+    that.setData({
+      value: value
+    })
     wx.getSystemInfo({
       success: function (res) {
         let winHeight = res.windowHeight;
@@ -359,6 +371,18 @@ Page({
       }
     })
 */
+    //that.get_shop_goods_category()
+    
+  },
+
+onShow:function(){
+  var that = this
+  that.get_shop_goods_category()
+},
+get_shop_goods_category:function(){
+    var that = this
+    var value = that.data.value 
+    console.log('get_shop_goods_category value:', value)
     wx.request({
       url: weburl + '/api/client/get_shop_goods_category',
       method: 'POST',
@@ -373,18 +397,18 @@ Page({
         'Accept': 'application/json'
       },
       success: function (res) {
-        console.log('菜品分类:')
-        console.log(res.data.result)
+        console.log('菜品分类:', res.data.result)
+        
         var goods_classify = res.data.result
-        if (!goods_classify) return
-        if(value==0){
+        if (goods_classify.length == 0) return
+        if (value == 0) {
           that.setData({
             navLeftItems: goods_classify,
             navRightItems: goods_classify[0]['list'],
             curNav: goods_classify[0]['id'],
             curIndex: 0
           })
-        }else{
+        } else {
           for (var i = 0; i < goods_classify.length; i++) {
             if (goods_classify[i]['id'] == value) {
               that.setData({
@@ -404,7 +428,6 @@ Page({
         that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
       }
     })
-    
   },
 
   //事件处理函数
@@ -419,6 +442,7 @@ Page({
       curIndex: index,
       navRightItems: that.data.navLeftItems[index]['list'],
       navLeftItems_name: that.data.navLeftItems[index]['name'],
+      value: that.data.navLeftItems[index]['id'],
       hiddenallclassify: true,
     })
     that.setData({
@@ -427,13 +451,15 @@ Page({
       toView:0,
       secid:0,
       all_rows:0,
+      page:1,
     })
-    page = 1;
+    
     that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
   },
 
   getMoreGoodsTapTag: function () {
-    var that = this;
+    var that = this
+    var page = that.data.page
     if(page>=that.data.all_rows){
       wx.showToast({
         title: '没有更多记录',
@@ -443,7 +469,7 @@ Page({
       return
     }
     that.setData({
-      page: page++
+      page: page+1
     });
     that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id'], that.data.secid);
     console.log("getMoreGoodsTapTag");

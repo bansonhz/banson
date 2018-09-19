@@ -1,9 +1,11 @@
 var utils = require('../../utils/util.js');
 var interval = null; //倒计时函数
 var app = getApp();
-var weburl = app.globalData.url;
-//var weburl = 'https://czw.saleii.com';
-//console.log(url);
+var weburl = app.globalData.weburl;
+var appid = app.globalData.appid;
+var appsecret = app.globalData.secret;
+var shop_type = app.globalData.shop_type;
+
 Page({
 
   /**
@@ -14,12 +16,41 @@ Page({
     fun_id: 2,
     time: '点击获取', //倒计时 
     currentTime: 60,
-    phoneNo:'18605703270',
-    scode:'12345',
+    phoneNo:'',
+    scode:'',
     goods_id:null,
-    username:null,
+    username: null,
     m_id:null,
-    token:null
+    token:null,
+    
+  },
+  onGotUserInfo: function (e) {
+    var that = this
+  
+    //权限
+    wx.getSetting({
+      success(res) {
+        //通讯录权限
+        if (!res.authSetting['scope.address']) {
+          wx.authorize({
+            scope: 'scope.address',
+            success() {
+              // 
+            }
+          })
+        }
+        //保存到相册权限
+        if (!res.authSetting['scope.writePhotosAlbum']) {
+          wx.authorize({
+            scope: 'scope.writePhotosAlbum',
+            success() {
+              //  
+
+            }
+          })
+        }
+      }
+    })
   },
   codeInput: function (e) {
     this.setData({
@@ -28,7 +59,8 @@ Page({
   },
   phoneNoInput(e) {
     this.setData({
-      phoneNo: e.detail.value
+      phoneNo: e.detail.value,
+      username: e.detail.value
     })
   },
   
@@ -96,6 +128,7 @@ Page({
   login() {
     console.log(this.data.scode);
     let that = this;
+    var username  = that.data.username
     if (!that.data.phoneNo) {
       app.wxToast({
         title: '请输入手机号码'
@@ -118,7 +151,11 @@ Page({
     wx.request({
       url: weburl + '/api/web/user/login/user_xcx_login',
       method: 'POST',
-      data: { username: that.data.phoneNo, extensionCode: "09016", smscode: that.data.scode },
+      data: { 
+        username: that.data.phoneNo, 
+        smscode: that.data.scode,
+        shop_type:shop_type,
+      },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json'
@@ -136,7 +173,8 @@ Page({
         wx.showToast({
           title: '保存成功',
           duration: 500
-        });
+        })
+        that.onGotUserInfo()
         // 等待半秒，toast消失后返回上一页
         setTimeout(function () {
           wx.navigateBack();
@@ -155,9 +193,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
+    var that = this
     that.setData({
-      goods_id: options.goods_id,
+      username: options.username,
     })
   },
 

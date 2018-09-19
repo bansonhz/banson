@@ -282,7 +282,7 @@ Page({
         },
         success: function (res) {
           console.log(res.data.result);
-          var title = wishflag == 1 ? '加入心愿单完成' : '购买送出完成'
+          var title = wishflag == 1 ? '加入购物车完成' : '加入购物车完成'
           wx.showToast({
             title: title,
             duration: 1500
@@ -299,7 +299,7 @@ Page({
             })
           } else {
             wx.switchTab({
-              url: '../hall/hall?'
+              url: '../cart/cart?'
             })
           }
 

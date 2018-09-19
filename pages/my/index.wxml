@@ -20,12 +20,13 @@
 		<text>已完成</text>
 	</view>
 </view>
-<view bindtap="navigateToMyOrder" class="tableviewcell">
-	<image src="../../images/wallet_logo.png" />
-	<text>唐朝钱包</text>
+<view class="menu-area">
+<view bindtap="navigateToWallet" class="tableviewcell">
+	<image src="../../images/wallet2_logo.png" />
+	<text>唐巢钱包</text>
 </view>
 <view bindtap="navigateToCoupon" class="tableviewcell">
-	<image src="../../images/coupon_logo.png" />
+	<image src="../../images/coupon.png" />
 	<text>优惠券</text>
 </view>
 <view bindtap="navigateToAddress" class="tableviewcell">
@@ -36,14 +37,14 @@
 	<image src="../../images/ewm.png" />
 	<text>扫码分享</text>
 </view>
-<!--
-<view bindtap="navigateToDonate" class="tableviewcell">
-	<image src="../../../images/icon_donate.png" />
-	<text>赞赏捐赠</text>
 </view>
-<view bindtap="navigateToAboutus" class="tableviewcell">
-	<image src="../../../images/icon_aboutus.png" />
-	<text>关于我们</text>
-</view>
-<button bindtap="logout" type="warn" class="logout">重新登录</button>
--->
+<view class="menu-area">
+  <view bindtap="" class="tableviewcell" style='width:{{windowWidth-35}}px'>
+	  <image src="../../images/u631.png" />
+    <button class="clickBtn" open-type="contact" session-from="weapp">帮助反馈</button> 
+  </view>
+ </view> 
+<button open-type="getUserInfo" lang="zh_CN" hover-class='none' bindgetuserinfo="onGotUserInfo" class="logout">重新登录
+</button>
+
+ 

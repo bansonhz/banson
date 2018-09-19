@@ -48,10 +48,15 @@
 				<!-- 商品标题 -->
         <view class="carts-text">
 				<text class="carts-title">{{item.sku_note?item.sku_note:item.name}}</text>
-				<view class="carts-text carts-subtitle">
-            <view class='carts-price'>
+				<view class="carts-subtitle"> 
+            <view class=''>
 				      <!-- 价格 -->
+               <view class="carts-sku"><text wx:for="{{item['value']}}" wx:for-item="sku_value" wx:key="">
+            {{sku_value?sku_value['name']+':':''}}{{sku_value['type']==2?sku_value['note']+' ':sku_value['value']+' '}}</text>
+          </view>
+              <!-- 
 				  	  <view class="carts-gov-price">{{item.act_info?item.act_info:'经典趣味'}}</view>
+              -->
               <view class="carts-en-price">￥{{item.sell_price}}元</view>
             </view>
 				  	<!-- 数量加减 -->
@@ -107,7 +112,7 @@
 		<view>￥{{item.sell_price}}元</view> 
  </view>
  <view class="carts-more" hidden="{{rshowmorehidden}}">
-    <text bindtap="bindShowMoreR" >更多...[{{rall_rows}}]</text>
+    <text bindtap="bindShowMoreR" >更多[{{rall_rows}}]</text>
 </view>
 <!-- 
 <view class="carts-more" hidden="{{rshowmorehidden?false:true}}">

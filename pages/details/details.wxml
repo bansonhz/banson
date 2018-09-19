@@ -19,18 +19,19 @@
     <view class="shopping_container">
       <view class="goods-name">
         <text>{{goodsname?goodsname:''}}</text>
-        <text class="goods_prom">{{goodsinfo?goodsinfo:'高端大气'}}</text>
+        <text class="goods_prom">{{goodsinfo?goodsinfo:'鲜香美味'}}</text>
       </view>
       <view class="goods-info">
-        <text class="left-tag">{{goodssale>0?goodssale:'0'}}人已送</text>
+        <text class="left-tag">{{goodssale>0?goodssale:'0'}}已售</text>
         <text class="right-tag">￥{{goodsprice>0?goodsprice:'0'}}</text>
       </view>
       <view>
         <!-- 
           <view style="width:50%;text-align:right"><image class="img_tag" src="../../images/u48.png"></image></view>
-          -->
+         
         适合送
         <text class="goods_tag">{{goodstag?goodstag:'朋友 同事'}}</text>
+         -->
       </view>
     </view>
   </view>

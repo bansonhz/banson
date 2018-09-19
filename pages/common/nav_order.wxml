@@ -2,7 +2,8 @@
 <template name="nav_order">
     <view class="top-bar2">
       <block wx:for="{{navList_order}}" wx:key="">
-        <view id="{{item.id}}" data-index="{{index}}" data-title="{{item.title}}" class="top-bar-item2 {{index == activeIndex2 ? 'top-bar-active2' : ''}}" catchtap="onOrderTapTag">{{item.title}}      
+        <view id="{{item.id}}" data-index="{{index}}" data-title="{{item.title}}" class="top-bar-item2 {{index == activeIndex2 ? 'top-bar-active2' : ''}}" catchtap="onOrderTapTag">
+        {{item.title}}      
         </view>
       </block>
     </view>

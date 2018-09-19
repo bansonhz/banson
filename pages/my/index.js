@@ -1,6 +1,13 @@
 var app = getApp()
-
 var weburl = app.globalData.weburl;
+var appid = app.globalData.appid;
+var appsecret = app.globalData.secret;
+var user_type = app.globalData.user_type;
+var shop_type = app.globalData.shop_type;
+var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '';
+var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
+var openid = wx.getStorageSync('openid') ? wx.getStorageSync('openid') : '';
+var userInfo = wx.getStorageSync('userInfo') ? wx.getStorageSync('userInfo') : '';
 
 Page({
   navigateToAddress: function () {
@@ -8,6 +15,7 @@ Page({
       url: '../address/list/list'
     });
   },
+  
   navigateToOrder: function (e) {
     var status = e.currentTarget.dataset.status
     wx.navigateTo({
@@ -15,19 +23,16 @@ Page({
     })
   },
   navigateToMyOrder: function (e) {
-    
     wx.navigateTo({
       url: '../order/mylist/mylist' 
     })
   },
-  navigateToShop4s: function (e) {
-
+  navigateToWallet: function (e) {
     wx.navigateTo({
-      url: '../address/shoplist/shoplist'
+      url: '../wallet/wallet'
     })
   },
   navigateToCoupon: function (e) {
-
     wx.navigateTo({
       url: '../member/couponmy/couponmy'
     })
@@ -35,6 +40,43 @@ Page({
   
   logout: function () {
 
+  },
+  onGotUserInfo: function (e) {
+    var that = this
+    console.log(e.detail.errMsg)
+    console.log(e.detail.userInfo)
+    console.log(e.detail.rawData)
+    wx.login({
+      success: function (res) {
+        if (res.code) {
+          console.log('获取用户登录态 code:' + res.code);
+          wx.request({
+            url: weburl + '/api/WXPay/getOpenidAction',
+            data: {
+              js_code: res.code,
+              appid: appid,
+              appsecret: appsecret
+            },
+            method: 'POST',
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json'
+            },
+            success: function (res) {
+              var user = res.data//返回openid
+              wx.setStorageSync('openid', user.openid);
+              wx.setStorageSync('session_key', user.session_key)
+              console.log('获取用户OpenId:', user.openid)
+              wx.navigateTo({
+                url: '../login/login?wechat=1'
+              })
+            }
+          })
+        } else {
+          console.log('获取用户登录态失败！' + res.errMsg)
+        }
+      }
+    })
   },
   onShow: function () {
     var that = this;

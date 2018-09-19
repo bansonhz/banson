@@ -2,7 +2,7 @@ import defaultData from '../../data';
 var util = require('../../utils/util.js');
 //获取应用实例
 var app = getApp();
-
+var shop_type = app.globalData.shop_type;
 var weburl = app.globalData.weburl;
 var page = 1;
 var pagesize = 20;
@@ -46,7 +46,7 @@ Page({
     amount:0,
     nickname: userInfo.nickName,
     avatarUrl: userInfo.avatarUrl,
-
+    shop_type: shop_type,
   },
   bindTextAreaBlur: function (e) {
     var that = this ;
@@ -58,7 +58,7 @@ Page({
   bindMinus: function (e) {
     // loading提示
     wx.showLoading({
-      title: '操作中',
+      title: '',
       mask: true
     });
     var index = parseInt(e.currentTarget.dataset.index);
@@ -121,7 +121,7 @@ Page({
   },
   bindManual: function (e) {
     wx.showLoading({
-      title: '操作中',
+      title: '',
       mask: true
     });
     var index = parseInt(e.currentTarget.dataset.index);
@@ -525,6 +525,9 @@ Page({
     // auto login
     var that = this;
     var minusStatuses = [];
+    var shop_type = that.data.shop_type
+    var page = that.data.page
+    var pagesize = that.data.pagesize
 
     // cart info
     wx.request({
@@ -602,7 +605,10 @@ Page({
       method: 'POST',
       data: { 
         username: username, 
-        access_token: token 
+        access_token: token,
+        shop_type: shop_type,
+        page: page,
+        pagesize: pagesize 
       },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -616,7 +622,7 @@ Page({
         if (recommentslist){
           for (var i = 0; i < recommentslist.length; i++) {
             recommentslist[i]['image'] = weburl + '/' + recommentslist[i]['image'];
-            recommentslist[i]['name'] = recommentslist[i]['name'].substr(0, 13) + '...';
+            //recommentslist[i]['name'] = recommentslist[i]['name'].substr(0, 13) + '...';
             if (i > 1) {
               recommentslist[i]['hidden'] = 1;
             }

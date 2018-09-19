@@ -3,12 +3,13 @@
         "pages/main/main",
         "pages/my/index",
         "pages/hall/hall",
-        "pages/list/list",
+        "pages/cart/cart",
+        "pages/custom/custom",
         "pages/classify/classify",
-        "pages/wish/wish",
+        "pages/wallet/wallet",
         "pages/order/list/list",
         "pages/order/mylist/mylist",
-        "pages/wechat/wechat",
+        "pages/sendfresh/sendfresh",
         "pages/member/index/index",
         "pages/member/memberdetails/memberdetails",
         "pages/member/share/share",
@@ -30,7 +31,7 @@
     "window": {
         "backgroundTextStyle": "light",
         "navigationBarTextStyle": "#fefefe",
-        "navigationBarTitleText": "半生",
+        "navigationBarTitleText": "鲜社",
         "navigationBarBackgroundColor": "#292929",
         "backgroundColor": "#F2f2f2",
         "enablePullDownRefresh": false
@@ -51,12 +52,12 @@
         "selectedIconPath": "images/menu_selected.png",
         "text": "菜单"
         }, {
-            "pagePath": "pages/classify/classify",
+            "pagePath": "pages/custom/custom",
             "iconPath": "images/customize.png",
             "selectedIconPath": "images/customize_selected.png",
             "text": "定制"
         }, {
-          "pagePath": "pages/hall/hall",
+          "pagePath": "pages/cart/cart",
           "iconPath": "images/cart.png",
           "selectedIconPath": "images/cart_selected.png",
           "text": "购物车"

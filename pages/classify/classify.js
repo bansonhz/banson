@@ -203,14 +203,15 @@ Page({
   },
   loadgoods: function (cat_id,sec_cat_id) {
     var that = this
-    var catid = cat_id > 0 ? cat_id : 0
-    var sec_catid = sec_cat_id > 0 ? sec_cat_id:0
+    var catid = cat_id ? cat_id : 0
+    var sec_catid = sec_cat_id ? sec_cat_id:0
     var search_goodsname = that.data.search_goodsname
     var goods_type = ''
     var page = that.data.page
     var pagesize = that.data.pagesize
     var page_num = that.data.page_num
-    if (search_goodsname) goods_type ='search_goodsname'
+    goods_type = search_goodsname?'search_goodsname':''
+    console.log('loadgoods cat_id:', cat_id, ' sec_cat_id:', sec_cat_id, ' page:', page)
     wx.request({
       url: weburl + '/api/client/get_goods_list',
       method: 'POST',
@@ -232,21 +233,21 @@ Page({
 
       },
       success: function (res) {
-        console.log('loadgoods:',res.data.result)
         var list = that.data.lists;
         if (!res.data.result){
           return
         }
         if (page == 1) list = []
+       
         var all_rows = res.data.all_rows
         page_num = all_rows //(all_rows / pagesize + 0.5)
         for (var i = 0; i < res.data.result.length; i++) {
-          res.data.result[i]['short_name'] = res.data.result[i]['name'].substring(0, 15) + '...';
+          //res.data.result[i]['short_name'] = res.data.result[i]['name'].substring(0, 15) + '...';
           if (res.data.result[i]['activity_image']) res.data.result[i]['image'] = weburl + res.data.result[i]['activity_image'];
          
           list.push(res.data.result[i]);
         }
-       
+        console.log('loadgoods:', list, res.data.result)
         that.setData({
           lists: list,
           all_rows: all_rows,
@@ -256,7 +257,6 @@ Page({
         that.setData({
           hidden: true
         })
-        console.log('loadgoods:')
         
       },
       fail: function (res) {
@@ -296,10 +296,11 @@ Page({
       secid:secid,
       lists:[],
       hiddenallclassify: true,
+      page:1,
   
     })
-    page = 1;
-    console.log('index:'+index)
+    
+    console.log('子分类数据 onTapTag index:'+index)
     that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id'], navRightItems[index]['sec_id']);
   },
   // 打开全部子分类
@@ -422,9 +423,10 @@ get_shop_goods_category:function(){
           }
         }
         that.setData({
-          navLeftItems_name: that.data.navLeftItems[that.data.curIndex]['name']
+          navLeftItems_name: that.data.navLeftItems[that.data.curIndex]['name'],
+          page:1
         })
-        page = 1
+       
         that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
       }
     })
@@ -435,7 +437,7 @@ get_shop_goods_category:function(){
     var that = this
     // 获取item项的id，和数组的下标值
     let id = e.target.dataset.id,
-      index = parseInt(e.target.dataset.index);
+    index = parseInt(e.target.dataset.index);
     // 把点击到的某一项，设为当前index
     that.setData({
       curNav: id,
@@ -453,7 +455,7 @@ get_shop_goods_category:function(){
       all_rows:0,
       page:1,
     })
-    
+    console.log('switchRightTab page:',that.data.page)
     that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
   },
 
@@ -465,7 +467,7 @@ get_shop_goods_category:function(){
         title: '没有更多记录',
         icon: 'loading',
         duration: 1000
-      });
+      })
       return
     }
     that.setData({

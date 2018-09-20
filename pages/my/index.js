@@ -27,6 +27,12 @@ Page({
       url: '../order/mylist/mylist' 
     })
   },
+  
+  navigateToUserinfo: function(e) {
+    wx.navigateTo({
+      url: 'user_info/user_info'
+    })
+  },
   navigateToWallet: function (e) {
     wx.navigateTo({
       url: '../wallet/wallet'
@@ -79,7 +85,7 @@ Page({
     })
   },
   onShow: function () {
-    var that = this;
+    
     var that = this
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function (userInfo) {

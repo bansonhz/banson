@@ -2,6 +2,7 @@ var util = require('../../../utils/util.js');
 var app = getApp();
 var weburl = app.globalData.weburl;
 var shop_type = app.globalData.shop_type; 
+var deliverytype = app.globalData.deliverytype;
 Page({
 	data: {
     title_name: '送出礼品',
@@ -24,6 +25,7 @@ Page({
     selectedAllStatus: false,
     discountpay:0, //折扣差额
     payamount:0, //实际支付金额
+    deliverytype: deliverytype, //提货方式 //1自提 2外送
     
 	},
   setNavigation: function () {
@@ -119,6 +121,7 @@ Page({
     var selected_coupon_id = that.data.selected_coupon_id
     var selected_coupon_type = that.data.selected_coupon_type
     var selectedAllStatus = that.data.selectedAllStatus
+    var deliverytype = that.data.deliverytype
     var status = 0
     var amount = that.data.amount
     var order_type = 'xianshe'
@@ -134,6 +137,7 @@ Page({
         sku_id: cartIds,
         buy_type: 'cart',
         order_type: order_type,
+        deliverytype: deliverytype,
         note: order_note,
         coupon_id:selectedAllStatus?selected_coupon_id:0,
         coupon_type:selectedAllStatus?selected_coupon_type:0,
@@ -387,7 +391,7 @@ Page({
     var selectedAllStatus = that.data.selectedAllStatus
     var selected_coupon_index = that.data.selected_coupon_index ? that.data.selected_coupon_index : 0
     var coupon_list = that.data.coupons_list
-    var couponSelectedStatus = coupon_list[selected_coupon_index]['selected']
+    var couponSelectedStatus = coupon_list[selected_coupon_index]? coupon_list[selected_coupon_index]['selected']:0
     that.setData({
       modalHiddenCoupon: !this.data.modalHiddenCoupon,
       selectedAllStatus: couponSelectedStatus ? true : false,

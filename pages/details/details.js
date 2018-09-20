@@ -84,6 +84,7 @@ Page({
         var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
         var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
         var page = that.data.page
+        var goods_shape = options.goods_shape
         var goodsname = options.name
         var goodsshortname = goodsname?goodsname.substring(0,13)+'...':''
         var goodsid = options.id
@@ -101,6 +102,7 @@ Page({
           goodsid: goodsid ? goodsid:0,
           goodsprice: goodsprice ? goodsprice:0,
           goodssale: goodssale ? goodssale:0,
+          goods_shape: goods_shape ? goods_shape:0,
         })
         that.setNavigation()
         if (goodsid>0){
@@ -110,8 +112,9 @@ Page({
             data: { 
               username: options.username ? options.username : username, 
               access_token: token, 
-              goods_id: options.id, 
-              shop_type:shop_type
+              goods_id: goodsid, 
+              shop_type:shop_type,
+              goods_shape:goods_shape,
             },
             header: {
               'Content-Type': 'application/x-www-form-urlencoded',
@@ -120,9 +123,7 @@ Page({
             success: function (res) {
               var goods_info = res.data.result
               var ret_info = res.data.info
-              console.log('获取单个产品信息');
-              console.log(res.data);
-              console.log(goods_info);
+              console.log('获取单个产品信息', res.data, ' info:', goods_info);
               if (goods_info) {
                 that.setData({
                   goodsname: goods_info[0]['name'],
@@ -141,9 +142,10 @@ Page({
                 })
                 setTimeout(function () {
                   wx.navigateBack();
-                }, 1500);
+                }, 1500)
+                return
               }
-              
+             
             }
           })
         }else{
@@ -155,7 +157,12 @@ Page({
         wx.request({
           url: weburl+'/api/client/get_goodsdesc_list',
           method: 'POST',
-          data: { username: options.username ? options.username : this.data.username, access_token: token, goods_id: options.id, page: page },
+          data: { 
+            username: options.username ? options.username : that.data.username, 
+            access_token: token, 
+            goods_id: goodsid, 
+            page: page 
+          },
           header: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'application/json'
@@ -173,7 +180,12 @@ Page({
         wx.request({
           url: weburl+'/api/client/get_goodssku_list',
           method: 'POST',
-          data: { username: options.username ? options.username:this.data.username, access_token: token, goods_id: options.id, page: page },
+          data: { 
+            username: options.username ? options.username:this.data.username, 
+            access_token: token, 
+            goods_id: goodsid, 
+            page: page 
+          },
           header: {
             'Content-Type': 'application/x-www-form-urlencoded',
             'Accept': 'application/json'

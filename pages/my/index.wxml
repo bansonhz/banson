@@ -20,6 +20,14 @@
 		<text>已完成</text>
 	</view>
 </view>
+<!-- 
+<view class="menu-area">
+<view bindtap="navigateToUserinfo" class="tableviewcell">
+	<image src="../../images/u72.png" />
+	<text>个人资料</text>
+</view>
+</view>
+-->
 <view class="menu-area">
 <view bindtap="navigateToWallet" class="tableviewcell">
 	<image src="../../images/wallet2_logo.png" />

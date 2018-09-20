@@ -2,6 +2,7 @@
     "pages": [
         "pages/main/main",
         "pages/my/index",
+        "pages/my/user_info/user_info",
         "pages/hall/hall",
         "pages/cart/cart",
         "pages/custom/custom",

@@ -84,7 +84,20 @@ Page({
     if (status) {
       that.setData({
         status: status
-      });
+      })
+      var title = ''
+      if(status == 1){
+        title = '待支付订单'
+      } else if (status == 2){
+        title = '待发货订单'
+      } else if (status == 3) {
+        title = '已发货订单'
+      } else if (status == 4) {
+        title = '已完成订单'
+      }
+      wx.setNavigationBarTitle({
+        title: title ? title:'我的订单'
+      })
     }
 
     that.reloadData();

@@ -475,10 +475,11 @@ Page({
     var goods_price = e.currentTarget.dataset.goodsPrice;
     var goods_info = e.currentTarget.dataset.goodsInfo;
     var goods_sale = e.currentTarget.dataset.sale
+    var goods_shape = e.currentTarget.dataset.goodsShape
     //var carts = this.data.carts;
     var sku_id = objectId;
     wx.navigateTo({
-      url: '../details/details?sku_id=' + objectId + '&id=' + goods_id + '&name=' + goods_name + '&goods_info=' + goods_info + '&goods_price=' + goods_price + '&sale=' + goods_sale + '&token=' + token + '&username=' + username
+      url: '../details/details?sku_id=' + objectId + '&id=' + goods_id + '&name=' + goods_name + '&goods_info=' + goods_info + '&goods_price=' + goods_price + '&goods_shape=' + goods_shape +'&sale=' + goods_sale + '&token=' + token + '&username=' + username
     });
   },
   touchStart: function (e) {

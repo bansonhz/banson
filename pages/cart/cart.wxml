@@ -5,7 +5,7 @@
   <text class="slogan" style='color:white;margin-top:40rpx;'>用心的食物才是最美</text>
 </view>
 <view class="container carts-list">
-    <view wx:for="{{carts}}" class="carts-container" wx:key="index" data-object-id="{{item.id}}" data-goods-id="{{item.goods_id}}"  data-goods-name="{{item.name}}"  data-goods-info="{{item.act_info}}" data-goods-price="{{item.sell_price}}" hidden="{{item.hidden==1?false:false}}" bindtap="showGoods">
+    <view wx:for="{{carts}}" class="carts-container" wx:key="index" data-object-id="{{item.id}}" data-goods-id="{{item.goods_id}}"  data-goods-shape="{{item.shape}}" data-goods-name="{{item.name}}"  data-goods-info="{{item.act_info}}" data-goods-price="{{item.sell_price}}" hidden="{{item.hidden==1?false:false}}" bindtap="showGoods">
     	<view class="carts-item" style="left: {{itemLefts[index]}}px;" data-index="{{index}}" bindtouchstart="touchStart" bindtouchmove="touchMove" bindtouchend="touchEnd">
 	    	<!-- 复选框图标 -->
 			<icon style="margin-left:20rpx;" type="{{item.selected ? 'success_circle' : 'circle'}}" size="18" catchtap="bindCheckbox" data-index="{{index}}" />

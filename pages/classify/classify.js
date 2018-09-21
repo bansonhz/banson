@@ -391,7 +391,8 @@ get_shop_goods_category:function(){
         username: username,
         access_token: token,
         shop_id: shop_id,
-        reid: 0
+        reid: 0,
+        category_type:0,
       },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',

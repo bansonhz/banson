@@ -4,19 +4,19 @@
 </view>
 <view class="order-area">
 	<view bindtap="navigateToOrder" class="order" data-status="1">
-		<image src="../../images/icon_order.png" />
+		<image src="../../images/daifukuan.png" />
 		<text>待付款</text>
 	</view>
 	<view bindtap="navigateToOrder" class="order" data-status="2">
-		<image src="../../images/icon_order.png" />
+		<image src="../../images/daishouhuo.png" />
 		<text>待发货</text>
 	</view>
 	<view bindtap="navigateToOrder" class="order" data-status="3">
-		<image src="../../images/icon_order.png" />
+		<image src="../../images/daifahuo.png" />
 		<text>已发货</text>
 	</view>
 	<view bindtap="navigateToOrder" class="order" data-status="4">
-		<image src="../../images/icon_order.png" />
+		<image src="../../images/dpl.png" />
 		<text>已完成</text>
 	</view>
 </view>
@@ -30,7 +30,7 @@
 -->
 <view class="menu-area">
 <view bindtap="navigateToWallet" class="tableviewcell">
-	<image src="../../images/wallet2_logo.png" />
+	<image src="../../images/wallet.png" />
 	<text>唐巢钱包</text>
 </view>
 <view bindtap="navigateToCoupon" class="tableviewcell">

@@ -130,8 +130,8 @@ page {
 }
 
 .order image {
-	width: 90rpx;
-	height: 90rpx;
+	width: 50rpx;
+	height: 50rpx;
 }
 
 .order text{

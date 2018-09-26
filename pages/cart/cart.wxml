@@ -40,7 +40,7 @@
 				</view>
 			</view>
     </view>
-    <button type="warn" data-index="{{index}}" class="delete-button" catchtap="delete" data-object-id="{{item.objectId}}">删除</button>
+    <button type="warn" data-index="{{index}}" class="delete-button" catchtap="delete" data-object-id="{{item.objectId}}"><text>删除</text></button>
     </view>
 </view>
 <view class="carts-footer">
@@ -63,9 +63,11 @@
     -->    
 		<view>￥{{item.sell_price}}元</view> 
  </view>
+ 
  <view class="carts-more" hidden="{{rshowmorehidden}}">
-    <text bindtap="bindShowMoreR" >更多[{{rall_rows}}]</text>
+   <!-- <text bindtap="bindShowMoreR" >更多[{{page}}/{{rpage_num}}]</text> --> 
 </view>
+ 
 <!-- 
 <view class="carts-more" hidden="{{rshowmorehidden?false:true}}">
     <text bindtap="bindShowLessR" >收起...[{{rall_rows}}]</text>

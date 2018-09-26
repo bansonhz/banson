@@ -117,7 +117,7 @@ page{
 .carts-container {
 	position: relative;
 	width: 100%;
-	height: 100px;
+	height: 210rpx;
 }
 
 /*左部图片*/
@@ -310,13 +310,24 @@ page{
 .delete-button {
 	width: 60px;
 	font-size: 16px;
-	height: 80%;
-	line-height: 90px;
+	height: 100%;
+	line-height: 90rpx;
 	border: 0;
 	border-radius: 0;
 	position: absolute;
+  text-align: center;
+  align-items: center;
 	right: 0;
 	top: 0;
+  color: #EB602E; 
+  background-color: #fff;
+  padding: 0px;
+  display: table;
+
+}
+.delete-button text {
+  vertical-align:middle;
+  display: table-cell;
 }
 
 .delete-button:before {
@@ -340,7 +351,6 @@ page{
 
 /*推荐商品列表头*/
 .item {
- 
   height: 180rpx;
   margin-left: 0rpx;
   margin-top: 0rpx;
@@ -376,6 +386,7 @@ page{
   border-bottom: 1px solid #eee;
 	background: white;
   padding:25rpx;
+  margin-bottom: 80rpx;
   z-index: 1;
 }
 

@@ -2,6 +2,7 @@ var utils = require('../../utils/util.js');
 var interval = null; //倒计时函数
 var app = getApp();
 var weburl = app.globalData.weburl;
+var openid = app.globalData.openid;
 var appid = app.globalData.appid;
 var appsecret = app.globalData.secret;
 var shop_type = app.globalData.shop_type;
@@ -129,6 +130,8 @@ Page({
     console.log(this.data.scode);
     let that = this;
     var username  = that.data.username
+    var openid = wx.getStorageSync('openid') ? wx.getStorageSync('openid') : openid;
+    var shop_type = shop_type?shop_type:3
     if (!that.data.phoneNo) {
       app.wxToast({
         title: '请输入手机号码'
@@ -155,6 +158,7 @@ Page({
         username: that.data.phoneNo, 
         smscode: that.data.scode,
         shop_type:shop_type,
+        openid:openid,
       },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',

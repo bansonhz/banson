@@ -56,7 +56,7 @@ page {
 }
 
 .tableviewcell {
-	width:100%;
+	width:90%;
   height: 100%;
   padding: 20rpx;
 	color: #444;

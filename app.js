@@ -3,8 +3,8 @@ var wxToast = require('toast/toast.js')
 var weburl = "https://sendheart.dreamer-inc.com";
 App({
   globalData: {
-    appid: 'wxe59fb5712b45adb7',//  小程序开发账号  wxe59fb5712b45adb7
-    secret: '9666f44dd87410cf85949f3a053dc14a',//   9666f44dd87410cf85949f3a053dc14a
+    appid: 'wxbfca73e39314bd08',//  小程序开发账号  wxe59fb5712b45adb7
+    secret: '0e098a2fbd661ac8a44d4064fda42b3f',//   9666f44dd87410cf85949f3a053dc14a
     weburl:'https://sendheart.dreamer-inc.com',
     openid: null,
     username: null,
@@ -44,9 +44,10 @@ App({
                 success: function (res) {
                   var user = res.data//返回openid
                   wx.setStorageSync('openid', user.openid);
-                  wx.setStorageSync('session_key', user.session_key);
-                  console.log('获取用户OpenId:');
-                  console.log(user.openid);
+                  wx.setStorageSync('session_key', user.session_key)
+                  getApp().globalData.openid = user.openid
+                  console.log('获取用户OpenId:', user.openid)
+                  //console.log(user.openid);
                   
                 }
               })

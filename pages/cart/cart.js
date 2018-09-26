@@ -37,8 +37,11 @@ Page({
     itemLefts: [],
     showmorehidden: true,
     rshowmorehidden: true,
+    page:page,
+    pagesize:pagesize,
     all_rows: 0,
     rall_rows: 0,
+    rpage_num: 0,
     windowWidth: 0,
     windowHeight: 0,
     carts: [],
@@ -247,7 +250,6 @@ Page({
     that.setData({
       recommentList: recommentList,
       rshowmorehidden: true
-
     });
   },
   bindShowLessR: function () {
@@ -659,10 +661,13 @@ Page({
           } else {
             rshowmorehidden = true
           }
+          var rpage_num = that.data.rpage_num
+          rpage_num = (recommentslist.length / pagesize + 0.5)
           that.setData({
             recommentList: recommentslist,
             rshowmorehidden: rshowmorehidden,
-            rall_rows: recommentslist.length
+            rall_rows: recommentslist.length,
+            rpage_num: rpage_num.toFixed(0),
           })
         }
       }

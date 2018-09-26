@@ -383,6 +383,7 @@ onShow:function(){
 get_shop_goods_category:function(){
     var that = this
     var value = that.data.value 
+    var secid = that.data.secid
     console.log('get_shop_goods_category value:', value)
     wx.request({
       url: weburl + '/api/client/get_shop_goods_category',
@@ -428,7 +429,7 @@ get_shop_goods_category:function(){
           page:1
         })
        
-        that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
+        that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id'],secid);
       }
     })
   },

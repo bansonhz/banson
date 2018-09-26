@@ -1,5 +1,5 @@
 var app = getApp();
-
+var shop_type = app.globalData.shop_type;
 var weburl = app.globalData.weburl;
 var navList_order = [
   { id: "xianshe", title: "我送出的" },
@@ -131,7 +131,8 @@ Page({
         openid: openid,
         order_type: order_type,
         page: page,
-        pagesize: pagesize
+        pagesize: pagesize,
+        shop_type:shop_type,
       },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',

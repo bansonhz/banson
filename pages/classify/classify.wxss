@@ -129,8 +129,8 @@ position: absolute;
 top: 0; 
 right: 0; 
 flex: 1; 
-/*宽度75%，高度占满，并使用百分比布局*/ 
-width: 80%; 
+/*宽度80%，高度占满，并使用百分比布局*/ 
+width: 82%; 
 height: 100%; 
 padding: 10px; 
 box-sizing: border-box; 
@@ -140,40 +140,46 @@ background: #fff;
 .nav_right .right_list{ 
 /*浮动向左*/ 
 float: left; 
-/*每个item设置宽度是33.33%*/ 
 width: 100%; 
-height: 100px; 
+height: 400rpx; 
 text-align: left; 
 } 
 /*右侧栏list的item*/ 
 .nav_right .nav_right_items{ 
 /*浮动向左*/ 
 float: left;  
-height: 162rpx; 
+height: 155rpx; 
 text-align: left; 
 width: 100%;
-padding: 0 10rpx;
+padding: 0 rpx;
 display:flex;
 flex-direction: column;
 align-items: left;
 } 
 
+.nav_right .nav_right_items .item-name-info{
+  color:gray;
+  font-size:20rpx;
+  overflow: hidden; 
+  white-space: nowrap; 
+  text-overflow: ellipsis; 
+  width:300rpx;
+}
 .linegray {
 	border-bottom: 1rpx solid #eee;
   margin-bottom: 10rpx;
 }
 
-.goods_tag {
+.nav_right .nav_right_items .goods_info {
   color: gray; 
   font-size: 8pt;
-  margin-top:-30px;
-  margin-left:120px;
-  text-align:right;
-
+  display:flex;
+  flex-direction: row;
+  align-items: left;
 }
-.goods_tag image{
-  width:20rpx;
-  height: 20rpx;
+.goods_info image {
+  width:50rpx; 
+  height: 50rpx;
   
 }
 .nav_right .top-bar-list{ 

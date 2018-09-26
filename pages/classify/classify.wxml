@@ -55,32 +55,26 @@
   <image style="width:40rpx;height:40rpx;margin-top:2rpx;" src="../../images/icon.png" bindtap="openAllTapTag" ></image>
   </view>
  
-  <view class="right_list" style='height:{{dkheight-78}}px;'>
-    <scroll-view scroll-y="true" style="margin-bottom:60px;" bindscrolltoupper="topLoad" bindscrolltolower="bindDownLoad" bindscroll="scroll" scroll-top="{{scrollTop}}">
+  <view class="right_list" style='height:{{dkheight}}px;'>
+    <scroll-view scroll-y="true" style="margin-bottom:10px;" bindscrolltoupper="topLoad" bindscrolltolower="bindDownLoad" bindscroll="scroll" scroll-top="{{scrollTop}}">
     <!--如果有数据，才遍历项-->
     <view wx:if="{{lists}}">
       <block wx:for="{{lists}}" wx:key="curIndex">
-        <view class="nav_right_items linegray" >
+        <view class="nav_right_items linegray" style="display:flex;flex-direction:row;">
             <!--用view包裹图片组合，如果有图片就用，无图片提供就使用50x30的这个默认图片-->
-          <view style="display:flex;flex-direction:row;">
-            <view style='margin-right:20rpx;' bindtap='showGoods' data-goods-id="{{item.id}}">              
-              <block wx:if="{{item.image}}">
-                <image src="{{item.image}}" mode='aspecFit'></image>
-              </block>
+            <view style='margin-right:15rpx;' bindtap='showGoods' data-goods-id="{{item.id}}">              
+                <image wx:if="{{item.image}}" src="{{item.image}}" mode='aspecFit'></image>
             </view>
-            <view>
-            <!--如果有文字，就用文字；无文字就用其他-->
-            <view>
+            <view bindtap='showGoods' data-goods-id="{{item.id}}">
               <text>{{item.name}}</text>
-              <text style="color:gray;font-size:20rpx;">{{item.goods_tag?item.goods_tag:'美味佳肴'}}</text>
-              <text style="color:gray;font-size:20rpx;">{{item.act_info?item.act_info:'美味佳肴'}}</text>
-              <text>￥{{item.sell_price}}</text>
-              <view class="goods_tag" data-goods-id="{{item.id}}" bindtap='addCart' style="text-align:right;">
-                <image style="width:60rpx;height:60rpx;"src="../../images/addcart.png"></image>
+              <view class="item-name-info">{{item.goods_tag?item.goods_tag:'美味佳肴'}}</view>
+              <view class="item-name-info">{{item.act_info?item.act_info:'美味佳肴'}}</view>
+              <view class="goods_info" data-goods-id="{{item.id}}" bindtap='addCart'>
+                <text style='width:300rpx;'>￥{{item.sell_price}}</text>
+                <image style='width:45rpx;height:45rpx;' src="../../images/addcart.png"></image>
               </view>
             </view>
-            </view>
-          </view>
+          
         </view>
       </block>
     </view>

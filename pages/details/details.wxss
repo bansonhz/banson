@@ -161,7 +161,7 @@ page {
 .footer {
   background: #fff;
   width: 100%;
-  padding-bottom: 50rpx;
+  padding: 5rpx;
   position: fixed;
   bottom: 0;
   border-top: 1rpx solid #eee;
@@ -183,10 +183,10 @@ page {
   border: none;
 }
 .add-cart {
-  line-height: 100rpx;
+  line-height: 70rpx;
   text-align: center;
   width: 50%;
-  height: 100rpx;
+  height: 70rpx;
   background-color: #e34c55;
   color: #fff;
   font-size: 32rpx;

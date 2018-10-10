@@ -6,6 +6,7 @@ var page = 1;
 var pagesize = 6;
 var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '15355813859';
 var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
+var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
 var shop_id = app.globalData.shop_id;
 var shop_type = app.globalData.shop_type;
 // 请求数据
@@ -212,6 +213,7 @@ Page({
     var page_num = that.data.page_num
     goods_type = search_goodsname?'search_goodsname':''
     console.log('loadgoods cat_id:', cat_id, ' sec_cat_id:', sec_cat_id, ' page:', page)
+    
     wx.request({
       url: weburl + '/api/client/get_goods_list',
       method: 'POST',
@@ -247,7 +249,7 @@ Page({
          
           list.push(res.data.result[i]);
         }
-        console.log('loadgoods:', list, res.data.result)
+        
         that.setData({
           lists: list,
           all_rows: all_rows,
@@ -294,13 +296,15 @@ Page({
       scrollLeft: scrollLeft,
       toView: toView ? toView:'0',
       secid:secid,
-      lists:[],
+      //lists:[],
+      lists: that.data.navLeftItems[that.data.curIndex]['list'],
       hiddenallclassify: true,
       page:1,
+      
   
     })
     
-    console.log('子分类数据 onTapTag index:'+index)
+    console.log('子分类数据 onTapTag index:' + index, that.data.curIndex)
     that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id'], navRightItems[index]['sec_id']);
   },
   // 打开全部子分类
@@ -378,7 +382,8 @@ Page({
 
 onShow:function(){
   var that = this
-  that.get_shop_goods_category()
+  //that.get_shop_goods_category()
+  that.get_shop_machine_goods()
 },
 get_shop_goods_category:function(){
     var that = this
@@ -434,6 +439,142 @@ get_shop_goods_category:function(){
     })
   },
 
+ //售货机商品信息
+  get_shop_machine_goods: function () {
+    var that = this
+    var value = that.data.value
+    var secid = that.data.secid
+   
+    var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
+    var machine_uuid = current_shop_info['machine_uuid'] ? current_shop_info['machine_uuid'] : '114131'
+    var machine_url = current_shop_info['machine_url']
+    var machine_username = current_shop_info['machine_username'] ? current_shop_info['machine_username'] : 'C17705810977'
+    var machine_password = current_shop_info['machine_password'] ? current_shop_info['machine_password'] : '123456'
+    console.log('get_shop_machine_goods current_shop_info:', current_shop_info)
+    wx.request({
+      url: machine_url + '/apiusers/checkusername',
+      method: 'GET',
+      data: {
+        userName: machine_username,
+        password: machine_password,
+      },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      success: function (res) {
+        console.log('售货机主系统登录完成:', res.data)
+        var shop_machine_auth = res.data
+        if (!shop_machine_auth) return
+        wx.request({
+          url: machine_url + '/customgoods/querymachinegoods',
+          method: 'GET',
+          data: {
+            machineUuid: machine_uuid,
+          },
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': shop_machine_auth['data'],
+            'Accept': 'application/json'
+          },
+          success: function (res) {
+            console.log('售货机商品信息获取完成:', res.data.data)
+            var shop_machine_goods = res.data.data
+            if (shop_machine_goods.length>0){
+              var goods_classify = {}
+              for (var i = 0; i < shop_machine_goods.length; i++) {
+                var goods_classify_info = {}
+                goods_classify_info['id'] = shop_machine_goods[i]['commGoodsModel']['uuid']
+                goods_classify_info['name'] = shop_machine_goods[i]['commGoodsModel']['typeName']
+                goods_classify_info['list'] = []
+                goods_classify[i] = goods_classify_info;
+               // console.log('售货机商品信息转换:', goods_classify)
+                if (shop_machine_goods[i].goodsList.length > 0) {
+                  for (var j = 0; j < shop_machine_goods[i].goodsList.length; j++) {
+                    var goods_classify_list = {}
+                    goods_classify_list['sec_id'] = shop_machine_goods[i]['goodsList'][j]['uuid']
+                    goods_classify_list['image'] = shop_machine_goods[i]['goodsList'][j]['goodsUrl']
+                    goods_classify_list['name'] = shop_machine_goods[i]['goodsList'][j]['goodsName']
+                    goods_classify_list['link'] = shop_machine_goods[i]['goodsList'][j]['introduceUrl']
+                    goods_classify_list['sell_price'] = shop_machine_goods[i]['goodsList'][j]['goodsPrice']
+                    if (goods_classify_list['image'].indexOf('jpg')) {
+                      goods_classify_list['image'] = 'http://pic.hnzczy.cn/' + goods_classify_list['image']
+                    }
+                    if (goods_classify_list['image'].indexOf('mp4')) {
+                      //goods_classify_list['image'] = 'http://video.hnzczy.cn/' + goods_classify_list['image']
+                    }
+                    if (goods_classify_list['link'].indexOf('mp4')) {
+                     // goods_classify_list['link'] = 'http://video.hnzczy.cn/' + goods_classify_list['link']
+                    }
+                    if (goods_classify_list['link'].indexOf('jpg')) {
+                      goods_classify_list['link'] = 'http://pic.hnzczy.cn/' + goods_classify_list['link']
+                    }
+                    goods_classify[i]['list'].push(goods_classify_list)
+                  }
+                }  
+              }
+            }
+            
+            console.log('售货机商品信息转换完成:', (goods_classify))
+            if (value == 0) {
+              that.setData({
+                navLeftItems: goods_classify,
+                navRightItems: goods_classify[0]['list'],
+                curNav: goods_classify[0]['id'],
+                curIndex: 0
+              })
+            } else {
+              for (var i = 0; i < goods_classify.length; i++) {
+                if (goods_classify[i]['id'] == value) {
+                  that.setData({
+                    navLeftItems: goods_classify,
+                    navRightItems: goods_classify[i]['list'],
+                    curNav: goods_classify[i]['id'],
+                    curIndex: i
+                  })
+                  break
+                }
+              }
+            }
+            that.setData({
+              navLeftItems_name: that.data.navLeftItems[that.data.curIndex]['name'],
+              lists: that.data.navLeftItems[that.data.curIndex]['list'],
+              page: 1
+            })
+            //that.loadgoods_shop_machine(that.data.navLeftItems[that.data.curIndex]['id'], secid);
+          }
+        })
+        /*
+        if (value == 0) {
+          that.setData({
+            navLeftItems: goods_classify,
+            navRightItems: goods_classify[0]['list'],
+            curNav: goods_classify[0]['id'],
+            curIndex: 0
+          })
+        } else {
+          for (var i = 0; i < goods_classify.length; i++) {
+            if (goods_classify[i]['id'] == value) {
+              that.setData({
+                navLeftItems: goods_classify,
+                navRightItems: goods_classify[i]['list'],
+                curNav: goods_classify[i]['id'],
+                curIndex: i
+              })
+              break
+            }
+          }
+        }
+        that.setData({
+          navLeftItems_name: that.data.navLeftItems[that.data.curIndex]['name'],
+          page: 1
+        })
+
+        that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id'], secid);
+        */
+      }
+    })
+  },
   //事件处理函数
   switchRightTab: function (e) {
     var that = this
@@ -448,9 +589,11 @@ get_shop_goods_category:function(){
       navLeftItems_name: that.data.navLeftItems[index]['name'],
       value: that.data.navLeftItems[index]['id'],
       hiddenallclassify: true,
+     
     })
     that.setData({
-      lists: [],
+      //lists: [],
+      lists: that.data.navLeftItems[that.data.curIndex]['list'],
       activeIndex:-1,
       toView:0,
       secid:0,
@@ -458,7 +601,7 @@ get_shop_goods_category:function(){
       page:1,
     })
     console.log('switchRightTab page:',that.data.page)
-    that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
+    //that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
   },
 
   getMoreGoodsTapTag: function () {

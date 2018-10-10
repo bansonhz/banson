@@ -1,5 +1,6 @@
 var app = getApp();
 var weburl = app.globalData.weburl;
+var shop_type = app.globalData.shop_type;
 
 Page({
 	data: {
@@ -97,6 +98,7 @@ Page({
               body: '商城',
               tradeNo: that.data.orderNo,
               totalFee: that.data.totalFee,
+              shop_type:shop_type,
             },
             method: 'POST',
             header: {

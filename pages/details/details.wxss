@@ -115,6 +115,8 @@ page {
   font-weight: normal;
   white-space: nowrap;
   overflow-x: hidden;
+  text-align: left;
+  padding: 5rpx;
 }
 
 .shopping_container .goods-info {
@@ -141,7 +143,32 @@ page {
   text-align: right;
   padding-right: 20rpx;
 }
+.goods-sku-info {
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+  align-items: left;
+  height:85rpx;
 
+}
+.goods-sku-name {
+  color: #333;
+  font-size: 32rpx;
+  padding: 2rpx 6rpx;
+  height: 50rpx;
+  line-height: 50rpx;
+  margin-left:30rpx; 
+  margin-right:30rpx; 
+}
+.goods-sku-info .goods_prom {
+  color: #999;
+  font-size: 28rpx;
+  display: block ;
+  white-space: pre-wrap;
+  width: 80%; 
+ 
+  padding: 5rpx;
+}
 .goods_tag {
   color: #999;
   font-size: 24rpx;
@@ -165,6 +192,11 @@ page {
   position: fixed;
   bottom: 0;
   border-top: 1rpx solid #eee;
+  /*
+  display: flex;
+	flex-direction: row;
+	justify-content: center;
+  */
 }
 .opt-buttons {
   width: 100%;
@@ -178,6 +210,7 @@ page {
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: space-around;
+  
 }
 .opt-buttons button::after {
   border: none;
@@ -191,6 +224,7 @@ page {
   color: #fff;
   font-size: 32rpx;
   border-radius: 0;
+
 }
 
 .wish-cart {

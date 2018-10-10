@@ -39,12 +39,13 @@
       </swiper>
   </view>
   -->
-  <view style='display:flex;flex-direction:column;text-align:left'>
+  <view class="" style='top:0;position: fixed;z-index:99;background:white;display:flex;flex-direction:column;text-align:left;width:100%;'>
     <text style='margin-left:0rpx;color:#333;font-weight:bold;'>{{navLeftItems_name}}</text>
     <text style='margin-left:0rpx;'>{{navLeftItems_slogon}}</text>
   </view>
+   <!-- 
   <view class="top-bar-list">
- 
+
   <scroll-view scroll-x="true" bindscroll="getleft" scroll-into-view="v_{{toView}}" class="top-bar">
       <block wx:for="{{navRightItems}}" wx:key="{{item.sec_id}}">
         <view id="v_{{index}}" data-index="{{index}}" data-id="{{item.sec_id}}"  data-name="{{item.name}}"  class="top-bar-item {{index == activeIndex ? 'top-bar-active' : ''}}" catchtap="onTapTag">
@@ -52,9 +53,11 @@
         </view>
       </block>
   </scroll-view>
+  
   <image style="width:40rpx;height:40rpx;margin-top:2rpx;" src="../../images/icon.png" bindtap="openAllTapTag" ></image>
+
   </view>
- 
+   -->
   <view class="right_list" style='height:{{dkheight}}px;'>
     <scroll-view scroll-y="true" style="margin-bottom:10px;" bindscrolltoupper="topLoad" bindscrolltolower="bindDownLoad" bindscroll="scroll" scroll-top="{{scrollTop}}">
     <!--如果有数据，才遍历项-->
@@ -67,8 +70,9 @@
             </view>
             <view bindtap='showGoods' data-goods-id="{{item.id}}">
               <text>{{item.name}}</text>
-              <view class="item-name-info">{{item.goods_tag?item.goods_tag:'美味佳肴'}}</view>
-              <view class="item-name-info">{{item.act_info?item.act_info:'美味佳肴'}}</view>
+              
+              <view class="item-name-info">{{item.goods_tag?item.goods_tag:''}}</view>
+              <view class="item-name-info">{{item.act_info?item.act_info:''}}</view>
               <view class="goods_info" data-goods-id="{{item.id}}" bindtap='addCart'>
                 <text style='width:300rpx;'>￥{{item.sell_price}}</text>
                 <image style='width:45rpx;height:45rpx;' src="../../images/addcart.png"></image>

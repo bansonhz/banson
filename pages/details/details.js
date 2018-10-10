@@ -224,19 +224,29 @@ Page({
     //事件处理函数 选择型号规格  
     goodsmodel: function () {
       var that = this;
+      console.log('goodsmodel 商品属性:', that.data.attrValueList)
       that.setData({
         modalHidden: !that.data.modalHidden,
-        sku_id: that.data.commodityAttr[0].id,
-        sku_sell_price: that.data.commodityAttr[0].sell_price,
+        //sku_id: that.data.commodityAttr[0].id,
+        //sku_sell_price: that.data.commodityAttr[0].sell_price,
         add_cart_title: '商品名称',
         wishflag: 0,
       })
+      if (that.data.attrValueList.length==0){
+        that.setData({
+          sku_id: that.data.commodityAttr[0].id,
+          sku_sell_price: that.data.commodityAttr[0].sell_price,
+          
+        })
+      }
     },
     wishCart: function () {
       var that = this
+      var firstIndex = that.data.firstIndex ? that.data.firstIndex : 0
+      var secondIndex = that.data.secondIndex ? that.data.secondIndex : 0
       that.setData({
         modalHidden: !that.data.modalHidden,
-        sku_id: that.data.commodityAttr[0].id,
+        //sku_id: that.data.commodityAttr[firstIndex].id,
         add_cart_title:'商品名称',
         wishflag: 1,
       })
@@ -500,6 +510,7 @@ Page({
     
       that.setData({
         attrValueList: attrValueList,
+        
         //includeGroup: includeGroup
       })
      // console.log('selectValueInfo 选中信息:', attrValueList,' index:',index); 

@@ -36,7 +36,8 @@ Page({
           for (var i = 0; i < orderObjects.length; i++) {
             orderObjects[i]['logo'] = weburl + orderObjects[i]['logo'];
             for (var j = 0; j < orderObjects[i]['order_sku'].length; j++) {
-              orderObjects[i]['order_sku'][j]['sku_image'] = weburl + orderObjects[i]['order_sku'][j]['sku_image'];
+              orderObjects[i]['order_sku'][j]['sku_image'] = orderObjects[i]['order_sku'][j]['sku_image']
+              orderObjects[i]['order_sku'][j]['sku_image'] = orderObjects[i]['order_sku'][j]['sku_image'].indexOf('http') ? weburl + orderObjects[i]['order_sku'][j]['sku_image'] : orderObjects[i]['order_sku'][j]['sku_image']
             }
             order_price = order_price + orderObjects[i]['order_price']
           }
@@ -71,8 +72,95 @@ Page({
     console.log('payment openId');
     console.log('openid:'+openId);
     console.log('totalFee:' + totalFee);
+    wx.request({
+      url: weburl + '/api/WXPay',
+      data: {
+        openid: openId,
+        body: '商城',
+        tradeNo: that.data.orderNo,
+        totalFee: that.data.totalFee,
+        shop_type: shop_type,
+      },
+      method: 'POST',
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      success: function (response) {
+        // 发起支付
+        if (response.data.timeStamp) {
+          wx.requestPayment({
+            'timeStamp': response.data.timeStamp,
+            'nonceStr': response.data.nonceStr,
+            'package': response.data.package,
+            'signType': 'MD5',
+            'paySign': response.data.paySign,
+            'success': function (res) {
+              
+              wx.showToast({
+                title: '支付完成',
+                icon: 'success',
+                duration: 1500
+              })
+              wx.navigateTo({
+                url: '../list/list?status=2'
+              })
+            }
+          })
+        } else {
+          wx.showToast({
+            title: response.data,
+            icon: 'loading',
+            duration: 2000,
+          })
+          wx.request({
+            url: weburl + '/api/client/release_member_schedule',
+            method: 'POST',
+            data: {
+              username: username,
+              access_token: token,
+              order_no: orderNo,
+              member_username: member_username,
+            },
+            header: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Accept': 'application/json'
+            },
+            success: function (res) {
+              console.log(res.data.result);
+              var result = res.data.result
+            }
+          })
+        }
 
+      },
+      fail: function (response) {
+        console.log('发起支付失败')
+        console.log(response)
+        wx.request({
+          url: weburl + '/api/client/release_member_schedule',
+          method: 'POST',
+          data: {
+            username: username,
+            access_token: token,
+            order_no: orderNo,
+            member_username: member_username,
+          },
+          header: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Accept': 'application/json'
+          },
+          success: function (res) {
+            console.log(res.data.result);
+            var result = res.data.result
+           
+          }
+        })
+
+      }
+    })
     //锁定预约时间表
+    /*
     wx.request({
       url: weburl + '/api/client/book_member_schedule',
       method: 'POST',
@@ -117,7 +205,7 @@ Page({
                   'success': function (res) {
                     wx.showToast({
                       title: '支付成功'
-                    });
+                    })
                     // update order
 
                   }
@@ -176,13 +264,13 @@ Page({
           
         } else {
           wx.showToast({
-            title: res.data.info,
+            title: res.data.info ? res.data.info:'',
             icon: 'loading',
             duration: 1500
           })
         }
       }
     })
-		
+		*/
 	}
 })

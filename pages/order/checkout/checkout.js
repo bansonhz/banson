@@ -26,7 +26,7 @@ Page({
     discountpay:0, //折扣差额
     payamount:0, //实际支付金额
     deliverytype: deliverytype, //提货方式 //1自提 2外送
-    
+    //addressObjects: [],
 	},
   setNavigation: function () {
     let startBarHeight = 20
@@ -56,7 +56,7 @@ Page({
     }
 
   },
-	addressObjects: [],
+	//
 	onLoad: function (options) {
     var that = this  
    // this.setNavigation()

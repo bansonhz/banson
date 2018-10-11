@@ -3,7 +3,8 @@ var wxparse = require("../../wxParse/wxParse.js");
 var weburl = app.globalData.weburl;
 var shop_type = app.globalData.shop_type;
 var from_page = app.globalData.from_page;
-
+var deliverytype = app.globalData.deliverytype;
+var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
 Page({
     data: {
         title_name: '详情',
@@ -48,7 +49,11 @@ Page({
         wishflag:0,
         goodsinfoshowflag:0,
         shop_type:shop_type,
-
+        machine_uuid: current_shop_info['machine_uuid'], //售货机 uuid
+        is_machine: current_shop_info['type'] == 2 ? 1 : 0, //是否售货机
+        machine_shop_id: current_shop_info['shop_id'], //售货机 所属 shop_id
+        machine_location_id: current_shop_info['id'], //售货机 所属 shop_id
+        deliverytype:deliverytype,
     },
   setNavigation: function () {
     let startBarHeight = 20
@@ -80,21 +85,44 @@ Page({
 
   },
   onLoad: function(options) {
-        var that = this;
-        var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
-        var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
-        var page = that.data.page
-        var goods_shape = options.goods_shape
-        var goodsname = options.name
-        var goodsshortname = goodsname?goodsname.substring(0,13)+'...':''
-        var goodsid = options.id
-        var goodsinfo = options.goods_info ? options.goods_info:''
-        var goodsprice = options.goods_price
-        var goodssale = options.sale
-        var image = options.image
-        var shop_type =  that.data.shop_type
-        goodsinfo = goodsinfo == 'undefined' ? '' : goodsinfo
-        that.setData({
+    var that = this;
+    var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
+    var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
+    var page = that.data.page
+    var goods_shape = options.goods_shape
+    var goodsname = options.name
+    var goodsshortname = goodsname?goodsname.substring(0,13)+'...':''
+    var goodsid = options.id
+    var goodsinfo = options.goods_info ? options.goods_info:''
+    var goodsprice = options.goods_price
+    var goodssale = options.sale
+    var image = options.image
+    var shop_type =  that.data.shop_type
+    var machine = options.machine ? options.machine:0
+    var goods_machine = options.goods_machine ? options.goods_machine : {}
+     
+    if (machine >0){
+      var machine_goods_info = JSON.parse(goods_machine)
+      var goodsPicsInfo = {}
+      var goodsPicsInfo_image = {}
+      var goodsPicsInfo_image_url = {}
+      goodsPicsInfo_image_url['url'] = machine_goods_info['link'] ? machine_goods_info['link'] : machine_goods_info['image']
+      goodsPicsInfo_image['0'] = goodsPicsInfo_image_url
+      goodsPicsInfo['image'] = goodsPicsInfo_image
+      console.log('detail machine goods info:', options.goods_machine);
+      that.setData({
+        goodsname: machine_goods_info['name'] ? machine_goods_info['name'] : '',
+        image: machine_goods_info['link'] ? machine_goods_info['link'] : machine_goods_info['image'],
+        goods_secid: machine_goods_info['sec_id'] ? machine_goods_info['sec_id'] : 0,
+        goodsid: machine_goods_info['id'] ? machine_goods_info['id'] : 0,
+        goodsprice: machine_goods_info['sell_price'] ? machine_goods_info['sell_price'] : 0,
+        goodsPicsInfo: goodsPicsInfo,
+      })
+      console.log('detail machine goods image:', that.data.goodsPicsInfo);
+      return
+    }
+    goodsinfo = goodsinfo == 'undefined' ? '' : goodsinfo
+    that.setData({
           goodsname: goodsname ? goodsname:'',
           goodsinfo: goodsinfo ? goodsinfo:'',
           goodsshortname: goodsshortname ? goodsshortname:'',
@@ -103,9 +131,9 @@ Page({
           goodsprice: goodsprice ? goodsprice:0,
           goodssale: goodssale ? goodssale:0,
           goods_shape: goods_shape ? goods_shape:0,
-        })
-        that.setNavigation()
-        if (goodsid>0){
+    })
+    that.setNavigation()
+    if (goodsid>0){
           wx.request({
             url: weburl + '/api/client/get_goods_list',
             method: 'POST',
@@ -148,13 +176,13 @@ Page({
              
             }
           })
-        }else{
+    }else{
           console.log('单个产品名称为空',goodsid);
           return
-        }
+    }
 
         // 商品详情图片
-        wx.request({
+    wx.request({
           url: weburl+'/api/client/get_goodsdesc_list',
           method: 'POST',
           data: { 
@@ -217,12 +245,12 @@ Page({
             })
 
           }
-        })
+    })
       
 
-    },
+  },
     //事件处理函数 选择型号规格  
-    goodsmodel: function () {
+  goodsmodel: function () {
       var that = this;
       console.log('goodsmodel 商品属性:', that.data.attrValueList)
       that.setData({
@@ -285,8 +313,8 @@ Page({
         }
       }
       
-    },
-    insertCart: function (sku_id,username,wishflag) {
+},
+insertCart: function (sku_id,username,wishflag) {
       var that = this
        
       wx.request({
@@ -344,24 +372,24 @@ Page({
         }
       })
       */
-    },
-    showCartToast: function (message) {
+},
+showCartToast: function (message) {
       wx.showToast({
         title: message ? message:'已加入购物车',
         icon: 'success',
         duration: 1000
       });
-    },
+},
 
  
-    showCart: function () {
+showCart: function () {
       app.globalData.from_page = '/pages/details/details'
       wx.switchTab({
         url: '../hall/hall'
       });
-    },
+},
 
-    showGoodsinfo: function () {
+showGoodsinfo: function () {
       // 获得高度  
       let winPage = this;
      
@@ -380,9 +408,9 @@ Page({
         goodsinfoshowflag: 1,
         scrollTop: winPage.data.scrollTop_init
       })
-    },
+},
 
-    showGoodspara: function () {
+showGoodspara: function () {
       // 获得高度  
       var winPage = this;
       winPage.setData({
@@ -404,19 +432,150 @@ Page({
       winPage.setData({
         hideviewgoodsparaflag: false
       })
-    },
+},
+confirmOrder: function () {
+  var that = this  
+  var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '';
+  var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
+  var status = 0;
+  var amount = that.data.goodsprice;
+  var order_type = 'xianshe_machine'
+  var shop_id = that.data.machine_shop_id ? that.data.machine_shop_id:0
+  var buy_type = 'sku' //立即购买
+  var m_desc = that.data.is_machine>0?'售货机购买':'小程序购物'
+  var deliverytype = that.data.deliverytype
+  var machine_uuid = that.data.machine_uuid
+  var order_price = that.data.goodsprice
+  
+  var goods_name = that.data.goodsname
+  var goods_image = that.data.image
+  var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
+  var machine_uuid = current_shop_info['machine_uuid'] //售货机 uuid
+  var is_machine = current_shop_info['type'] == 2 ? 1 : 0 //是否售货机
+  var machine_shop_id = current_shop_info['shop_id'] //售货机 所属 shop_id
+  var machine_location_id = current_shop_info['id'] //售货机 所属 shop_id
+  var shop_delivery_id =  machine_location_id ? machine_location_id : 0
+  
 
-    upper: function (e) {
+  if (is_machine > 0){
+    var goods_id = that.data.goodsid
+    var sku_id = that.data.goods_secid
+    wx.request({
+      url: weburl + '/api/client/add_order3',
+      method: 'POST',
+      data: {
+        username: username,
+        access_token: token,
+        goods_id: goods_id,
+        sku_id: sku_id,
+        buy_type: buy_type,
+        buy_num: 1,
+        order_type: order_type,
+        shop_id: shop_id,
+        m_desc: m_desc,
+        deliverytype: deliverytype,
+        address_id: machine_uuid,
+        order_price: order_price,
+        shop_delivery_id: shop_delivery_id,
+        goods_name: goods_name,
+        goods_image: goods_image,
+        delivery_id: 0,
+      },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      success: function (res) {
+        console.log(res.data.result);
+        var order_data = res.data.result;
+        if (!res.data.info) {
+          wx.showToast({
+            title: '订单提交完成',
+            icon: 'success',
+            duration: 1500
+          });
+        } else {
+          wx.showToast({
+            title: res.data.info,
+            icon: 'loading',
+            duration: 1500
+          });
+        }
+        wx.navigateTo({
+          url: '../order/payment/payment?orderNo=' + order_data['order_no'] + '&totalFee=' + order_data['order_pay']
+        });
+      }
+    })
+  }else{
+    var sku_id = that.data.sku_id
+    if(sku_id == 0) {
+      wx.showToast({
+        title: '未选中商品',
+        icon: 'loading',
+        duration: 1500
+      });
+      return
+    }
+    wx.request({
+      url: weburl + '/api/client/add_order',
+      method: 'POST',
+      data: {
+        username: username,
+        access_token: token,
+        sku_id: sku_id,
+        buy_type: buy_type,
+        buy_num: 1,
+        order_type: order_type,
+        shop_id: shop_id,
+        m_desc: m_desc,
+        deliverytype: deliverytype,
+        address_id: 0,
+        shop_delivery_id: shop_delivery_id,
+        goods_name: goods_name,
+        goods_image: goods_image,
+        delivery_id: 0,
+      },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      success: function (res) {
+        console.log(res.data.result);
+        var order_data = res.data.result;
+        if (!res.data.info) {
+          wx.showToast({
+            title: '订单提交完成',
+            icon: 'success',
+            duration: 1500
+          });
+        } else {
+          wx.showToast({
+            title: res.data.info,
+            icon: 'loading',
+            duration: 1500
+          });
+        }
+        wx.navigateTo({
+          url: '../order/payment/payment?orderNo=' + order_data['order_no'] + '&totalFee=' + order_data['order_pay']
+        });
+      }
+    })
+  }
+  
+
+},
+
+upper: function (e) {
       console.log(e)
-    },
-    lower: function (e) {
+},
+lower: function (e) {
       console.log(e)
     },
     scroll: function (e) {
       console.log(e)
-    },
+},
 
-    getAttrIndex: function (attrName, attrValueList) {
+getAttrIndex: function (attrName, attrValueList) {
       // 判断数组中的attrKey是否有该属性值 
       for (var i = 0; i < attrValueList.length; i++) {
         if (attrName == attrValueList[i].name) {
@@ -424,8 +583,8 @@ Page({
         }
       }
       return i < attrValueList.length ? i : -1;
-    },
-    isValueExist: function (value, valueArr) {
+},
+isValueExist: function (value, valueArr) {
       // 判断是否已有属性值 
       for (var i = 0; i < valueArr.length; i++) {
         if (valueArr[i] == value) {
@@ -433,9 +592,9 @@ Page({
         }
       }
       return i < valueArr.length;
-    },
+},
     /* 选择属性值事件 */
-    selectAttrValue: function (e) {
+selectAttrValue: function (e) {
       /* 
       点选属性值，联动判断其他属性值是否可选 
       { 
@@ -501,9 +660,9 @@ Page({
 
       
      
-    },
+},
     /* 选中 */
-    selectValue: function (index, key, value) {
+selectValue: function (index, key, value) {
       var that = this
       var attrValueList = that.data.attrValueList
       attrValueList[index].selectedValue = value;
@@ -514,9 +673,9 @@ Page({
         //includeGroup: includeGroup
       })
      // console.log('selectValueInfo 选中信息:', attrValueList,' index:',index); 
-    },
+},
     /* 取消选中 */
-    disSelectValue: function (index, key, value) {
+disSelectValue: function (index, key, value) {
       //var commodityAttr = this.data.commodityAttr;
       var that = this
       var attrValueList = that.data.attrValueList
@@ -529,30 +688,23 @@ Page({
         attrValueList: attrValueList
       })
      // console.log('selectValueInfo 取消选中信息:', attrValueList,' index:',index); 
-    },
+},
     
-  onShow: function () {
-     var that = this
+onShow: function () {
+    var that = this
+    var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
+    that.setData({
+      machine_uuid: current_shop_info['machine_uuid'], //售货机 uuid
+      is_machine: current_shop_info['type'] == 2 ? 1 : 0, //是否售货机
+    })
+    /*
     var pages = getCurrentPages()
     if (pages.length > 1) {
       that.setData({
         title_logo: '../../images/back.png'
       })
     }  
-      //console.log('App Show');
-   // this.distachAttrValue(this.data.attrValueList);
-      // 只有一个属性组合的时候默认选中 
-      // console.log(this.data.attrValueList); 
-      /*
-      if (this.data.commodityAttr.length == 1) {
-        for (var i = 0; i < this.data.commodityAttr[0].attrValueList.length; i++) {
-          this.data.attrValueList[i].selectedValue = this.data.commodityAttr[0].attrValueList[i].attrValue;
-        }
-        this.setData({
-          attrValueList: this.data.attrValueList
-        });
-      }
-      */
+    */
     wx.getSystemInfo({
       success: function (res) {
         let winHeight = res.windowHeight;
@@ -562,14 +714,15 @@ Page({
         })
       }
     })
-  },
 
-  onReady: function () {
+},
+
+onReady: function () {
     this.videoContext = wx.createVideoContext('myVideo')
     this.videoContext.seek(1)
-  },
+},
 
-  onShareAppMessage: function () {
+onShareAppMessage: function () {
     return {
       title: '送心',
       desc: '送礼就是送心!',

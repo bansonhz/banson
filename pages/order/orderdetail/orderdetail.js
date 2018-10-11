@@ -352,7 +352,7 @@ Page({
     var member_username = e.currentTarget.dataset.goodsOwner;
     var shape = e.currentTarget.dataset.shape;
     var member_type = 3
-
+    return
     if (shape <= 1) {  //普通商品订单
       wx.navigateTo({
         url: '../../details/details?sku_id=' + skuId + '&goods_name=' + goods_name + '&id=' + goods_id + '&token=' + token + '&username=' + username

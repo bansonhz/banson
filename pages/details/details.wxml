@@ -12,6 +12,7 @@
               </cover-view>
             </video>
             <image wx:else src="{{item.url}}" class="slide-image" />
+             
           </swiper-item>
         </block>
       </swiper>
@@ -32,9 +33,9 @@
             </view>
           </view>
       </view>
-       <view class="goods-sku-info">
+       <view wx:if="{{goodsinfo.length>0}}" class="goods-sku-info">
         <view class="goods-sku-name">描述</view>
-        <view class="goods_prom">{{goodsinfo?goodsinfo:'鲜香美味'}}</view>
+        <view class="goods_prom">{{goodsinfo?goodsinfo:''}}</view>
       </view>
       <view class="goods-info">
       <!-- 
@@ -57,7 +58,7 @@
     </view>
   </view>
 
-  <view class="shopping_container">
+  <view class="shopping_container" hidden='{{hideviewgoodsinfo}}'>
     <view class="prd-detail">
       <view class='wxParse' hidden='{{hideviewgoodsinfo}}'>
         <template is="wxParse" data="{{wxParseData:dkcontent1.nodes}}" />
@@ -91,8 +92,12 @@
   
 </view>
 <view class="footer">
-  <view class="opt-buttons"></view>
-   <button class="add-cart" bindtap="goodsmodel">
+  <view class="opt-buttons">
+   <button class="add-cart" bindtap="goodsmodel" wx:if="{{is_machine==0}}">
       <text>加入购物车</text> 
     </button>
+    <button class="add-cart" bindtap="confirmOrder">
+      <text>立即购买</text> 
+    </button>
+  </view>
 </view>

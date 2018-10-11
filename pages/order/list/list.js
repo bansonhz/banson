@@ -163,7 +163,7 @@ Page({
           for (var i = 0; i < orderObjects.length; i++) {
             orderObjects[i]['logo'] = weburl + '/' + orderObjects[i]['logo'];
             for (var j = 0; j < orderObjects[i]['order_sku'].length; j++) {
-              orderObjects[i]['order_sku'][j]['sku_image'] = weburl + orderObjects[i]['order_sku'][j]['sku_image'];
+              orderObjects[i]['order_sku'][j]['sku_image'] = orderObjects[i]['order_sku'][j]['sku_image'].indexOf('ttp')>0 ? orderObjects[i]['order_sku'][j]['sku_image']:weburl + orderObjects[i]['order_sku'][j]['sku_image'];
             }
 
           }

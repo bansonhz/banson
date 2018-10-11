@@ -130,7 +130,7 @@ top: 0;
 right: 0; 
 flex: 1; 
 /*宽度80%，高度占满，并使用百分比布局*/ 
-width: 82%; 
+width: 80%; 
 height: 100%; 
 padding: 10px; 
 box-sizing: border-box; 
@@ -151,7 +151,7 @@ margin-top:80rpx;
 float: left;  
 height: 155rpx; 
 text-align: left; 
-width: 100%;
+width: 90%;
 padding: 0 rpx;
 display:flex;
 flex-direction: column;
@@ -188,10 +188,11 @@ align-items: left;
   direction: row;
   align-items: left;
   text-align: left;
+  margin-top:80rpx;
 } 
 
 .all-classify{ 
-  width: 100%;
+ width: 100%;
   background: white; 
   display: flex;
   flex-direction: column;
@@ -214,7 +215,7 @@ align-items: left;
 } 
 .all-classify-item {
   color: gray;
-  width: 260rpx;
+  width: 180rpx;
   text-align: center;
   /* line-height: 72rpx; */
   font-size: 30rpx;
@@ -257,11 +258,11 @@ text-align: center;
   position: relative;
   margin-top: 0rpx;
   top:0;
-  z-index:99;
+  z-index:9;
 }
 .top-bar-item {
   display:inline-block;
-  width: 180rpx;
+  width: 120rpx;
   color: gray;
   text-align: center;
   /* line-height: 72rpx; */

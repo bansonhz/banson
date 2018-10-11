@@ -206,10 +206,11 @@ page {
   justify-content: center;
   align-items: center;
   width: 100%;
+  justify-content: space-around;
   */
 	display: flex;
 	flex-direction: row-reverse;
-	justify-content: space-around;
+
   
 }
 .opt-buttons button::after {
@@ -218,7 +219,7 @@ page {
 .add-cart {
   line-height: 70rpx;
   text-align: center;
-  width: 50%;
+  width: 40%;
   height: 70rpx;
   background-color: #e34c55;
   color: #fff;

@@ -123,6 +123,7 @@ Page({
     var selectedAllStatus = that.data.selectedAllStatus
     var deliverytype = that.data.deliverytype
     var status = 0
+    var shop_type = that.data.shop_type
     var amount = that.data.amount
     var order_type = 'xianshe'
     var order_note = that.data.note
@@ -136,6 +137,7 @@ Page({
         access_token: token,
         sku_id: cartIds,
         buy_type: 'cart',
+        shop_type:shop_type,
         order_type: order_type,
         deliverytype: deliverytype,
         note: order_note,

@@ -1,3 +1,4 @@
+var util = require('../../../utils/util.js');
 var app = getApp();
 var shop_type = app.globalData.shop_type;
 var weburl = app.globalData.weburl;
@@ -5,7 +6,7 @@ var navList_order = [
   { id: "xianshe", title: "我送出的" },
   { id: "xianshe", title: "我收到的" },
 ];
-
+var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
 Page({
   data: {
     orders: [],
@@ -20,6 +21,14 @@ Page({
     gift_send: 0,
     gift_rcv: 0,
     page_num: 0,
+    shop_type:shop_type,
+    current_date: util.formatTime(new Date).substring(0, 10), //年月日
+    current_time: util.formatTime(new Date).substring(11, 19),  //时分秒
+    machine_uuid: current_shop_info['machine_uuid'], //售货机 uuid
+    is_machine: current_shop_info['type'] == 2 ? 1 : 0, //是否售货机
+    machine_shop_id: current_shop_info['shop_id'], //售货机 所属 shop_id
+    machine_location_id: current_shop_info['id'], //售货机 所属 shop_id
+    machine_url: current_shop_info['machine_url'], //售货机 后端服务url
   },
   onOrderTapTag: function (e) {
     var that = this;
@@ -103,7 +112,143 @@ Page({
     that.reloadData();
   },
   onShow: function () {
-    //
+    var that = this
+    wx.getSystemInfo({
+      success: function (res) {
+        that.setData({
+          windowHeight: res.windowHeight,
+          windowWidth: res.windowWidth,
+          dkheight: res.windowHeight - 60,
+        })
+      }
+    })
+
+  },
+  //取货码
+  pickcode: function (e) {
+    var that = this
+    var shop_type = that.data.shop_type
+    var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
+    var orderNo = e.currentTarget.dataset.objectId;
+    var price = e.currentTarget.dataset.totalFee;
+    var orderSku = e.currentTarget.dataset.orderSku
+    var orderIndex = e.currentTarget.dataset.orderIndex
+    var orderTime = that.data.current_date + 'T' + that.data.current_time+'Z'
+    var machine_url = current_shop_info['machine_url']
+    var machineUuid = current_shop_info['machine_uuid']
+    var machine_username = current_shop_info['machine_username'] ? current_shop_info['machine_username'] : 'C17705810977'
+    var machine_password = current_shop_info['machine_password'] ? current_shop_info['machine_password'] : '123456'
+    var goodsList = [
+      {
+        goodsUuid: orderSku[0]['sku_id'],
+        goodsNumber: 1,
+        goodsPrice: price,
+      }
+    ]
+
+    wx.request({
+      url: machine_url + '/apiusers/checkusername',
+      method: 'GET',
+      data: {
+        userName: machine_username,
+        password: machine_password,
+      },
+      header: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      success: function (res) {
+        console.log('售货机主系统登录完成:', res.data, that.data.current_date, that.data.current_time, orderNo)
+        var shop_machine_auth = res.data
+        if (!shop_machine_auth) {
+          console.log('售货机主系统登录失败:', res.data);
+          return
+        }
+        //取货码申请
+        console.log('取货码申请:', orderNo, price, orderTime, 'machineUuid:', machineUuid, 'goodsList:', goodsList)
+        wx.request({
+          url: machine_url + '/commpick/productionpick',
+          method: 'POST',
+          data: {
+            orderNo: orderNo,
+            timeOut: 1,
+            price: price,
+            orderTime: orderTime,
+            goodsNumber: 1,
+            machineUuid: machineUuid,
+            goodsList: goodsList,
+          },
+          header: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json;text/plain,*/*',
+            'Authorization': shop_machine_auth['data'],
+          },
+          success: function (res) {
+            console.log('取货码申请完成:', res.data)
+            var rcv_note
+            var pick_code = ''
+            var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
+            var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
+            //保存取货码
+            if (res.data.result == '200') {
+               pick_code = res.data.data
+               rcv_note = '鲜社取货码成功:' + pick_code
+             
+              
+            } else {
+              rcv_note = '鲜社取货码失败:' + res.data.resultDesc
+              wx.showToast({
+                title: res.data.resultDesc,
+                icon: 'none',
+                duration: 2000,
+              })
+            }
+            wx.request({
+              url: weburl + '/api/client/update_order_note',
+              method: 'POST',
+              data: {
+                username: username,
+                access_token: token,
+                order_no: orderNo,
+                rcv_note: rcv_note,
+                pick_code: pick_code,
+                shop_type: shop_type,
+              },
+              header: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json'
+              },
+              success: function (res) {
+                console.log('鲜社取货码保存:', res.data)
+                if (res.data.info) {
+                  wx.showToast({
+                    title: res.data.info,
+                    icon: 'none',
+                    duration: 1500,
+                  })
+                } else {
+                  var orders = that.data.orders
+                  orders[orderIndex]['pick_code'] = pick_code
+                  that.setData({
+                    orders: orders,
+                  })
+                  console.log('取货码本地更新:', orders[orderIndex])
+                  
+                }
+              }
+            })
+          },
+          fail: function (res) {
+            console.log('fail:', res)
+            wx.showToast({
+              title: res.data.resultDesc,
+              icon: 'loading',
+              duration: 2000,
+            })
+          }
+        })
+      }
+    })
   },
 
   reloadData: function () {
@@ -112,13 +257,14 @@ Page({
     var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '';
     var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
     var openid = wx.getStorageSync('openid') ? wx.getStorageSync('openid') : '';
-    var status = that.data.status;
-    var page = that.data.page;
-    var pagesize = that.data.pagesize;
+    var status = that.data.status
+    var shop_type = that.data.shop_type
+    var page = that.data.page
+    var pagesize = that.data.pagesize
     if (status == 4) {
         status = '4,5,6,7,10'
     }
-    console.log('page:' + page + ' pagesize:' + pagesize);
+    console.log('reloadData shop_type:' + shop_type + ' pagesize:' + pagesize);
 
     //从服务器获取订单列表
     wx.request({
@@ -128,11 +274,12 @@ Page({
         username: username,
         access_token: token,
         status: status,
+        shop_type:shop_type,
         openid: openid,
         order_type: order_type,
         page: page,
         pagesize: pagesize,
-        shop_type:shop_type,
+         
       },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -163,7 +310,7 @@ Page({
           for (var i = 0; i < orderObjects.length; i++) {
             orderObjects[i]['logo'] = weburl + '/' + orderObjects[i]['logo'];
             for (var j = 0; j < orderObjects[i]['order_sku'].length; j++) {
-              orderObjects[i]['order_sku'][j]['sku_image'] = orderObjects[i]['order_sku'][j]['sku_image'].indexOf('ttp')>0 ? orderObjects[i]['order_sku'][j]['sku_image']:weburl + orderObjects[i]['order_sku'][j]['sku_image'];
+              orderObjects[i]['order_sku'][j]['sku_image'] = orderObjects[i]['order_sku'][j]['sku_image'].indexOf('http')>-1 ? orderObjects[i]['order_sku'][j]['sku_image']:weburl + orderObjects[i]['order_sku'][j]['sku_image'];
             }
 
           }

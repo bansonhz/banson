@@ -3,7 +3,11 @@
 page {
 	background: #eee;
 }
-
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
 .Hui-iconfont {
  font-family: "Hui-iconfont";
  font-size:30rpx;
@@ -18,8 +22,10 @@ page {
 
 
 .order-item {
-	margin-bottom: 5px;
-	background: #fff;
+  width: 96%;
+  margin: 15rpx auto 0 auto;
+  background: #fff;
+  border-radius: 10rpx;
 }
 
 .order-item:last-child {
@@ -27,14 +33,15 @@ page {
 }
 
 .order-footer {
-	padding: 3px 0;
+ 	padding: 10rpx 20rpx;
   display: flex;
-  flex-direction:row;
+  flex-direction: row;
+  
 }
 
 .order-footer text {
 	font-size: 12px;
-	margin: 5px;
+	margin-left: 2px;
 }
 
 /*接受方微信头像*/
@@ -44,34 +51,34 @@ page {
   border-radius: 50%;
 }
 
-/*每行单元格*/
+ 
 .carts-item {
-	display: flex;
-	flex-direction: row;
-	height:150rpx;
-	/*width属性解决标题文字太短而缩略图偏移*/
-	width:100%;
-	border-bottom: 1px solid #eee;
-	padding: 10rpx;
+  display: flex;
+  flex-direction: row;
+  height: 150rpx;
+  /*width属性解决标题文字太短而缩略图偏移
+  border-bottom: 1px solid #eee;*/
+  padding: 10rpx;
 }
 
 /*左部图片*/
+
 .carts-image {
   margin-left: 10rpx;
-  margin-bottom: 10px;
-	width:200rpx;
-	height:200rpx;
+  margin-bottom: 10rpx;
+  width: 110rpx;
+  height: 110rpx;
 }
 
-
 /**/
+
 .shop-text {
-	margin-left: 10rpx;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-  font-size:14px;
-	justify-content: space-between;
+  margin: 10rpx 20rpx;
+  display: flex;
+  flex-direction: row;
+  font-size: 24rpx;
+  color: #999;
+  justify-content: space-between;
 }
 
 /*logo部图片*/
@@ -84,7 +91,6 @@ page {
 /*右部描述*/
 .carts-text {
 	margin-left: 10rpx;
-	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -124,7 +130,7 @@ page {
 	color: #f60;
 	font-size:14px;
 	line-height: 22px;
-   display: flex;
+  display: flex;
 	flex-direction: row;
 }
 
@@ -136,7 +142,7 @@ page {
 
 /*辅助导航 nav*/
 .banner {
-	width: 100%;
+ 
 	height: 90rpx;
 	padding-top: 0rpx;
 	/*margin-left: 15rpx;*/
@@ -144,7 +150,7 @@ page {
 .top-bar2 {
   height: 72rpx;
   background: white; 
-  width:100%;
+ 
   position: fixed;
   top:0;
   border-top: 1px solid #F2f2f2;

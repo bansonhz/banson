@@ -10,6 +10,7 @@ var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '
 var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
 var openid = wx.getStorageSync('openid') ? wx.getStorageSync('openid') : '';
 var userInfo = wx.getStorageSync('userInfo') ? wx.getStorageSync('userInfo') : '';
+var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
 // 请求数据
 
 Page({
@@ -50,6 +51,10 @@ Page({
     nickname: userInfo.nickName,
     avatarUrl: userInfo.avatarUrl,
     shop_type: shop_type,
+    machine_uuid: current_shop_info['machine_uuid'], //售货机 uuid
+    is_machine: current_shop_info['type'] == 2 ? 1 : 0, //是否售货机
+    machine_shop_id: current_shop_info['shop_id'], //售货机 所属 shop_id
+    machine_location_id: current_shop_info['id'], //售货机 所属 shop_id
   },
   bindTextAreaBlur: function (e) {
     var that = this;

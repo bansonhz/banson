@@ -3,9 +3,8 @@
   <view class="shop-text">
 			<image class="logo-image" src="{{item.logo}}" mode="aspectFill"/>
       <text class="shop-text" style="font-size:12px;">{{item.shop_name}}</text>
-     
   </view>
-  
+
 	<view wx:for="{{item['order_sku']}}" wx:for-item="mapping" wx:key="" class="carts-item" bindtap="showGoods" data-sku-id="{{mapping.id}}" data-goods-id="{{mapping.goods_id}}" data-goods-name="{{mapping.goods_name}}" data-shape="{{mapping.shape}}" data-goods-owner="{{mapping.goods_owner}}">
 		<view>
 			<!-- 缩略图 -->
@@ -43,10 +42,8 @@
     </view>
 	</view>
 	<view class="order-footer">
-		<text>{{shape<2?'收货地址':'地址'}}</text>
+		<text>{{shape<2?'地址':'地址'}}</text>
 		<text>{{item.address?item.address:''}}</text>
-    
-  
 	</view>
 </view>
 <view class="order-detail">
@@ -77,23 +74,23 @@
   </modal> 
 </view> 
 <view class="delivery-detail">
-  <view class="delivery-detail-text">
+  <view class="delivery-detail-text" wx:if="{{shape<2 && item.goods_owner.length==0}}" >
    <text style="width:20%">{{shape<2?'收货人':'预约人'}}</text>
    <text>{{fullname?fullname:''}}{{tel?tel:''}}</text>
    </view>
-   <view class="delivery-detail-text"> 
-   <text style="width:20%">{{shape<2?'收货地址':'地址'}}:</text>
+   <view class="delivery-detail-text" wx:if="{{shape<2 && item.goods_owner.length==0}}"> 
+   <text style="width:20%">{{shape<2?'地址':'地址'}}:</text>
    <text>{{orderaddress?orderaddress:''}}{{shape}}</text>
   </view>
-  <view class="delivery-detail-text" wx:if="{{shape<2}}">
+  <view class="delivery-detail-text" wx:if="{{shape<2 && item.goods_owner.length==0}}">
     <text style="width:20%">物流公司:</text>
     <text>{{deliveryname?deliveryname:''}}</text>
   </view>
-  <view class="delivery-detail-text" wx:if="{{shape<2}}">
+  <view class="delivery-detail-text" wx:if="{{shape<2 && item.goods_owner.length==0}}">
    <text style="width:20%">运单号:</text>
    <text>{{deliverycode?deliverycode:''}}</text>
   </view>
-  <view class="delivery-detail-text" wx:if="{{shape<2}}">
+  <view class="delivery-detail-text" wx:if="{{shape<2 && item.goods_owner.length==0}}">
    <text style="width:20%">物流状态:</text>
    <text style="width:60%">{{deliverystepinfo?deliverystepinfo:''}}</text>
    <text wx:if="{{deliverycode}}" bindtap="expressTapTag" style="width:20%;color:gray;text-align:center;border:1px solid; border-radius: 5px">物流详情</text>

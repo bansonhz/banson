@@ -1,6 +1,6 @@
 var app = getApp();
 var weburl = app.globalData.weburl;
-
+var shop_type = app.globalData.shop_type;
 Page({
   data: {
     username:null,
@@ -9,6 +9,7 @@ Page({
     currentlocationhidden:true,
     currentaddresshidden:true,
     is_delivery:0,
+    shop_type:shop_type,
 
   },
 	add: function () {
@@ -68,6 +69,7 @@ Page({
 		var that = this;
     var username = that.data.username;
     var token =  that.data.token;
+    var shop_type = that.data.shop_type
 		// 取得下标
 		var index = parseInt(e.currentTarget.dataset.index);
 		// 遍历所有地址对象设为非默认
@@ -91,6 +93,7 @@ Page({
       method: 'POST',
       data: {
         'username': username,
+        'shop_type':shop_type,
         'id': addressObjects[index]['id'],
         'access_token': token,
         'full_name': addressObjects[index]['full_name'],
@@ -133,6 +136,7 @@ Page({
 		var that = this;
     var username = that.data.username;
     var token = that.data.token;
+    var shop_type = that.data.shop_type
 		// 取得下标
 		var index = parseInt(e.currentTarget.dataset.index);
 		// 找到当前地址AVObject对象
@@ -149,8 +153,9 @@ Page({
             method: 'POST',
             data: {
               'username': username,
-              'address_id': address['id'],
               'access_token': token,
+              'shop_type':shop_type,
+              'address_id': address['id'],
             },
             header: {
               'Content-Type': 'application/x-www-form-urlencoded',
@@ -187,14 +192,16 @@ Page({
 	},
 	loadData: function (username,token) {
 		// 加载网络数据，获取地址列表
-		var that = this;
+		var that = this
+    var shop_type = that.data.shop_type
     wx.request({
       url: weburl + '/api/client/get_member_address',
       method: 'POST',
       data: { 
         username: username, 
         token: token,
-        is_delivery:1
+        is_delivery:1,
+        shop_type:shop_type,
         },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',

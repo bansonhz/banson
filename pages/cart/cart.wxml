@@ -54,7 +54,7 @@
 <view class="recomment-title">
     <text>精品推荐</text>
 </view>
-<view wx:for="{{recommentList}}" class="item" wx:key="index" bindtap="showGoods" data-object-id="{{item.id}}" data-goods-id="{{item.id}}" data-goods-name="{{item.name}}" data-goods-price="{{item.sell_price}}" data-sale="{{item.sale}}" data-goods-info="{{item.act_info}}" hidden="{{item.hidden==1?true:false}}">
+<view wx:if="{{is_machine==0}}" wx:for="{{recommentList}}" class="item" wx:key="index" bindtap="showGoods" data-object-id="{{item.id}}" data-goods-id="{{item.id}}" data-goods-name="{{item.name}}" data-goods-price="{{item.sell_price}}" data-sale="{{item.sale}}" data-goods-info="{{item.act_info}}" hidden="{{item.hidden==1?true:false}}">
    <image class="img" src="{{item.image}}"></image>
     <text style="font-size:12px;">{{item.name}}</text>
     <view style="font-size:10px;color:gray;">{{item.act_info?item.act_info:'鲜香美味'}}</view>  

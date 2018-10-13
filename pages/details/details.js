@@ -89,7 +89,7 @@ Page({
     var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
     var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
     var page = that.data.page
-    var goods_shape = options.goods_shape
+    var goods_shape = options.goods_shape?options.goods_shape:0
     var goodsname = options.name
     var goodsshortname = goodsname?goodsname.substring(0,13)+'...':''
     var goodsid = options.id
@@ -100,7 +100,11 @@ Page({
     var shop_type =  that.data.shop_type
     var machine = options.machine ? options.machine:0
     var goods_machine = options.goods_machine ? options.goods_machine : {}
-     
+
+    that.setData({
+      goods_shape: goods_shape,
+      machine: machine,
+    })
     if (machine >0){
       var machine_goods_info = JSON.parse(goods_machine)
       var goodsPicsInfo = {}
@@ -437,6 +441,8 @@ confirmOrder: function () {
   var that = this  
   var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '';
   var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
+  var goods_shape = that.data.goods_shape
+  var machine = that.data.machine
   var status = 0;
   var amount = that.data.goodsprice;
   var order_type = 'xianshe_machine'
@@ -446,7 +452,7 @@ confirmOrder: function () {
   var deliverytype = that.data.deliverytype
   var machine_uuid = that.data.machine_uuid
   var order_price = that.data.goodsprice
-  
+  var shop_type = that.data.shop_type
   var goods_name = that.data.goodsname
   var goods_image = that.data.image
   var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
@@ -455,9 +461,14 @@ confirmOrder: function () {
   var machine_shop_id = current_shop_info['shop_id'] //售货机 所属 shop_id
   var machine_location_id = current_shop_info['id'] //售货机 所属 shop_id
   var shop_delivery_id =  machine_location_id ? machine_location_id : 0
+  var prov = current_shop_info['prov'] ? current_shop_info['prov']:0
+  var city = current_shop_info['city'] ? current_shop_info['city'] : 0
+  var area = current_shop_info['area'] ? current_shop_info['area'] : 0
+  var town = current_shop_info['town'] ? current_shop_info['town'] : 0
+  var address = current_shop_info['address'] ? current_shop_info['address'] : 0
   
 
-  if (is_machine > 0){
+  if (is_machine > 0 && machine == 1){
     var goods_id = that.data.goodsid
     var sku_id = that.data.goods_secid
     wx.request({
@@ -480,6 +491,12 @@ confirmOrder: function () {
         goods_name: goods_name,
         goods_image: goods_image,
         delivery_id: 0,
+        shop_type:shop_type,
+        prov:prov,
+        city:city,
+        area:area,
+        town:town,
+        address:address,
       },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -506,7 +523,7 @@ confirmOrder: function () {
         });
       }
     })
-  }else{
+  } else {
     var sku_id = that.data.sku_id
     if(sku_id == 0) {
       wx.showToast({
@@ -527,6 +544,7 @@ confirmOrder: function () {
         buy_num: 1,
         order_type: order_type,
         shop_id: shop_id,
+        shop_type:shop_type,
         m_desc: m_desc,
         deliverytype: deliverytype,
         address_id: 0,
@@ -551,7 +569,7 @@ confirmOrder: function () {
         } else {
           wx.showToast({
             title: res.data.info,
-            icon: 'loading',
+            icon: 'none',
             duration: 1500
           });
         }

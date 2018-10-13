@@ -1,10 +1,31 @@
+@import "../../../lib/style/font.wxss";
+
 page {
 	background: #eee;
 }
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+.Hui-iconfont {
+ font-family: "Hui-iconfont";
+ font-size:30rpx;
+}
+.iconv-uparrow:after {
+  content:'\e6d6';
+}
+
+.iconv-downarrow:after {
+  content:'\e6d5';
+}
+
 
 .order-item {
-	margin-bottom: 10px;
-	background: #fff;
+  width: 96%;
+  margin: 15rpx auto 0 auto;
+  background: #fff;
+  border-radius: 10rpx;
 }
 
 .order-item:last-child {
@@ -12,42 +33,52 @@ page {
 }
 
 .order-footer {
-	padding: 3px 0;
+ 	padding: 10rpx 20rpx;
+  display: flex;
+  flex-direction: row;
+  
 }
 
 .order-footer text {
 	font-size: 12px;
-	margin: 0 5px;
+	margin-left: 2px;
 }
 
-/*每行单元格*/
+/*接受方微信头像*/
+.order-footer image {
+	width:50rpx;
+	height:50rpx;
+  border-radius: 50%;
+}
+
+ 
 .carts-item {
-	display: flex;
-	flex-direction: row;
-	height:150rpx;
-	/*width属性解决标题文字太短而缩略图偏移*/
-	width:100%;
-	border-bottom: 1px solid #eee;
-	padding: 10rpx ;
+  display: flex;
+  flex-direction: row;
+  height: 150rpx;
+  /*width属性解决标题文字太短而缩略图偏移
+  border-bottom: 1px solid #eee;*/
+  padding: 10rpx;
 }
 
 /*左部图片*/
+
 .carts-image {
-  margin-left: 20rpx;
+  margin-left: 10rpx;
   margin-bottom: 10rpx;
-	width:180rpx;
-	height:180rpx;
+  width: 110rpx;
+  height: 110rpx;
 }
 
-
 /**/
+
 .shop-text {
-	margin-left: 10rpx;
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-  font-size:14px;
-	justify-content: space-between;
+  margin: 10rpx 20rpx;
+  display: flex;
+  flex-direction: row;
+  font-size: 24rpx;
+  color: #999;
+  justify-content: space-between;
 }
 
 /*logo部图片*/
@@ -60,7 +91,6 @@ page {
 /*右部描述*/
 .carts-text {
 	margin-left: 10rpx;
-	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -70,13 +100,14 @@ page {
 .carts-title {
 	font-size: 28rpx;
 	color: #444;
+	line-height: 38rpx;
 }
 
 /*右下部分价格与数量*/
 .carts-subtitle {
 	font-size: 25rpx;
 	color:darkgray;
-	padding: 0rpx;
+	padding: 0 20rpx;
 	display: flex;
 	flex-direction: row;
 	justify-content:space-between;
@@ -99,11 +130,41 @@ page {
 	color: #f60;
 	font-size:14px;
 	line-height: 22px;
-   display: flex;
+  display: flex;
 	flex-direction: row;
 }
 
 /*隐藏元素*/
 .hidden {
 	display: none;
+}
+
+
+/*辅助导航 nav*/
+.banner {
+ 
+	height: 90rpx;
+	padding-top: 0rpx;
+	/*margin-left: 15rpx;*/
+}
+.top-bar2 {
+  height: 72rpx;
+  background: white; 
+ 
+  position: fixed;
+  top:0;
+  border-top: 1px solid #F2f2f2;
+  z-index:1;
+}
+.top-bar-item2 {
+  display:inline-block;
+  width: 48%;  /*250rpx*/
+  color: gray;
+  text-align: center;
+  /* line-height: 72rpx; */
+  font-size: 32rpx;
+}
+.top-bar-active2 {
+  color: red;
+  font-size: 38rpx;
 }

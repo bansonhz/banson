@@ -93,10 +93,10 @@
 </view>
 <view class="footer">
   <view class="opt-buttons">
-   <button class="add-cart" bindtap="goodsmodel" wx:if="{{is_machine==0}}">
+   <button class="add-cart" bindtap="goodsmodel" wx:if="{{machine==0 && goods_shape>0}}">
       <text>加入购物车</text> 
     </button>
-    <button class="add-cart" bindtap="confirmOrder">
+    <button class="add-cart" bindtap="confirmOrder" wx:if="{{is_machine>0 && machine==1}}">
       <text>立即购买</text> 
     </button>
   </view>

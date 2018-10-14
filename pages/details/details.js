@@ -299,7 +299,8 @@ Page({
     },  
     addCart: function () {
       var that = this
-      var username = wx.getStorageSync('username');
+      var username = wx.getStorageSync('username')
+     
       if (!username) {//登录
         wx.navigateTo({
           url: '../login/login?goods_id=' + that.data.goodsid
@@ -320,7 +321,7 @@ Page({
 },
 insertCart: function (sku_id,username,wishflag) {
       var that = this
-       
+      var shop_type = that.data.shop_type
       wx.request({
         url: weburl + '/api/client/add_cart',
         method: 'POST',
@@ -328,7 +329,8 @@ insertCart: function (sku_id,username,wishflag) {
           username: username,
           access_token: "1",
           sku_id: sku_id,
-          wishflag: wishflag
+          wishflag: wishflag,
+          shop_type:shop_type,
         },
         header: {
           'Content-Type': 'application/x-www-form-urlencoded',

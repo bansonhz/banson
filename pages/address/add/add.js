@@ -191,7 +191,8 @@ Page({
         success: function (res) {
           //console.log(res.data.result);
           var address = res.data.result;
-          var array = [];
+          var array = []
+          if (!address) return
           for (var i = 0; i < address.length; i++) {
             array[i] = address[i]['address'];
           }

@@ -75,12 +75,14 @@ Page({
 	},
 	onShow: function () {
     var that = this 
+    /*
     var pages = getCurrentPages()
     if (pages.length > 1) {
       that.setData({
         title_logo: '../../../images/back.png'
       })
     }  
+    */
     that.loadAddress()
 	},
 	readCarts: function (options) {
@@ -163,9 +165,10 @@ Page({
         } else {
           wx.showToast({
             title: res.data.info,
-            icon: 'loading',
-            duration: 1500
+            icon: 'none',
+            duration: 2000
           })
+          
         }
       
       }
@@ -177,34 +180,52 @@ Page({
     var addressList = [];
     var addressObjects = null;
     var address = [];
-    var token = that.data.token;
-    var username = that.data.username;
+    var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
+    var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
+    var shop_type = that.data.shop_type
     //取送货地址
+    console.log('取送货地址 username:', username,shop_type);
     wx.request({
       url: weburl + '/api/client/get_member_address',
       method: 'POST',
-      data: { username: username, token: token },
+      data: { 
+        username: username, 
+        token: token,
+        shop_type:shop_type, 
+      },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json'
       },
       success: function (res) {
-        //console.log(res.data.result);
-        address = res.data.result;
-        for (var i = 0; i < address.length; i++) {
-          // find the default address
-          if (address[i]['isDefault'] == 1) {
+        console.log('取送货地址:',res.data);
+        address = res.data.result
+        if (address.length>0){
+          for (var i = 0; i < address.length; i++) {
+            // find the default address
+            if (address[i]['isDefault'] == 1) {
+              that.setData({
+                addressIndex: i
+              })
+            }
+            addressList[i] = address[i];
             that.setData({
-              addressIndex: i
-            });
+              addressList: addressList,
+              addressObjects: address,
+            })
+            //console.log(addressList[i]);
           }
-          addressList[i] = address[i];
-          //console.log(addressList[i]);
+        }else{
+          wx.showToast({
+            title: '收货地址不在配送区,请重新设置',
+            icon: 'none',
+            duration: 3000
+          })
+          wx.navigateTo({
+            url: '/pages/address/list/list'
+          })
         }
-        that.setData({
-          addressList: addressList
-        });
-        that.addressObjects = address;
+        
       }
     })
 

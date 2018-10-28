@@ -25,6 +25,7 @@ Page({
         goodsprice: 0,
         goodssale: 0,
         goodsid: 0,
+        goods_num:1, //only for machine goods
         sku_gov_price:0,
         sku_earnest_price:0,
         sku_sell_price: 0,
@@ -55,6 +56,34 @@ Page({
         machine_location_id: current_shop_info['id'], //售货机 所属 shop_id
         deliverytype:deliverytype,
     },
+  bindMinus: function (e) {
+    var that = this
+    var num = that.data.goods_num
+    var num_cur = num
+    //  
+    if (num_cur > 1) {
+      num--
+    } else {
+      return
+    }
+
+    that.setData({
+      goods_num: num,
+    })
+  },
+  bindPlus: function (e) {
+    var that = this
+    var num = that.data.goods_num;
+    var num_cur = num
+    //  
+    if (num_cur > 0) {
+      num++
+    }  
+
+    that.setData({
+      goods_num: num,
+    })
+  },
   setNavigation: function () {
     let startBarHeight = 20
     let navgationHeight = 44
@@ -193,7 +222,8 @@ Page({
             username: options.username ? options.username : that.data.username, 
             access_token: token, 
             goods_id: goodsid, 
-            page: page 
+            page: page ,
+            shop_type: shop_type,
           },
           header: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -473,6 +503,7 @@ confirmOrder: function () {
   if (is_machine > 0 && machine == 1){
     var goods_id = that.data.goodsid
     var sku_id = that.data.goods_secid
+    var goods_num = that.data.goods_num ? that.data.goods_num:1
     wx.request({
       url: weburl + '/api/client/add_order3',
       method: 'POST',
@@ -482,13 +513,13 @@ confirmOrder: function () {
         goods_id: goods_id,
         sku_id: sku_id,
         buy_type: buy_type,
-        buy_num: 1,
+        buy_num: goods_num,
         order_type: order_type,
         shop_id: shop_id,
         m_desc: m_desc,
         deliverytype: deliverytype,
         address_id: machine_uuid,
-        order_price: order_price,
+        order_price: order_price * goods_num,
         shop_delivery_id: shop_delivery_id,
         goods_name: goods_name,
         goods_image: goods_image,
@@ -521,7 +552,7 @@ confirmOrder: function () {
           });
         }
         wx.navigateTo({
-          url: '../order/payment/payment?orderNo=' + order_data['order_no'] + '&totalFee=' + order_data['order_pay']
+          url: '../order/payment/payment?orderNo=' + order_data['order_no'] + '&totalFee=' + order_data['order_pay'] + '&goods_num=' + goods_num
         });
       }
     })

@@ -356,6 +356,16 @@ Page({
         })
       }
     }) 
+    var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
+    that.setData({
+      is_machine: current_shop_info['type'] == 2 ? 1 : 0,
+      machine_uuid: current_shop_info['machine_uuid'],
+    })
+    if (that.data.is_machine > 0 && that.data.machine_uuid) {
+      that.get_shop_machine_goods()
+    } else {
+      that.get_shop_goods_category()
+    }
 
     //sliderList
     /*
@@ -397,16 +407,6 @@ Page({
 
 onShow:function(){
   var that = this
-  var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
-  that.setData({
-    is_machine: current_shop_info['type']==2?1:0,
-    machine_uuid: current_shop_info['machine_uuid'],
-  })
-  if(that.data.is_machine>0 && that.data.machine_uuid){
-    that.get_shop_machine_goods()
-  }else{
-    that.get_shop_goods_category()
-  }
  
 },
 get_shop_goods_category:function(){
@@ -599,8 +599,9 @@ get_shop_goods_category:function(){
   switchRightTab: function (e) {
     var that = this
     // 获取item项的id，和数组的下标值
-    let id = e.target.dataset.id,
-    index = parseInt(e.target.dataset.index);
+    let id = e.target.dataset.id
+    let index = parseInt(e.target.dataset.index)
+   
     // 把点击到的某一项，设为当前index
     that.setData({
       curNav: id,
@@ -611,6 +612,7 @@ get_shop_goods_category:function(){
       hiddenallclassify: true,
      
     })
+    console.log('switchRightTab curIndex:', that.data.curIndex, 'id:', id)
     that.setData({
       lists: [],
       activeIndex:-1,
@@ -619,11 +621,12 @@ get_shop_goods_category:function(){
       all_rows:0,
       page:1,
     })
-    console.log('switchRightTab page:', that.data.page, 'list:', that.data.lists)
+    
     if(that.data.is_machine>0 && that.data.machine_uuid){
       that.setData({
         lists: that.data.navLeftItems[that.data.curIndex]['list'],
       })
+      console.log('switchRightTab page:', that.data.page, 'list:', that.data.lists)
     }else{
       that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
     }

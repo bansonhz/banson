@@ -44,19 +44,23 @@
         <!-- 
         <text class="right-tag">￥{{goodsprice>0?goodsprice:'0'}}</text>
         -->
-         <view wx:if="{{sku_sell_price}}" class="left-tag"><text>￥{{sku_sell_price}}</text></view>
-         <view wx:if="{{!sku_sell_price && attrValueList.length==0}}" class="left-tag"><text>￥{{goodsprice>0?goodsprice:'0'}}</text></view>
-      </view>
-      <view>
-        <!-- 
-          <view style="width:50%;text-align:right"><image class="img_tag" src="../../images/u48.png"></image></view>
-         
-        适合送
-        <text class="goods_tag">{{goodstag?goodstag:'朋友 同事'}}</text>
-         -->
-      </view>
+         <view wx:if="{{sku_sell_price}}" class="left-tag">
+          <text>￥{{sku_sell_price}}</text>
+        </view>
+         <view wx:if="{{!sku_sell_price && attrValueList.length==0}}" class="left-tag">
+          <text>￥{{goodsprice>0?goodsprice:'0'}}</text>
+         </view>
+         <!-- 
+         <view wx:if="{{is_machine>0&&machine>0}}" class="left-tag2" >
+            <image style='width:60rpx;height:60rpx;' src="../../images/minus.png" catchtap="bindMinus"></image>
+						<view style='margin-left:20rpx;margin-right:20rpx;'>{{goods_num?goods_num:1}}</view>
+            <image  style='width:60rpx;height:60rpx;' src="../../images/addcart.png" catchtap="bindPlus"></image>
+        </view>
+        -->
     </view>
   </view>
+      </view>
+      
 
   <view class="shopping_container" hidden='{{hideviewgoodsinfo}}'>
     <view class="prd-detail">

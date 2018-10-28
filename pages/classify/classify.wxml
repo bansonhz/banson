@@ -17,10 +17,10 @@
 <view class="container" style='height:{{dkheight}}px;'>
   <!--左侧栏-->
   <view class="nav_left" style='height:{{dkheight}}px;'>
-    <block wx:for="{{navLeftItems}}" wx:key="{{id}}">
+    <block wx:for="{{navLeftItems}}" wx:key="{{id}}" wx:for-index="curLeftIndex">
       <!--当前项的id等于item项的id，那个就是当前状态-->
       <!--用data-index记录这个数据在数组的下标位置，使用data-id设置每个item的id值，供打开2级页面使用-->
-      <view class="nav_left_items {{curNav == item.id ? 'active' : ''}}" bindtap="switchRightTab" data-index="{{index}}" data-id="{{item.id}}">{{item.name}}</view>
+      <view class="nav_left_items {{curNav == item.id ? 'active' : ''}}" bindtap="switchRightTab" data-index="{{curLeftIndex}}" data-id="{{item.id}}">{{item.name}}</view>
     </block>
   </view>
 

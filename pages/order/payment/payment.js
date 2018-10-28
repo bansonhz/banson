@@ -20,12 +20,13 @@ Page({
 	onLoad: function (options) {
     var that = this;
     var orderNo = options.orderNo
-    var totalFee = options.totalFee ? options.totalFee:0;
+    var totalFee = options.totalFee ? options.totalFee:0
+    var goods_num = options.goods_num ? options.goods_num:1
     var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
     var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
     var member_username = options.member_username ? options.member_username:''
     var shop_type = that.data.shop_type
-    console.log('totalFee:' + totalFee)
+    console.log('totalFee:' + totalFee,'goods_num:',goods_num)
     wx.request({
       url: weburl + '/api/client/query_order',
       method: 'POST',
@@ -61,6 +62,7 @@ Page({
             username: username,
             token: token,
             totalFee: totalFee,
+            goods_num:goods_num,
             member_username: member_username,
           })
         } else {
@@ -93,6 +95,7 @@ Page({
     var orders = that.data.orders
     var orderNo = that.data.orderNo
     var price = that.data.totalFee
+    var goods_num = that.data.goods_num
     var orderTime = that.data.current_date + 'T' + that.data.current_time + 'Z'
     var shop_type = that.data.shop_type
     var machine_url = current_shop_info['machine_url']
@@ -102,7 +105,7 @@ Page({
     var goodsList = [
       {
         goodsUuid:orders[0]['order_sku'][0]['sku_id'],
-        goodsNumber:1,
+        goodsNumber: goods_num,
         goodsPrice: price,
       }
     ]
@@ -153,9 +156,9 @@ Page({
             var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
             if (res.data.result=='200'){
                 pick_code = res.data.data
-                rcv_note = '鲜社取货码' + pick_code
+                rcv_note = '唐巢取货码' + pick_code
             }else{
-              rcv_note = '鲜社取货码失败:' + res.data.resultDesc
+              rcv_note = '唐巢取货码失败:' + res.data.resultDesc
               wx.showToast({
                 title: res.data.resultDesc,
                 icon: 'none',
@@ -178,7 +181,7 @@ Page({
                 'Accept': 'application/json'
               },
               success: function (res) {
-                console.log('鲜社取货码保存:', res.data)
+                console.log('唐巢取货码保存:', res.data)
                 if (res.data.info) {
                   wx.showToast({
                     title: res.data.info,

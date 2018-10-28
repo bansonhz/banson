@@ -84,7 +84,54 @@ Page({
       url: '../orderdetail/orderdetail?order_id=' + order_id + '&order_object=' + JSON.stringify(order_object) + '&giftflag=' + that.data.giftflag
     })
   },
+  gotoMap: function (e) {
+    var that = this
+    var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '';
+    var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
+    var address = e.currentTarget.dataset.address
+    var addrname = e.currentTarget.dataset.addrname
+    wx.request({
+      url: weburl + '/api/client/get_chineseaddr_area',
+      method: 'POST',
+      data: {
+        username: username,
+        token: token,
+        address: address,
+      },
+      header: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json'
+      },
+      success: function (res) {
+        console.log(res.data.result)
+        var location = res.data.result
+        that.setData({
+          lat: location[1],
+          lng: location[0],
+        })
+        wx.openLocation({
+          latitude: Number(that.data.lat),
+          longitude: Number(that.data.lng),
+          scale: 14,
+          name: addrname,
+          address: address,
+          success: function (res) {
+            console.log(res)
+          },
+          fail: function (res) {
+            console.log(res)
+          }
+        })
 
+      },
+      fail: function (res) {
+        console.log('fail', res)
+      },
+      complete: function () {
+        console.log('complete')
+      }
+    })
+  },
   onLoad: function (options) {
     // 订单状态，已下单为1，已付为2，已发货为3，已收货为4 5已经评价 6退款 7部分退款 8用户取消订单 9作废订单 10退款中
     var that = this
@@ -132,6 +179,7 @@ Page({
     var orderNo = e.currentTarget.dataset.objectId;
     var price = e.currentTarget.dataset.totalFee;
     var orderSku = e.currentTarget.dataset.orderSku
+    var orderSkunum = e.currentTarget.dataset.orderSkunum
     var orderIndex = e.currentTarget.dataset.orderIndex
     var orderTime = that.data.current_date + 'T' + that.data.current_time+'Z'
     var machine_url = current_shop_info['machine_url']
@@ -141,7 +189,7 @@ Page({
     var goodsList = [
       {
         goodsUuid: orderSku[0]['sku_id'],
-        goodsNumber: 1,
+        goodsNumber: orderSkunum ? orderSkunum:1,
         goodsPrice: price,
       }
     ]
@@ -158,7 +206,7 @@ Page({
         'Accept': 'application/json'
       },
       success: function (res) {
-        console.log('售货机主系统登录完成:', res.data, that.data.current_date, that.data.current_time, orderNo)
+        console.log('售货机主系统登录完成:', res.data, goodsList, orderSkunum, orderNo)
         var shop_machine_auth = res.data
         if (!shop_machine_auth) {
           console.log('售货机主系统登录失败:', res.data);
@@ -192,11 +240,11 @@ Page({
             //保存取货码
             if (res.data.result == '200') {
                pick_code = res.data.data
-               rcv_note = '鲜社取货码成功:' + pick_code
+               rcv_note = '唐巢取货码成功:' + pick_code
              
               
             } else {
-              rcv_note = '鲜社取货码失败:' + res.data.resultDesc
+              rcv_note = '唐巢取货码失败:' + res.data.resultDesc
               wx.showToast({
                 title: res.data.resultDesc,
                 icon: 'none',
@@ -219,7 +267,7 @@ Page({
                 'Accept': 'application/json'
               },
               success: function (res) {
-                console.log('鲜社取货码保存:', res.data)
+                console.log('唐巢取货码保存:', res.data)
                 if (res.data.info) {
                   wx.showToast({
                     title: res.data.info,
@@ -310,7 +358,16 @@ Page({
           for (var i = 0; i < orderObjects.length; i++) {
             orderObjects[i]['logo'] = weburl + '/' + orderObjects[i]['logo'];
             for (var j = 0; j < orderObjects[i]['order_sku'].length; j++) {
-              orderObjects[i]['order_sku'][j]['sku_image'] = orderObjects[i]['order_sku'][j]['sku_image'].indexOf('http')>-1 ? orderObjects[i]['order_sku'][j]['sku_image']:weburl + orderObjects[i]['order_sku'][j]['sku_image'];
+              orderObjects[i]['order_sku'][j]['sku_image'] = orderObjects[i]['order_sku'][j]['sku_image'].indexOf('http')>-1 ? orderObjects[i]['order_sku'][j]['sku_image']:weburl + orderObjects[i]['order_sku'][j]['sku_image']
+              if (orderObjects[i]['order_sku'][j]['sku_value'].length>0){
+                for (var k = 0; k < orderObjects[i]['order_sku'][j]['sku_value'].length; k++) {
+                  if (orderObjects[i]['order_sku'][j]['sku_value'][k]['type'] == 2) {
+                    orderObjects[i]['order_sku'][j]['sku_value'][k]['value'] = orderObjects[i]['order_sku'][j]['sku_value'][k]['value'].indexOf('http') > -1 ? orderObjects[i]['order_sku'][j]['sku_value'][k]['value'] : weburl + orderObjects[i]['order_sku'][j]['sku_value'][k]['value']
+                  }
+                }
+             
+              }
+            
             }
 
           }
@@ -351,11 +408,12 @@ Page({
   },
   pay: function (e) {
     var objectId = e.currentTarget.dataset.objectId;
-    var totalFee = e.currentTarget.dataset.totalFee;
-    console.log('order_no');
-    console.log(objectId);
+    var totalFee = e.currentTarget.dataset.totalFee ? e.currentTarget.dataset.totalFee:0;
+    var orderSkunum = e.currentTarget.dataset.orderSkunum ? e.currentTarget.dataset.orderSkunum:1;
+    console.log('order_no', objectId,'price:',totalFee,'goods_num:',orderSkunum)
+   
     wx.navigateTo({
-      url: '../payment/payment?orderNo=' + objectId + '&totalFee=' + totalFee
+      url: '../payment/payment?orderNo=' + objectId + '&totalFee=' + totalFee + '&goods_num=' + orderSkunum
     });
   },
   receive: function (e) {

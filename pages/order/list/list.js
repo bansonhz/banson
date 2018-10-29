@@ -169,7 +169,6 @@ Page({
         })
       }
     })
-
   },
   //取货码
   pickcode: function (e) {

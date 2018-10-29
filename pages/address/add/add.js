@@ -4,9 +4,29 @@ var QQMapWX = require('../../../utils/qqmap-wx-jssdk.min.js');
 var qqmapsdk;
 var shop_type = app.globalData.shop_type;
 Page({
-	isDefault: false,
-  is_delivery: 0,
-
+  data: {
+    isDefault: false,
+    is_delivery: 0,
+    current: 0,
+    username: null,
+    token: null,
+    addressId: null,
+    province: [],
+    city: [],
+    region: [],
+    town: [],
+    provinceId: [],
+    cityId: [],
+    regionId: [],
+    townId: [],
+    provinceObjects: [],
+    cityObjects: [],
+    regionObjects: [],
+    townObjects: [],
+    areaSelectedStr: '请选择省市区',
+    maskVisual: 'hidden',
+    provinceName: '请选择',
+  },
 	formSubmit: function(e) {
 
     var that = this;
@@ -106,27 +126,7 @@ Page({
       }
     })
 	},
-	data: {
-		current: 0,
-    username:null,
-    token:null,
-    addressId:null,
-		province: [],
-		city: [],
-		region: [],
-		town: [],
-    provinceId: [],
-    cityId: [],
-    regionId: [],
-    townId: [],
-		provinceObjects: [],
-		cityObjects: [],
-		regionObjects: [],
-		townObjects: [],
-		areaSelectedStr: '请选择省市区',
-		maskVisual: 'hidden',
-		provinceName: '请选择',
-	},
+	
 
 	onLoad: function (options) {
     qqmapsdk = new QQMapWX({
@@ -144,7 +144,9 @@ Page({
     wx.request({
       url: weburl + '/api/client/get_area_list',
       method: 'POST',
-      data: { parent_id: 0 },
+      data: { 
+        parent_id: 0 
+      },
       header: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json'
@@ -172,8 +174,12 @@ Page({
    
 	},
   loadAddress: function (options) {
-    var that = this;
-    var addressId = options.objectId;
+    var that = this
+    var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
+    var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
+    var addressId = options.objectId
+    var shop_type = that.data.shop_type
+    console.log('loadAddress options:', options);
     if (addressId != undefined) {
       that.setData({
         addressId: addressId
@@ -182,14 +188,17 @@ Page({
         url: weburl + '/api/client/get_member_address',
         method: 'POST',
         data: { 
-          address_id: addressId 
+          username: options.username ? options.username : username,
+          access_token: token,
+          shop_type: shop_type,
+          address_id: addressId, 
           },
         header: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Accept': 'application/json'
         },
         success: function (res) {
-          //console.log(res.data.result);
+          console.log('loadAddress get_member_address:',res.data.result);
           var address = res.data.result;
           var array = []
           if (!address) return

@@ -24,6 +24,7 @@ Page({
     m_id:null,
     token:null,
     shop_type:shop_type,
+    background_img:weburl+'/uploads/xianshe_login.jpg'
     
   },
   onGotUserInfo: function (e) {

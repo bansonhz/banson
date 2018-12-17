@@ -219,7 +219,7 @@ Page({
           url: weburl+'/api/client/get_goodsdesc_list',
           method: 'POST',
           data: { 
-            username: options.username ? options.username : that.data.username, 
+            username: username, 
             access_token: token, 
             goods_id: goodsid, 
             page: page ,

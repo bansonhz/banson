@@ -356,16 +356,7 @@ Page({
         })
       }
     }) 
-    var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
-    that.setData({
-      is_machine: current_shop_info['type'] == 2 ? 1 : 0,
-      machine_uuid: current_shop_info['machine_uuid'],
-    })
-    if (that.data.is_machine > 0 && that.data.machine_uuid) {
-      that.get_shop_machine_goods()
-    } else {
-      that.get_shop_goods_category()
-    }
+   
 
     //sliderList
     /*
@@ -407,7 +398,18 @@ Page({
 
 onShow:function(){
   var that = this
- 
+  var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
+  that.setData({
+    is_machine: current_shop_info['type'] == 2 ? 1 : 0,
+    machine_uuid: current_shop_info['machine_uuid'],
+  })
+  if (that.data.is_machine > 0 || that.data.machine_uuid) {
+    that.get_shop_machine_goods()
+    console.log('售货机:', current_shop_info)
+  } else {
+    that.get_shop_goods_category()
+    console.log('店铺:', current_shop_info)
+  }
 },
 get_shop_goods_category:function(){
     var that = this

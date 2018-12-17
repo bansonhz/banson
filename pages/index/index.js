@@ -5,7 +5,7 @@ var qqmapsdk;
 
 //获取应用实例
 var app = getApp();
-//var weburl = "https://czw.saleii.com";
+ 
 var weburl = app.globalData.weburl;
 var qqmapkey = app.globalData.mapkey;
 var shop_type = app.globalData.shop_type;

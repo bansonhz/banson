@@ -529,8 +529,8 @@ Page({
   onShareAppMessage: function () {
     return {
       title: '唐巢',
-      desc: '品质生活快乐做菜!',
-      path: '/pages/list/list?id=123'
+      desc: '品质生活!',
+      path: '/pages/list/list?refername='+username
     }
   }
 })

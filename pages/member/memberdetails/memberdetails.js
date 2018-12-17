@@ -2,9 +2,11 @@ var app = getApp();
 var wxparse = require("../../../wxParse/wxParse.js");
 var util = require('../../../utils/util.js');
 var weburl = app.globalData.weburl;
+var shop_type = app.globalData.shop_type;
 
 Page({
     data: {
+        shop_type:shop_type,
         user:null,
         userInfo:{},
         username:null,
@@ -234,7 +236,7 @@ Page({
         hiddenmodalput: false
       })
     },
-    //点击按钮痰喘指定的hiddenmodalput弹出框  
+    //点击按指定的hiddenmodalput弹出框  
     modalinput: function () {
       var that = this
       that.setData({
@@ -469,7 +471,7 @@ Page({
       var page = that.data.page
       var pagesize = that.data.pagesize
       var goods_id = that.data.goodsid
-
+      var shop_type = that.data.shop_type
       if (goods_id > 0) {
         wx.request({
           url: weburl + '/api/client/get_comments_list',
@@ -480,6 +482,7 @@ Page({
             goods_id: goods_id,
             page: page,
             pagesize: pagesize,
+            shop_type: shop_type,
           },
           header: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -526,7 +529,7 @@ Page({
       var comment = that.data.comment
       var goods_id = that.data.goodsid
       var goods_owner = that.data.cuisine_username
-      
+      var shop_type = that.data.shop_type
       if (goods_id > 0) {
         wx.request({
           url: weburl + '/api/client/post_comment',
@@ -536,7 +539,8 @@ Page({
             access_token: token,
             goods_id: goods_id,
             goods_owner: goods_owner,
-            content: comment
+            content: comment,
+            shop_type:shop_type,
           },
           header: {
             'Content-Type': 'application/x-www-form-urlencoded',

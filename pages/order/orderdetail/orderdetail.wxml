@@ -32,7 +32,7 @@
 		<text style="width:20%;" bindtap="receive" data-object-id="{{item.id}}" class="{{(item.status==3 && item.goods_owner!=username ) ? '': 'hidden'}}">确认收货</text>
      <text style="width:20%;" bindtap="comment" data-object-id="{{item.id}}" class="{{(item.status==4 &&item.goods_owner!=username ) ? '': 'hidden'}}"  style="color:red">我要评价</text>
       <view class="cuisine-level">
-      <text style="width:20%;" class="{{(item.status==5) ? '': 'hidden'}}"  style="color:red">我的评价</text>
+        <text style="width:20%;" class="{{(item.status==5) ? '': 'hidden'}}"  style="color:red">我的评价</text>
         <image style="width:30rpx;height:30rpx;padding:20rpx;margin-left:10rpx;" src="{{item.comment_level>0?'../../../images/star_on.png':'../../../images/star.png'}}" />
         <image style="width:30rpx;height:30rpx;padding:20rpx;margin-left:10rpx;" src="{{item.comment_level>1?'../../../images/star_on.png':'../../../images/star.png'}}" />
         <image style="width:30rpx;height:30rpx;padding:20rpx;margin-left:10rpx;" src="{{item.comment_level>2?'../../../images/star_on.png':'../../../images/star.png'}}" />

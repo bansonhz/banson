@@ -4,6 +4,7 @@ var util = require('../../utils/util.js')
 var wxparse = require("../../wxParse/wxParse.js");
 var app = getApp();
 var weburl = app.globalData.weburl;
+var webwss = app.globalData.webwss;
 var uploadurl = weburl + 'api/upload/index4';
 var socketOpen = false
 var socketMsgQueue = []
@@ -199,7 +200,7 @@ Page({
     */
     if (!socketOpen) {
       wx.connectSocket({
-        url: 'wss://czw.saleii.com/wss'
+        url: webwss +'/wss'
       })
       wx.onSocketError(function (res) {
         socketOpen = false

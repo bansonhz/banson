@@ -1,6 +1,6 @@
 <view>
   <view class='beij' >
-    <image src='../../images/banner01.jpg' class="bjt"></image> 
+    <image src='{{background_img}}' class="bjt"></image> 
   </view>
   <view style="position: absolute;left:28rpx;right:28rpx;bottom:0">
     <view class="weui-cell weui-cell_input iphone">

@@ -1,11 +1,16 @@
+var util = require('../../../utils/util.js')
+var QQMapWX = require('../../../utils/qqmap-wx-jssdk.js')
+var qqmapsdk
 var app = getApp();
 var weburl = app.globalData.weburl;
 var shop_type = app.globalData.shop_type;
+var qqmapkey = app.globalData.mapkey;
 
 Page({
   data: {
     username:null,
     token:null,
+    qqmapkey: qqmapkey,
     addressIndex:[],
     prov:[],
     city:[],
@@ -119,28 +124,18 @@ Page({
   onLoad: function (options) {
     var that = this
     var address = options.address ? options.address:''
-    var cur_city = wx.getStorageSync('city') ? wx.getStorageSync('city'):1213  //默认杭州市 1213
-    var cur_area = wx.getStorageSync('district') ? wx.getStorageSync('district') : 50142 //默认老余杭 50142
-    var cur_prov = wx.getStorageSync('province') ? wx.getStorageSync('province'):15  //默认浙江省15
-    var prov = that.data.prov
-    var city = that.data.city
-    var area = that.data.area
-    prov.push(cur_prov)
-    city.push(cur_city)
-    area.push(cur_area)
     that.setData({
-      address:address,
-      prov:prov,
-      city:city,
-      area:area,
+      address: address,
     })
+    that.location()
+   
 
   },
 	onShow: function () {
     var that = this
     var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
     var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
-    
+    var cur_city = wx.getStorageSync('city') 
     wx.getSystemInfo({
       success: function (res) {
         that.setData({
@@ -150,19 +145,15 @@ Page({
         })
       }
     })
-    that.setData({
-      username: username,
-      token: token,
-      
-    })
-    if(username){
-      that.loadData(username, token);
-    }else{
+   
+    if(!username){
       wx.navigateTo({
         url: '../../login/login'
       })
     }
-	
+    if (!cur_city){
+      that.location()
+    }
 	},
 	setDefault: function (e) {
 		// 设置为默认地址
@@ -286,9 +277,11 @@ Page({
 		})
 		
 	},
-	loadData: function (username,token) {
-		// 加载网络数据，获取地址列表
+	loadData: function () {
+		//获取地址列表
 		var that = this
+    var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
+    var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
     var curIndex = that.data.curIndex
     var city = that.data.city[curIndex]
     var area = that.data.area[curIndex]
@@ -335,5 +328,97 @@ Page({
         
       }
     })
-	}
+	},
+
+  location: function () {
+    var that = this
+    var cur_city = wx.getStorageSync('city')  //默认杭州市 1213
+    var cur_area = wx.getStorageSync('district') //默认老余杭 50142
+    var cur_prov = wx.getStorageSync('province')  //默认浙江省15
+    var prov = that.data.prov
+    var city = that.data.city
+    var area = that.data.area
+    var qqmapkey = that.data.qqmapkey
+    
+    if (!cur_city){
+     //获取当前位置
+     wx.getSetting({
+       success(res) {
+         if (!res.authSetting['scope.userLocation']) {
+           wx.authorize({
+             scope: 'scope.userLocation',
+             success() {
+               console.log('位置授权成功' + res.errMsg)
+             },
+             fail() {
+               return
+             }
+           })
+         }
+       }
+     })
+
+     // 实例化腾讯地图API核心类
+     qqmapsdk = new QQMapWX({
+       key: qqmapkey // 必填
+     })
+     wx.getLocation({
+       type: 'wgs84',
+       success: function (res) {
+         var latitude = res.latitude
+         var longitude = res.longitude
+         var speed = res.speed
+         var accuracy = res.accuracy
+         wx.setStorageSync('latitude', latitude);
+         wx.setStorageSync('longitude', longitude);
+         wx.setStorageSync('speed', speed);
+         wx.setStorageSync('accuracy', accuracy)
+         qqmapsdk.reverseGeocoder({
+           poi_options: 'policy=2',
+           get_poi: 1,
+           success: function (res) {
+             console.log('qqmapsdk:', res);
+             that.setData({
+               address: res.result.address
+             })
+             wx.setStorageSync('mylocation', res.result.address)
+             wx.setStorageSync('city', res.result.address_component.city)
+             wx.setStorageSync('district', res.result.address_component.district)
+             wx.setStorageSync('province', res.result.address_component.province)
+             wx.setStorageSync('street', res.result.address_component.street)
+             wx.setStorageSync('street_number', res.result.address_component.street_number)
+             console.log('位置获取成功:' + res.result.address)
+             prov.push(res.result.address_component.province)
+             city.push(res.result.address_component.city)
+             area.push(res.result.address_component.district)
+             that.setData({
+               prov: prov,
+               city: city,
+               area: area,
+             })
+             that.loadData()
+           },
+           fail: function (res) {
+             console.log('位置获取失败')
+             console.log(res)
+           },
+           complete: function (res) {
+             console.log(res)
+           }
+         })
+       }
+     })
+   } else {
+     prov.push(cur_prov)
+     city.push(cur_city)
+     area.push(cur_area)
+     that.setData({
+       prov: prov,
+       city: city,
+       area: area,
+     })
+    that.loadData()
+   }
+  
+  }
 })

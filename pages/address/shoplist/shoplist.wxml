@@ -32,4 +32,4 @@
 </view>
 
 
-<button  class="address-add" type="default" size="default" hover-class="none" class="morebtn" bindtap="getMore">更多记录 {{page}}/{{page_num}}</button>
+<button  wx:if="{{page_num>1}}" class="address-add" type="default" size="default" hover-class="none" class="morebtn" bindtap="getMore">更多记录 {{page}}/{{page_num}}</button>

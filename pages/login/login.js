@@ -182,14 +182,18 @@ Page({
         wx.setStorageSync('extensionCode', res.data.result['extensionCode']);
         wx.setStorageSync('username', res.data.result['username']);
         wx.setStorageSync('m_id', res.data.result['m_id']);
-        wx.showToast({
-          title: '保存成功',
-          duration: 500
-        })
+        //wx.showToast({
+        //  title: '保存成功',
+        //  duration: 500
+        //})
+       
         that.onGotUserInfo()
         // 等待半秒，toast消失后返回上一页
         setTimeout(function () {
-          wx.navigateBack();
+          //wx.navigateBack()
+          wx.navigateTo({
+            url: '../address/shoplist/shoplist'
+          })
         }, 500);
       },
       

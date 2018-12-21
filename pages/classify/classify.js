@@ -342,9 +342,17 @@ Page({
   onLoad: function (options) {
     var that = this
     var value = options.value ? options.value:0
+    var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
+    var is_machine = wx.getStorageSync('is_machine')
+    var machine_uuid = wx.getStorageSync('machine_uuid') 
     that.setData({
-      value: value
+      value: value,
+      current_shop_info: current_shop_info,
+      is_machine: is_machine,
+      machine_uuid: machine_uuid,
+
     })
+    
     wx.getSystemInfo({
       success: function (res) {
         let winHeight = res.windowHeight;
@@ -399,11 +407,14 @@ Page({
 onShow:function(){
   var that = this
   var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
+  var is_machine = wx.getStorageSync('is_machine')
+  var machine_uuid = wx.getStorageSync('machine_uuid') 
+  
   that.setData({
     is_machine: current_shop_info['type'] == 2 ? 1 : 0,
     machine_uuid: current_shop_info['machine_uuid'],
   })
-  if (that.data.is_machine > 0 || that.data.machine_uuid) {
+  if (that.data.is_machine > 0) {
     that.get_shop_machine_goods()
     console.log('售货机:', current_shop_info)
   } else {

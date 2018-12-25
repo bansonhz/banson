@@ -28,10 +28,12 @@ Page({
     
   },
   onGotUserInfo: function (e) {
+    console.log("onGotUserInfo e:", e)
     var that = this
     var userInfo = e.detail.userInfo
     var rawData = e.detail.rawData
-    wx.setStorageSync('userInfo', userInfo)
+    wx.setStorageSync('userInfo', e.detail.userInfo)
+    
     that.setData({
       wx_nickname: userInfo.nickName,
       wx_headimg: userInfo.avatarUrl
@@ -194,7 +196,7 @@ Page({
         //  duration: 500
         //})
        
-        that.onGotUserInfo()
+        //that.onGotUserInfo()
         // 等待半秒，toast消失后返回上一页
         setTimeout(function () {
           //wx.navigateBack()

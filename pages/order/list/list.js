@@ -173,9 +173,12 @@ Page({
   //取货码
   pickcode: function (e) {
     var that = this
+    var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '';
+    var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
     var shop_type = that.data.shop_type
     var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
     var orderNo = e.currentTarget.dataset.objectId;
+    var goodsOwner = e.currentTarget.dataset.goodsOwner;
     var price = e.currentTarget.dataset.totalFee;
     var orderSku = e.currentTarget.dataset.orderSku
     var orderSkunum = e.currentTarget.dataset.orderSkunum
@@ -192,110 +195,138 @@ Page({
         goodsPrice: price,
       }
     ]
-
+    console.log('售货机取货码 orderNo:', orderNo, ' goods_owner:', goodsOwner);
     wx.request({
-      url: machine_url + '/apiusers/checkusername',
-      method: 'GET',
+      url: weburl + '/api/client/get_shop4s_address',
+      method: 'POST',
       data: {
-        userName: machine_username,
-        password: machine_password,
+        username: username,
+        token: token,
+        goods_owner: goodsOwner,
+        shop_type: shop_type,
       },
       header: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json'
       },
       success: function (res) {
-        console.log('售货机主系统登录完成:', res.data, goodsList, orderSkunum, orderNo)
-        var shop_machine_auth = res.data
-        if (!shop_machine_auth) {
-          console.log('售货机主系统登录失败:', res.data);
-          return
-        }
-        //取货码申请
-        console.log('取货码申请:', orderNo, price, orderTime, 'machineUuid:', machineUuid, 'goodsList:', goodsList)
-        wx.request({
-          url: machine_url + '/commpick/productionpick',
-          method: 'POST',
-          data: {
-            orderNo: orderNo,
-            timeOut: 1,
-            price: price,
-            orderTime: orderTime,
-            goodsNumber: 1,
-            machineUuid: machineUuid,
-            goodsList: goodsList,
-          },
-          header: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json;text/plain,*/*',
-            'Authorization': shop_machine_auth['data'],
-          },
-          success: function (res) {
-            console.log('取货码申请完成:', res.data)
-            var rcv_note
-            var pick_code = ''
-            var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
-            var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
-            //保存取货码
-            if (res.data.result == '200') {
-               pick_code = res.data.data
-               rcv_note = '唐巢取货码成功:' + pick_code
-             
-              
-            } else {
-              rcv_note = '唐巢取货码失败:' + res.data.resultDesc
-              wx.showToast({
-                title: res.data.resultDesc,
-                icon: 'none',
-                duration: 2000,
+        console.log('get_shop4s_address:', res.data.result);
+        var machine_info = res.data.result
+        if (machine_info['machine_url']) {
+          wx.request({
+            url: machine_info['machine_url'] + '/apiusers/checkusername',
+            method: 'GET',
+            data: {
+              userName: machine_username,
+              password: machine_password,
+            },
+            header: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            success: function (res) {
+              console.log('售货机主系统登录完成:', res.data, goodsList, orderSkunum, orderNo)
+              var shop_machine_auth = res.data
+              if (!shop_machine_auth) {
+                console.log('售货机主系统登录失败:', res.data);
+                return
+              }
+              //取货码申请
+              console.log('取货码申请:', orderNo, price, orderTime, 'machineUuid:', machineUuid, 'goodsList:', goodsList)
+              wx.request({
+                url: machine_info['machine_url'] + '/commpick/productionpick',
+                method: 'POST',
+                data: {
+                  orderNo: orderNo,
+                  timeOut: 1,
+                  price: price,
+                  orderTime: orderTime,
+                  goodsNumber: 1,
+                  machineUuid: machineUuid,
+                  goodsList: goodsList,
+                },
+                header: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json;text/plain,*/*',
+                  'Authorization': shop_machine_auth['data'],
+                },
+                success: function (res) {
+                  console.log('取货码申请完成:', res.data)
+                  var rcv_note
+                  var pick_code = ''
+                  var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : ''
+                  var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1'
+                  //保存取货码
+                  if (res.data.result == '200') {
+                    pick_code = res.data.data
+                    rcv_note = '唐巢取货码成功:' + pick_code
+
+
+                  } else {
+                    rcv_note = '唐巢取货码失败:' + res.data.resultDesc
+                    wx.showToast({
+                      title: res.data.resultDesc,
+                      icon: 'none',
+                      duration: 2000,
+                    })
+                  }
+                  wx.request({
+                    url: weburl + '/api/client/update_order_note',
+                    method: 'POST',
+                    data: {
+                      username: username,
+                      access_token: token,
+                      order_no: orderNo,
+                      rcv_note: rcv_note,
+                      pick_code: pick_code,
+                      shop_type: shop_type,
+                    },
+                    header: {
+                      'Content-Type': 'application/x-www-form-urlencoded',
+                      'Accept': 'application/json'
+                    },
+                    success: function (res) {
+                      console.log('唐巢取货码保存:', res.data)
+                      if (res.data.info) {
+                        wx.showToast({
+                          title: res.data.info,
+                          icon: 'none',
+                          duration: 1500,
+                        })
+                      } else {
+                        var orders = that.data.orders
+                        orders[orderIndex]['pick_code'] = pick_code
+                        that.setData({
+                          orders: orders,
+                        })
+                        console.log('取货码本地更新:', orders[orderIndex])
+
+                      }
+                    }
+                  })
+                },
+                fail: function (res) {
+                  console.log('fail:', res)
+                  wx.showToast({
+                    title: res.data.resultDesc,
+                    icon: 'loading',
+                    duration: 2000,
+                  })
+                }
               })
             }
-            wx.request({
-              url: weburl + '/api/client/update_order_note',
-              method: 'POST',
-              data: {
-                username: username,
-                access_token: token,
-                order_no: orderNo,
-                rcv_note: rcv_note,
-                pick_code: pick_code,
-                shop_type: shop_type,
-              },
-              header: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Accept': 'application/json'
-              },
-              success: function (res) {
-                console.log('唐巢取货码保存:', res.data)
-                if (res.data.info) {
-                  wx.showToast({
-                    title: res.data.info,
-                    icon: 'none',
-                    duration: 1500,
-                  })
-                } else {
-                  var orders = that.data.orders
-                  orders[orderIndex]['pick_code'] = pick_code
-                  that.setData({
-                    orders: orders,
-                  })
-                  console.log('取货码本地更新:', orders[orderIndex])
-                  
-                }
-              }
-            })
-          },
-          fail: function (res) {
-            console.log('fail:', res)
-            wx.showToast({
-              title: res.data.resultDesc,
-              icon: 'loading',
-              duration: 2000,
-            })
-          }
-        })
+          })
+        }else{
+          wx.showToast({
+            title: res.data.info ? res.data.info : '取货码获取失败',
+            icon: 'loading',
+            duration: 1500
+          })
+        }
+
       }
     })
+    
   },
 
   reloadData: function () {

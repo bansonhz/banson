@@ -29,7 +29,13 @@ Page({
   },
   onGotUserInfo: function (e) {
     var that = this
-  
+    var userInfo = e.detail.userInfo
+    var rawData = e.detail.rawData
+    wx.setStorageSync('userInfo', userInfo)
+    that.setData({
+      wx_nickname: userInfo.nickName,
+      wx_headimg: userInfo.avatarUrl
+    })
     //权限
     wx.getSetting({
       success(res) {
@@ -54,6 +60,7 @@ Page({
         }
       }
     })
+    that.login()
   },
   codeInput: function (e) {
     this.setData({
@@ -97,13 +104,13 @@ Page({
   },
   vscode() {
     if (!this.data.phoneNo) {
-      app.wxToast({
+      wx.showToast({
         title: '请输入手机号码'
       })
       return;
     }
     if(this.data.phoneNo.length!=11) {
-      app.wxToast({
+      wx.showToast({
         title: '手机号码格式不对'
       })
       return;
@@ -141,19 +148,19 @@ Page({
     var openid = wx.getStorageSync('openid') ? wx.getStorageSync('openid') : openid;
     var shop_type = shop_type?shop_type:3
     if (!that.data.phoneNo) {
-      app.wxToast({
+      wx.showToast({
         title: '请输入手机号码'
       })
       return;
     }
     if (that.data.phoneNo.length != 11) {
-      app.wxToast({
+      wx.showToast({
         title: '手机号码格式不对'
       })
       return;
     }
     if (!that.data.scode) {
-      app.wxToast({
+      wx.showToast({
         title: '请输入验证码'
       })
       return;
@@ -192,7 +199,7 @@ Page({
         setTimeout(function () {
           //wx.navigateBack()
           wx.navigateTo({
-            url: '../address/shoplist/shoplist'
+            url: '/pages/address/shoplist/shoplist'
           })
         }, 500);
       },

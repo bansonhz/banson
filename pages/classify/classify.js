@@ -191,12 +191,14 @@ Page({
         'Accept': 'application/json'
       },
       success: function (res) {
-        console.log(res.data.result);
-        var title = wishflag == 1 ? '加入购物车完成' : '加入购物车完成'
+        console.log(res.data.result)
+        /*
+        var title = wishflag == 1 ? '' : ''
         wx.showToast({
           title: title,
           duration: 1000
         })
+        */
         if (wishflag == 1) {
           wx.navigateTo({
             url: '../wish/wish'
@@ -557,6 +559,7 @@ get_shop_goods_category:function(){
                 var goods_classify = []
                 for (var i = 0; i < shop_machine_goods.length; i++) {
                   var goods_classify_info = {}
+                 
                   goods_classify_info['id'] = shop_machine_goods[i]['commGoodsModel']['uuid']
                   goods_classify_info['name'] = shop_machine_goods[i]['commGoodsModel']['typeName']
                   goods_classify_info['list'] = []
@@ -565,24 +568,27 @@ get_shop_goods_category:function(){
                   if (shop_machine_goods[i].goodsList.length > 0) {
                     for (var j = 0; j < shop_machine_goods[i].goodsList.length; j++) {
                       var goods_classify_list = {}
-                      goods_classify_list['sec_id'] = shop_machine_goods[i]['goodsList'][j]['uuid']
-                      goods_classify_list['image'] = shop_machine_goods[i]['goodsList'][j]['goodsUrl']
-                      goods_classify_list['name'] = shop_machine_goods[i]['goodsList'][j]['goodsName']
-                      goods_classify_list['link'] = shop_machine_goods[i]['goodsList'][j]['introduceUrl']
-                      goods_classify_list['sell_price'] = shop_machine_goods[i]['goodsList'][j]['goodsPrice']
-                      if (goods_classify_list['image'].indexOf('jpg')) {
-                        goods_classify_list['image'] = 'http://pic.hnzczy.cn/' + goods_classify_list['image']
+                      if (!shop_machine_goods[i]['goodsList'][j]['effEndTime']) {
+                        goods_classify_list['sec_id'] = shop_machine_goods[i]['goodsList'][j]['uuid']
+                        goods_classify_list['image'] = shop_machine_goods[i]['goodsList'][j]['goodsUrl']
+                        goods_classify_list['name'] = shop_machine_goods[i]['goodsList'][j]['goodsName']
+                        goods_classify_list['link'] = shop_machine_goods[i]['goodsList'][j]['introduceUrl']
+                        goods_classify_list['sell_price'] = shop_machine_goods[i]['goodsList'][j]['goodsPrice']
+                        if (goods_classify_list['image'].indexOf('jpg')) {
+                          goods_classify_list['image'] = 'http://pic.hnzczy.cn/' + goods_classify_list['image']
+                        }
+                        if (goods_classify_list['image'].indexOf('mp4')) {
+                          //goods_classify_list['image'] = 'http://video.hnzczy.cn/' + goods_classify_list['image']
+                        }
+                        if (goods_classify_list['link'].indexOf('mp4')) {
+                          // goods_classify_list['link'] = 'http://video.hnzczy.cn/' + goods_classify_list['link']
+                        }
+                        if (goods_classify_list['link'].indexOf('jpg')) {
+                          goods_classify_list['link'] = 'http://pic.hnzczy.cn/' + goods_classify_list['link']
+                        }
+                        goods_classify[i]['list'].push(goods_classify_list)
                       }
-                      if (goods_classify_list['image'].indexOf('mp4')) {
-                        //goods_classify_list['image'] = 'http://video.hnzczy.cn/' + goods_classify_list['image']
-                      }
-                      if (goods_classify_list['link'].indexOf('mp4')) {
-                        // goods_classify_list['link'] = 'http://video.hnzczy.cn/' + goods_classify_list['link']
-                      }
-                      if (goods_classify_list['link'].indexOf('jpg')) {
-                        goods_classify_list['link'] = 'http://pic.hnzczy.cn/' + goods_classify_list['link']
-                      }
-                      goods_classify[i]['list'].push(goods_classify_list)
+                      
                     }
                   }
                 }

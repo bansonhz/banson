@@ -7,7 +7,7 @@ var shop_type = app.globalData.shop_type;
 var username = wx.getStorageSync('username') ? wx.getStorageSync('username') : '';
 var token = wx.getStorageSync('token') ? wx.getStorageSync('token') : '1';
 var openid = wx.getStorageSync('openid') ? wx.getStorageSync('openid') : '';
-var userInfo = wx.getStorageSync('userInfo') ? wx.getStorageSync('userInfo') : '';
+var userInfo = wx.getStorageSync('userInfo') ? wx.getStorageSync('userInfo') : app.globalData.userInfo;
 
 Page({
   navigateToAddress: function () {

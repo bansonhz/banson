@@ -72,5 +72,5 @@
 <view class="carts-more" hidden="{{rshowmorehidden?false:true}}">
     <text bindtap="bindShowLessR" >收起...[{{rall_rows}}]</text>
 </view>
--->
 <button wx:if="{{!userInfo}}" open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" type="warn" class="logout">获取用户信息</button>
+-->

@@ -67,7 +67,6 @@
             </view>
             <view bindtap='showGoods' data-goods-id="{{item.id}}" data-goods-index="{{goodsindex}}">
               <text>{{item.name}}</text>
-              
               <view class="item-name-info">{{item.goods_tag?item.goods_tag:''}}</view>
               <view class="item-name-info">{{item.act_info?item.act_info:''}}</view>
               <view class="goods_info" data-goods-id="{{item.id}}" bindtap='addCart'>

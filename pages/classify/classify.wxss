@@ -149,7 +149,7 @@ margin-top:80rpx;
 .nav_right .nav_right_items{ 
 /*浮动向左*/ 
 float: left;  
-height: 155rpx; 
+
 text-align: left; 
 width: 90%;
 padding: 0 rpx;
@@ -271,4 +271,8 @@ text-align: center;
 .top-bar-active{
   color: red;
   font-size: 30rpx;
+}
+.classify-image {
+  margin-left: 10rpx;
+  margin-bottom: 10rpx;
 }

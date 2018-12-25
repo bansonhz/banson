@@ -2,6 +2,7 @@
   <view class='beij' >
     <image src='{{background_img}}' class="bjt"></image> 
   </view>
+  
   <view style="position: absolute;left:28rpx;right:28rpx;bottom:0">
     <view class="weui-cell weui-cell_input iphone">
       <view class="weui-cell__hd">
@@ -23,12 +24,8 @@
           <button class="weui-vcode-btn color2" disabled="{{disabled}}" data-id="2" bindtap="vscode">{{time}}</button>
       </view>
     </view>
-    <view class='page__bd page__bd_spacing ' bindtap='login'>
-      <button class="weui-btn color2 btn"  >登录</button>
-    </view>
-
+    <view class='page__bd page__bd_spacing'>
+    <button  open-type="getUserInfo" lang="zh_CN" bindgetuserinfo="onGotUserInfo" type="warn" style="width:50%">授权登录</button>
+  </view>
   </view>
 </view>
-	
-<import src="../../toast/toast.wxml"/>
-<template is="wxToast" data="{{...wxToastConfig}}"></template>

@@ -55,17 +55,17 @@ page {
 .carts-item {
   display: flex;
   flex-direction: row;
-  height: 150rpx;
+  height: 120rpx;
   /*width属性解决标题文字太短而缩略图偏移
   border-bottom: 1px solid #eee;*/
-  padding: 10rpx;
+  padding: 5rpx;
 }
 
 /*左部图片*/
 
 .carts-image {
   margin-left: 10rpx;
-  margin-bottom: 10rpx;
+  margin-bottom: 0rpx;
   width: 110rpx;
   height: 110rpx;
 }
@@ -100,14 +100,14 @@ page {
 .carts-title {
 	font-size: 28rpx;
 	color: #444;
-	line-height: 38rpx;
+	line-height: 30rpx;
 }
 
 /*右下部分价格与数量*/
 .carts-subtitle {
 	font-size: 25rpx;
 	color:darkgray;
-	padding: 0 20rpx;
+	padding: 0 10rpx;
 	display: flex;
 	flex-direction: row;
 	justify-content:space-between;

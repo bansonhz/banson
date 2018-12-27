@@ -391,11 +391,12 @@ Page({
               orderObjects[i]['order_sku'][j]['sku_image'] = orderObjects[i]['order_sku'][j]['sku_image'].indexOf('http')>-1 ? orderObjects[i]['order_sku'][j]['sku_image']:weburl + orderObjects[i]['order_sku'][j]['sku_image']
               if (orderObjects[i]['order_sku'][j]['sku_value'].length>0){
                 for (var k = 0; k < orderObjects[i]['order_sku'][j]['sku_value'].length; k++) {
-                  if (orderObjects[i]['order_sku'][j]['sku_value'][k]['type'] == 2) {
+                  if (orderObjects[i]['order_sku'][j]['sku_value'][k].length == 0) {
+                    orderObjects[i]['order_sku'][j]['sku_value'][k] = ''
+                  } else if (orderObjects[i]['order_sku'][j]['sku_value'][k]['type'] == 2) {
                     orderObjects[i]['order_sku'][j]['sku_value'][k]['value'] = orderObjects[i]['order_sku'][j]['sku_value'][k]['value'].indexOf('http') > -1 ? orderObjects[i]['order_sku'][j]['sku_value'][k]['value'] : weburl + orderObjects[i]['order_sku'][j]['sku_value'][k]['value']
                   }
                 }
-             
               }
             
             }

@@ -381,9 +381,9 @@ Page({
     that.setData({
       address: address,
     })
+    console.log('onload address:',that.data.address)
     that.location()
    
-
   },
 	onShow: function () {
     var that = this
@@ -579,6 +579,9 @@ Page({
             page_num: page_num.toFixed(0),
           })
         }
+        if (res.data.all_rows==0){
+          wx.setStorageSync('city', '') //情况位置重新获取
+        }
         
       }
     })
@@ -593,7 +596,7 @@ Page({
     var city = that.data.city
     var area = that.data.area
     var qqmapkey = that.data.qqmapkey
-    
+    console.log('location cur_city:', cur_city)
     if (!cur_city){
      //获取当前位置
      wx.getSetting({

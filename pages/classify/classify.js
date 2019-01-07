@@ -426,7 +426,7 @@ onShow:function(){
 },
 get_shop_goods_category:function(){
   var that = this
-  var value = that.data.value 
+  var value = that.data.value ? that.data.value:0
   var secid = that.data.secid
   var navLeftItems = wx.getStorageSync('navLeftItems')
   var navRightItems = wx.getStorageSync('navRightItems')
@@ -494,24 +494,25 @@ get_shop_goods_category:function(){
       }
     })
   }else{
+    var curIndex = that.data.curIndex ? that.data.curIndex : 0
     that.setData({
       navLeftItems_name: navLeftItems_name,
-      lists: that.data.navRightItems.length>0 ? that.data.navRightItems : navLeftItems_lists,
+      //lists: navLeftItems_lists,
       navLeftItems: navLeftItems,
-      navRightItems: that.data.navRightItems.length>0 ? that.data.navRightItems : navRightItems,
+      navRightItems: navRightItems,
       curNav: that.data.curNav ? that.data.curNav : navLeftItems_curNav,
       curIndex: that.data.curIndex ? that.data.curIndex : navLeftItems_curIndex,
       page: 1
     })
   }
-  var curIndex = that.data.curIndex ? that.data.curIndex:0
-  that.loadgoods(that.data.navLeftItems[curIndex]['id'], secid);
+  that.getRightTab(that.data.curNav, that.data.curIndex)
+  //that.loadgoods(that.data.navLeftItems[curIndex]['id'], secid);
   },
 
  //售货机商品信息
   get_shop_machine_goods: function () {
     var that = this
-    var value = that.data.value
+    var value = that.data.value ? that.data.value:0
     var secid = that.data.secid
     var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
     var machine_uuid = current_shop_info['machine_uuid'] ? current_shop_info['machine_uuid'] : '114131'
@@ -640,25 +641,61 @@ get_shop_goods_category:function(){
     }else{
       that.setData({
         navLeftItems_name: navLeftItems_name,
-        lists: that.data.navRightItems.length>0 ? that.data.navRightItems:navLeftItems_lists,
+        lists: navLeftItems_lists,
         navLeftItems: navLeftItems,
-        navRightItems: that.data.navRightItems.length>0 ? that.data.navRightItems : navRightItems,
+        navRightItems: navRightItems,
         curNav: that.data.curNav ? that.data.curNav:navLeftItems_curNav,
         curIndex: that.data.curIndex ? that.data.curIndex:navLeftItems_curIndex,
         page: 1
       })
       console.log('售货机商品分类 curIndex:', that.data.curIndex, 'navRightItems:',that.data.navRightItems)
       console.log('售货机商品分类 lists:', that.data.lists)
-       
+      that.getRightTab(that.data.curNav, that.data.curIndex)
     }
+  },
+
+  getRightTab: function (id,index) {
+    var that = this
+    // 获取item项的id，和数组的下标值
+      id = id?id:0
+      index = index ?index:0
+    
+    that.setData({
+      curNav: id,
+      curIndex: index,
+      //navRightItems: that.data.navLeftItems[index]['list'],
+      //navLeftItems_name: that.data.navLeftItems[index]['name'],
+      //value: that.data.navLeftItems[index]['id'],
+      hiddenallclassify: true,
+
+    })
+    console.log('getRightTab curIndex:', that.data.curIndex, 'id:', id)
+    that.setData({
+      lists: [],
+      activeIndex: -1,
+      toView: 0,
+      secid: 0,
+      all_rows: 0,
+      page: 1,
+    })
+
+    if (that.data.is_machine > 0 && that.data.machine_uuid) {
+      that.setData({
+        lists: that.data.navLeftItems[that.data.curIndex]['list'],
+      })
+      console.log('getRightTab page:', that.data.page, 'list:', that.data.lists)
+    } else {
+      that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id']);
+    }
+
   },
   //事件处理函数
   switchRightTab: function (e) {
     var that = this
     // 获取item项的id，和数组的下标值
-    let id = e.target.dataset.id
+    let id = e.target.dataset.id ? e.target.dataset.id:0
     let index = parseInt(e.target.dataset.index)
-   
+    index = index ? index:0
     // 把点击到的某一项，设为当前index
     that.setData({
       curNav: id,
@@ -689,6 +726,7 @@ get_shop_goods_category:function(){
     }
     
   },
+
 
   getMoreGoodsTapTag: function () {
     var that = this

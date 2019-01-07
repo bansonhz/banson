@@ -354,13 +354,7 @@ Page({
       machine_uuid: machine_uuid,
 
     })
-    if (that.data.is_machine > 0) {
-      that.get_shop_machine_goods()
-      console.log('售货机:', current_shop_info)
-    } else {
-      that.get_shop_goods_category()
-      console.log('店铺:', current_shop_info)
-    }
+    
     wx.getSystemInfo({
       success: function (res) {
         let winHeight = res.windowHeight;
@@ -422,13 +416,18 @@ onShow:function(){
     is_machine: current_shop_info['type'] == 2 ? 1 : 0,
     machine_uuid: current_shop_info['machine_uuid'],
   })
-  
+  if (that.data.is_machine > 0) {
+    that.get_shop_machine_goods()
+    console.log('售货机:', current_shop_info)
+  } else {
+    that.get_shop_goods_category()
+    console.log('店铺:', current_shop_info)
+  }
 },
 get_shop_goods_category:function(){
   var that = this
   var value = that.data.value 
   var secid = that.data.secid
-
   var navLeftItems = wx.getStorageSync('navLeftItems')
   var navRightItems = wx.getStorageSync('navRightItems')
   var navLeftItems_name = wx.getStorageSync('navLeftItems_name')
@@ -497,15 +496,16 @@ get_shop_goods_category:function(){
   }else{
     that.setData({
       navLeftItems_name: navLeftItems_name,
-      lists: navLeftItems_lists,
+      lists: that.data.navRightItems.length>0 ? that.data.navRightItems : navLeftItems_lists,
       navLeftItems: navLeftItems,
-      navRightItems: navRightItems,
-      curNav: navLeftItems_curNav,
-      curIndex: navLeftItems_curIndex,
+      navRightItems: that.data.navRightItems.length>0 ? that.data.navRightItems : navRightItems,
+      curNav: that.data.curNav ? that.data.curNav : navLeftItems_curNav,
+      curIndex: that.data.curIndex ? that.data.curIndex : navLeftItems_curIndex,
       page: 1
     })
   }
-  that.loadgoods(that.data.navLeftItems[that.data.curIndex]['id'], secid);
+  var curIndex = that.data.curIndex ? that.data.curIndex:0
+  that.loadgoods(that.data.navLeftItems[curIndex]['id'], secid);
   },
 
  //售货机商品信息
@@ -525,6 +525,7 @@ get_shop_goods_category:function(){
     var navLeftItems_curNav = wx.getStorageSync('navLeftItems_curNav')
     var navLeftItems_curIndex = wx.getStorageSync('navLeftItems_curIndex')
     console.log('get_shop_machine_goods current_shop_info:', current_shop_info)
+    console.log('get_shop_machine_goods navRightItems:', navRightItems)
     if (!navLeftItems){
       wx.request({
         url: machine_url + '/apiusers/checkusername',
@@ -631,7 +632,7 @@ get_shop_goods_category:function(){
                 lists: that.data.navLeftItems[that.data.curIndex]['list'],
                 page: 1
               })
-              //that.loadgoods_shop_machine(that.data.navLeftItems[that.data.curIndex]['id'], secid);
+              
             }
           })
         }
@@ -639,13 +640,16 @@ get_shop_goods_category:function(){
     }else{
       that.setData({
         navLeftItems_name: navLeftItems_name,
-        lists: navLeftItems_lists,
+        lists: that.data.navRightItems.length>0 ? that.data.navRightItems:navLeftItems_lists,
         navLeftItems: navLeftItems,
-        navRightItems: navRightItems,
-        curNav: navLeftItems_curNav,
-        curIndex: navLeftItems_curIndex,
+        navRightItems: that.data.navRightItems.length>0 ? that.data.navRightItems : navRightItems,
+        curNav: that.data.curNav ? that.data.curNav:navLeftItems_curNav,
+        curIndex: that.data.curIndex ? that.data.curIndex:navLeftItems_curIndex,
         page: 1
       })
+      console.log('售货机商品分类 curIndex:', that.data.curIndex, 'navRightItems:',that.data.navRightItems)
+      console.log('售货机商品分类 lists:', that.data.lists)
+       
     }
   },
   //事件处理函数

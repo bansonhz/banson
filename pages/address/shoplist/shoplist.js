@@ -136,7 +136,7 @@ Page({
   //售货机商品信息
   get_shop_machine_goods: function () {
     var that = this
-    var value = that.data.value
+    var value = that.data.value ? that.data.value:0
     var secid = that.data.secid
    
     var current_shop_info = wx.getStorageSync('current_shop_info') ? wx.getStorageSync('current_shop_info') : ''
@@ -245,8 +245,7 @@ Page({
               }
             
             }
-            console.log('售货机商品分类 curIndex:', that.data.curIndex, goods_classify)
-            console.log('售货机商品分类 navLeftItems:', that.data.navLeftItems)
+           
             that.setData({
               navLeftItems_name: that.data.navLeftItems[that.data.curIndex]['name'],
               lists: that.data.navLeftItems[that.data.curIndex]['list'],
@@ -258,8 +257,9 @@ Page({
             wx.setStorageSync('navLeftItems_lists', that.data.lists)
             wx.setStorageSync('navLeftItems_curNav', that.data.curNav)
             wx.setStorageSync('navLeftItems_curIndex', that.data.curIndex)
+            console.log('售货机商品分类 curIndex:', that.data.curIndex, 'navRightItems:', that.data.navRightItems)
+            console.log('售货机商品分类 navLeftItems:', that.data.navLeftItems)
             // 等待半秒，toast消失后返回上一页
-           
             setTimeout(function () {
               //wx.navigateBack()
               wx.switchTab({

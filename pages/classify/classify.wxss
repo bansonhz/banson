@@ -95,7 +95,7 @@ swiper-item image {
 /*设置行内块级元素（没使用定位）*/ 
 display: flex; 
 flex-direction:column;
-width: 20%; 
+width: 35%; 
  
 /*主盒子设置背景色为灰色*/ 
 background: #f5f5f5; 
@@ -106,9 +106,9 @@ z-index: 9;
 .nav_left .nav_left_items{ 
   margin-left: 1px;
 /*每个高30px*/ 
-height: 30px; 
+height: 25px; 
 /*垂直居中*/ 
-line-height: 30px; 
+line-height: 25px; 
 /*再设上下padding增加高度，总高42px*/ 
 padding: 6px 0; 
 /*只设下边线*/ 
@@ -130,7 +130,7 @@ top: 0;
 right: 0; 
 flex: 1; 
 /*宽度80%，高度占满，并使用百分比布局*/ 
-width: 80%; 
+width: 65%; 
 height: 100%; 
 padding: 10px; 
 box-sizing: border-box; 
@@ -149,9 +149,8 @@ margin-top:80rpx;
 .nav_right .nav_right_items{ 
 /*浮动向左*/ 
 float: left;  
-
 text-align: left; 
-width: 90%;
+width: 100%;
 padding: 0 rpx;
 display:flex;
 flex-direction: column;

@@ -47,7 +47,7 @@
   <view wx:if="{{!machine_uuid && is_machine==0}}" class="top-bar-list">
     <scroll-view scroll-x="true" bindscroll="getleft" scroll-into-view="v_{{toView}}" class="top-bar">
       <block wx:for="{{navRightItems}}" wx:key="{{item.sec_id}}">
-        <view id="v_{{index}}" data-index="{{index}}" data-id="{{item.sec_id}}"  data-name="{{item.name}}"  class="top-bar-item {{index == activeIndex ? 'top-bar-active' : ''}}" catchtap="onTapTag">
+        <view wx:if="{{item.availableInventory>0}}" id="v_{{index}}" data-index="{{index}}" data-id="{{item.sec_id}}"  data-name="{{item.name}}"  class="top-bar-item {{index == activeIndex ? 'top-bar-active' : ''}}" catchtap="onTapTag">
         {{item.name}}
         </view>
       </block>
